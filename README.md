@@ -85,4 +85,4 @@ MIT
 
 ---
 
-Built by [https://veerpratapsingh.vercel.app](**Veer Pratap Singh**)
+Built by [**Veer Pratap Singh**](https://veerpratapsingh.vercel.app)
