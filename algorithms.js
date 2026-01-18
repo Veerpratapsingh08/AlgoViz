@@ -479,7 +479,6 @@ class LinkedList {
     clear() { this.head = null; }
 }
 
-// Export for app.js
 window.SortingAlgorithms = SortingAlgorithms;
 window.PathfindingAlgorithms = PathfindingAlgorithms;
 window.BinarySearchTree = BinarySearchTree;

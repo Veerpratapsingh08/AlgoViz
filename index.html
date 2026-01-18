@@ -3,307 +3,291 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Algorithm Visualizer | Interactive DSA Experience</title>
-    <meta name="description" content="Experience algorithms come to life with stunning visualizations. Sorting, pathfinding, and data structures animated beautifully.">
-    <meta name="author" content="Veer Pratap Singh">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>AlgoViz - Unified Algorithm Visualizer</title>
     <link rel="stylesheet" href="styles.css">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
 </head>
-<body>
-    <div class="bg-animation">
-        <div class="gradient-orb orb-1"></div>
-        <div class="gradient-orb orb-2"></div>
-        <div class="gradient-orb orb-3"></div>
-        <div class="grid-overlay"></div>
-    </div>
+<body class="font-display">
 
+    <!-- Splash Screen -->
     <div class="splash-screen" id="splash">
-        <div class="splash-content">
-            <div class="logo-container">
-                <svg class="logo-svg" viewBox="0 0 100 100">
-                    <defs>
-                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#8B5CF6"/>
-                            <stop offset="50%" style="stop-color:#EC4899"/>
-                            <stop offset="100%" style="stop-color:#06B6D4"/>
-                        </linearGradient>
-                    </defs>
-                    <circle class="logo-circle" cx="50" cy="50" r="45" fill="none" stroke="url(#logoGradient)" stroke-width="2"/>
-                    <path class="logo-path" d="M30 50 L45 65 L70 35" fill="none" stroke="url(#logoGradient)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+        <div class="texture-overlay"></div>
+        <div class="splash-content-new">
+            <div class="logo-wrapper">
+                <div class="logo-glow"></div>
+                <!-- Using the asset logo -->
+                <img src="assets/logo.svg" alt="AlgoViz Logo" class="splash-logo-img">
             </div>
-            <h1 class="splash-title">Algorithm Visualizer</h1>
-            <p class="splash-subtitle">Experience the beauty of algorithms</p>
-            <div class="loading-bar">
-                <div class="loading-progress"></div>
+            <h1 class="splash-headline">AlgoViz</h1>
+            <div class="splash-progress-container">
+                <div class="splash-progress-bar">
+                    <div class="splash-progress-fill"></div>
+                </div>
             </div>
+            <div class="splash-footer">version 2.0</div>
         </div>
     </div>
 
-    <div class="app" id="app">
-        <header class="header">
-            <div class="header-content">
-                <div class="brand">
-                    <div class="brand-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                            <path d="M2 17l10 5 10-5"/>
-                            <path d="M2 12l10 5 10-5"/>
-                        </svg>
-                    </div>
-                    <span class="brand-text">AlgoViz</span>
+    <!-- Main App Container -->
+    <div class="app hidden" id="app">
+        
+        <!-- Unified Header -->
+        <header class="unified-header">
+            <div class="header-brand">
+                <div class="header-logo-box">
+                    <span class="material-symbols-outlined">hub</span>
                 </div>
-                <nav class="nav">
-                    <button class="nav-btn active" data-tab="sorting">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M3 6h18M3 12h12M3 18h6"/>
-                        </svg>
-                        <span>Sorting</span>
-                    </button>
-                    <button class="nav-btn" data-tab="pathfinding">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"/>
-                            <path d="M12 2v4M12 18v4M2 12h4M18 12h4"/>
-                        </svg>
-                        <span>Pathfinding</span>
-                    </button>
-                    <button class="nav-btn" data-tab="datastructures">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="3" width="7" height="7"/>
-                            <rect x="14" y="3" width="7" height="7"/>
-                            <rect x="14" y="14" width="7" height="7"/>
-                            <rect x="3" y="14" width="7" height="7"/>
-                        </svg>
-                        <span>Structures</span>
-                    </button>
-                </nav>
-                <div class="header-actions">
-                    <a href="https://github.com/Veerpratapsingh08/Java-DSA" target="_blank" class="github-link">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-                        </svg>
-                    </a>
-                </div>
+                <h1 class="header-title">AlgoViz</h1>
+            </div>
+            
+            <!-- View Navigation -->
+            <nav class="view-nav">
+                <button class="nav-link active" data-view="sorting">Sorting</button>
+                <button class="nav-link" data-view="pathfinding">Pathfinding</button>
+                <button class="nav-link" data-view="datastructures">Structures</button>
+            </nav>
+
+            <div class="header-actions">
+                <button class="btn-icon">
+                    <span class="material-symbols-outlined">settings</span>
+                </button>
+                <button class="btn-icon">
+                    <span class="material-symbols-outlined">code</span>
+                </button>
             </div>
         </header>
 
-        <main class="main">
-            <section class="tab-content active" id="sorting-tab">
-                <div class="controls-panel">
-                    <div class="control-group">
-                        <label class="control-label">Algorithm</label>
-                        <div class="select-wrapper">
-                            <select id="sorting-algorithm" class="select">
-                                <option value="bubble">Bubble Sort</option>
-                                <option value="selection">Selection Sort</option>
-                                <option value="insertion">Insertion Sort</option>
-                                <option value="merge">Merge Sort</option>
-                                <option value="quick">Quick Sort</option>
-                                <option value="heap">Heap Sort</option>
-                            </select>
+        <main>
+            <!-- 1. SORTING VIEW -->
+            <section id="sorting-view" class="dashboard-view sorting-layout">
+                <!-- Floating Controls (Top) -->
+                <div class="floating-controls">
+                    <div class="glass-panel justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="select-wrapper">
+                                <select id="sorting-algorithm">
+                                    <option value="merge">Merge Sort</option>
+                                    <option value="quick">Quick Sort</option>
+                                    <option value="heap">Heap Sort</option>
+                                    <option value="bubble">Bubble Sort</option>
+                                </select>
+                            </div>
+                            <div class="w-px h-8 bg-white/10"></div>
+                            <div class="flex items-center gap-4">
+                                <label class="text-xs text-muted font-bold uppercase">Size</label>
+                                <input type="range" id="array-size" min="10" max="100" value="50" class="w-32">
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <label class="text-xs text-muted font-bold uppercase">Speed</label>
+                                <input type="range" id="sort-speed" min="1" max="100" value="50" class="w-32">
+                            </div>
                         </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label">Array Size: <span id="size-value">50</span></label>
-                        <input type="range" id="array-size" class="slider" min="10" max="150" value="50">
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label">Speed: <span id="speed-value">50</span>ms</label>
-                        <input type="range" id="sort-speed" class="slider" min="1" max="200" value="50">
-                    </div>
-                    <div class="button-group">
-                        <button id="generate-array" class="btn btn-secondary">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M23 4v6h-6M1 20v-6h6"/>
-                                <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
-                            </svg>
-                            Generate
-                        </button>
-                        <button id="start-sort" class="btn btn-primary">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polygon points="5 3 19 12 5 21 5 3"/>
-                            </svg>
-                            Sort
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="visualization-container">
-                    <div class="bars-container" id="bars-container"></div>
-                    <div class="stats-panel">
-                        <div class="stat-item">
-                            <span class="stat-label">Comparisons</span>
-                            <span class="stat-value" id="comparisons">0</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Swaps</span>
-                            <span class="stat-value" id="swaps">0</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Time</span>
-                            <span class="stat-value" id="time-elapsed">0.00s</span>
+                        <div class="flex items-center gap-2">
+                            <button id="generate-array" class="btn btn-surface">
+                                <span class="material-symbols-outlined">restart_alt</span>
+                                Reset
+                            </button>
+                            <button id="start-sort" class="btn btn-primary">
+                                <span class="material-symbols-outlined">play_arrow</span>
+                                Sort
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <div class="info-card">
-                    <h3 id="algo-name">Bubble Sort</h3>
-                    <p id="algo-description">Bubble Sort repeatedly steps through the list, compares adjacent elements and swaps them if they are in the wrong order.</p>
-                    <div class="complexity-grid">
-                        <div class="complexity-item">
-                            <span class="complexity-label">Best</span>
-                            <span class="complexity-value" id="best-case">O(n)</span>
+                <!-- Canvas -->
+                <div class="sorting-canvas">
+                    <div id="bars-container" class="bars-container">
+                        <!-- Bars generated by JS -->
+                    </div>
+                </div>
+
+                <!-- Right Sidebar (Stats) -->
+                <aside class="sidebar-right">
+                    <div class="sidebar-section">
+                        <div class="sidebar-title">
+                            <span class="material-symbols-outlined text-sm">monitoring</span>
+                            Live Statistics
                         </div>
-                        <div class="complexity-item">
-                            <span class="complexity-label">Average</span>
-                            <span class="complexity-value" id="avg-case">O(n²)</span>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="stat-card">
+                                <div class="stat-value" id="comparisons">0</div>
+                                <div class="stat-label">Comparisons</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="swaps">0</div>
+                                <div class="stat-label">Swaps</div>
+                            </div>
+                            <div class="stat-card col-span-2">
+                                <div class="stat-value" id="time-elapsed">0.00s</div>
+                                <div class="stat-label">Time Elapsed</div>
+                            </div>
                         </div>
-                        <div class="complexity-item">
-                            <span class="complexity-label">Worst</span>
-                            <span class="complexity-value" id="worst-case">O(n²)</span>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <div class="sidebar-title">
+                            <span class="material-symbols-outlined text-sm">functions</span>
+                            Complexity
                         </div>
-                        <div class="complexity-item">
-                            <span class="complexity-label">Space</span>
-                            <span class="complexity-value" id="space-complexity">O(1)</span>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-muted">Time (Avg)</span>
+                                <code class="font-mono text-sm text-green-400">Θ(n log n)</code>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-muted">Space</span>
+                                <code class="font-mono text-sm text-blue-400">O(n)</code>
+                            </div>
                         </div>
+                    </div>
+                    
+                    <div class="sidebar-section flex-1">
+                        <div class="sidebar-title">Description</div>
+                        <p class="text-sm text-muted leading-relaxed" id="algo-description">
+                            Select an algorithm to see how it works.
+                        </p>
+                    </div>
+                </aside>
+            </section>
+
+            <!-- 2. PATHFINDING VIEW -->
+            <section id="pathfinding-view" class="dashboard-view pathfinding-layout hidden">
+                <!-- Left Sidebar -->
+                <aside class="sidebar-left">
+                    <div class="sidebar-section">
+                        <div class="sidebar-title">Configuration</div>
+                        <div class="space-y-4">
+                            <div class="space-y-2">
+                                <label class="text-sm text-muted">Algorithm</label>
+                                <div class="select-wrapper w-full">
+                                    <select id="pf-algorithm" class="w-full p-2 bg-surface rounded border border-white/10">
+                                        <option value="dijkstra">Dijkstra's Algorithm</option>
+                                        <option value="astar">A* Search</option>
+                                        <option value="bfs">Breadth-First Search</option>
+                                        <option value="dfs">Depth-First Search</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <div class="sidebar-title">Draw Mode</div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button class="btn btn-surface flex-col gap-1 h-20 active" data-draw="wall">
+                                <span class="material-symbols-outlined">grid_view</span>
+                                <span class="text-xs">Wall</span>
+                            </button>
+                            <button class="btn btn-surface flex-col gap-1 h-20" data-draw="start">
+                                <span class="material-symbols-outlined">trip_origin</span>
+                                <span class="text-xs">Start</span>
+                            </button>
+                            <button class="btn btn-surface flex-col gap-1 h-20" data-draw="end">
+                                <span class="material-symbols-outlined">flag</span>
+                                <span class="text-xs">Target</span>
+                            </button>
+                             <button class="btn btn-surface flex-col gap-1 h-20" data-draw="weight">
+                                <span class="material-symbols-outlined">fitness_center</span>
+                                <span class="text-xs">Weight</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-section mt-auto">
+                         <div class="stat-card mb-4">
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-xs text-muted">Nodes Visited</span>
+                                    <span class="font-mono text-white" id="pf-stats-visited">0</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-xs text-muted">Path Length</span>
+                                    <span class="font-mono text-white" id="pf-stats-length">0</span>
+                                </div>
+                        </div>
+                        <button id="pf-generate-maze" class="btn btn-surface w-full mb-2">Generate Maze</button>
+                        <button id="pf-clear" class="btn btn-surface w-full text-red-400">Clear Grid</button>
+                    </div>
+                </aside>
+
+                <!-- Canvas -->
+                <div class="pathfinding-canvas">
+                    <!-- Grid Container -->
+                    <div id="grid-container" class="grid-container">
+                        <!-- Grid cells generated by JS -->
+                    </div>
+
+                    <!-- Bottom Controls -->
+                    <div class="glass-panel bottom-controls">
+                        <button class="btn-icon" id="pf-speed-slow"><span class="material-symbols-outlined">speed</span></button>
+                        <button id="pf-start" class="btn btn-primary rounded-full px-8">
+                            <span class="material-symbols-outlined">play_arrow</span>
+                            Visualize
+                        </button>
+                        <button class="btn-icon" id="pf-reset"><span class="material-symbols-outlined">replay</span></button>
                     </div>
                 </div>
             </section>
 
-            <section class="tab-content" id="pathfinding-tab">
-                <div class="controls-panel">
-                    <div class="control-group">
-                        <label class="control-label">Algorithm</label>
-                        <div class="select-wrapper">
-                            <select id="pathfinding-algorithm" class="select">
-                                <option value="dijkstra">Dijkstra's Algorithm</option>
-                                <option value="astar">A* Search</option>
-                                <option value="bfs">Breadth-First Search</option>
-                                <option value="dfs">Depth-First Search</option>
-                            </select>
+            <!-- 3. DATA STRUCTURES VIEW -->
+            <section id="datastructures-view" class="dashboard-view hidden">
+                 <aside class="sidebar-left w-[360px]">
+                    <div class="sidebar-section">
+                        <div class="sidebar-title">Structure Type</div>
+                        <div class="flex gap-1 bg-surface p-1 rounded-xl">
+                            <button class="flex-1 py-1.5 text-xs rounded-lg bg-primary text-white">BST</button>
+                            <button class="flex-1 py-1.5 text-xs rounded-lg hover:bg-white/5 text-muted">Stack</button>
+                            <button class="flex-1 py-1.5 text-xs rounded-lg hover:bg-white/5 text-muted">Queue</button>
                         </div>
                     </div>
-                    <div class="control-group">
-                        <label class="control-label">Draw Mode</label>
-                        <div class="toggle-group">
-                            <button class="toggle-btn active" data-mode="wall">Wall</button>
-                            <button class="toggle-btn" data-mode="start">Start</button>
-                            <button class="toggle-btn" data-mode="end">End</button>
+                    
+                    <div class="sidebar-section">
+                        <div class="sidebar-title">Operations</div>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="text-xs text-muted mb-1 block">Value</label>
+                                <div class="flex gap-2">
+                                    <input type="number" id="ds-value" value="42" class="flex-1 bg-main border border-white/10 rounded-lg px-3 py-2 text-white font-mono focus:border-primary outline-none">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button id="ds-insert" class="btn btn-primary w-full">Insert</button>
+                                <button id="ds-remove" class="btn btn-surface w-full">Remove</button>
+                            </div>
+                            <button id="ds-search" class="btn btn-surface w-full">Search</button>
                         </div>
                     </div>
-                    <div class="button-group">
-                        <button id="clear-grid" class="btn btn-secondary">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
-                            </svg>
-                            Clear
-                        </button>
-                        <button id="generate-maze" class="btn btn-secondary">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="3" width="18" height="18" rx="2"/>
-                                <path d="M9 3v18M15 3v18M3 9h18M3 15h18"/>
-                            </svg>
-                            Maze
-                        </button>
-                        <button id="start-pathfinding" class="btn btn-primary">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polygon points="5 3 19 12 5 21 5 3"/>
-                            </svg>
-                            Find Path
-                        </button>
+
+                    <div class="sidebar-section flex-1 flex flex-col min-h-0">
+                         <div class="sidebar-title">Event Log</div>
+                         <div class="ds-log custom-scrollbar" id="ds-log">
+                             <div class="log-entry">
+                                 <span class="log-timestamp">10:42:01</span>
+                                 <span>System initialized.</span>
+                             </div>
+                         </div>
                     </div>
-                </div>
+                </aside>
                 
-                <div class="visualization-container">
-                    <div class="grid-container" id="grid-container"></div>
-                    <div class="legend-panel">
-                        <div class="legend-item">
-                            <div class="legend-color start-color"></div>
-                            <span>Start</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color end-color"></div>
-                            <span>End</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color wall-color"></div>
-                            <span>Wall</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color visited-color"></div>
-                            <span>Visited</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color path-color"></div>
-                            <span>Path</span>
-                        </div>
-                    </div>
+                <div class="ds-canvas" id="ds-canvas">
+                     <!-- Data Structure Visualization Container -->
+                     <div id="ds-container" class="ds-container">
+                         <!-- DS Nodes rendered here -->
+                         <div class="ds-empty-state">
+                             <span class="material-symbols-outlined text-6xl opacity-20">schema</span>
+                             <p>Binary Search Tree Visualizer</p>
+                         </div>
+                     </div>
                 </div>
             </section>
 
-            <section class="tab-content" id="datastructures-tab">
-                <div class="controls-panel">
-                    <div class="control-group">
-                        <label class="control-label">Structure</label>
-                        <div class="select-wrapper">
-                            <select id="ds-type" class="select">
-                                <option value="bst">Binary Search Tree</option>
-                                <option value="stack">Stack</option>
-                                <option value="queue">Queue</option>
-                                <option value="linkedlist">Linked List</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label">Value</label>
-                        <input type="number" id="ds-value" class="input" placeholder="Enter value...">
-                    </div>
-                    <div class="button-group">
-                        <button id="ds-insert" class="btn btn-primary">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <line x1="12" y1="5" x2="12" y2="19"/>
-                                <line x1="5" y1="12" x2="19" y2="12"/>
-                            </svg>
-                            Insert
-                        </button>
-                        <button id="ds-remove" class="btn btn-secondary">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <line x1="5" y1="12" x2="19" y2="12"/>
-                            </svg>
-                            Remove
-                        </button>
-                        <button id="ds-clear" class="btn btn-secondary">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
-                            </svg>
-                            Clear
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="visualization-container">
-                    <div class="ds-container" id="ds-container">
-                        <div class="ds-empty-state">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                                <path d="M2 17l10 5 10-5"/>
-                                <path d="M2 12l10 5 10-5"/>
-                            </svg>
-                            <p>Enter a value and click Insert to begin</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
         </main>
-
-
-        <footer class="footer">
-            <p>Built with ❤️ by <a href="https://github.com/Veerpratapsingh08" target="_blank">Veer Pratap Singh</a></p>
-        </footer>
     </div>
 
+    <!-- Scripts -->
     <script src="algorithms.js"></script>
     <script src="app.js"></script>
 </body>

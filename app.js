@@ -1,20 +1,41 @@
-// Algorithm Visualizer - Main Application
+
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
-        document.getElementById('splash').classList.add('hidden');
+        const splash = document.getElementById('splash');
+        splash.style.opacity = '0';
+        setTimeout(() => {
+            splash.classList.add('hidden');
+            document.getElementById('app').classList.remove('hidden');
+        }, 500);
     }, 2500);
-    const sortingViz = new SortingVisualizer();
-    const pathfindingViz = new PathfindingVisualizer();
-    const dsViz = new DataStructureVisualizer();
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            btn.classList.add('active');
-            document.getElementById(`${btn.dataset.tab}-tab`).classList.add('active');
+
+    window.sortingViz = new SortingVisualizer();
+    window.pathfindingViz = new PathfindingVisualizer();
+    window.dsViz = new DataStructureVisualizer();
+
+    const navLinks = document.querySelectorAll('.nav-link');
+    const views = document.querySelectorAll('.dashboard-view');
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+
+
+            const viewId = `${link.dataset.view}-view`;
+            views.forEach(view => {
+                if (view.id === viewId) {
+                    view.classList.remove('hidden');
+
+                    if (viewId === 'datastructures-view') window.dsViz.render(); 
+                } else {
+                    view.classList.add('hidden');
+                }
+            });
         });
     });
 });
+
 class SortingVisualizer {
     constructor() {
         this.array = [];
@@ -25,31 +46,24 @@ class SortingVisualizer {
         this.startTime = 0;
         this.timerInterval = null;
         this.algorithms = new SortingAlgorithms(this);
-        this.algorithmInfo = {
-            bubble: { name: 'Bubble Sort', desc: 'Repeatedly steps through the list, compares adjacent elements and swaps them if in wrong order.', best: 'O(n)', avg: 'O(n²)', worst: 'O(n²)', space: 'O(1)' },
-            selection: { name: 'Selection Sort', desc: 'Divides input into sorted and unsorted regions, repeatedly selects the smallest element.', best: 'O(n²)', avg: 'O(n²)', worst: 'O(n²)', space: 'O(1)' },
-            insertion: { name: 'Insertion Sort', desc: 'Builds final sorted array one item at a time by inserting elements in correct position.', best: 'O(n)', avg: 'O(n²)', worst: 'O(n²)', space: 'O(1)' },
-            merge: { name: 'Merge Sort', desc: 'Divides array into halves, recursively sorts them, then merges the sorted halves.', best: 'O(n log n)', avg: 'O(n log n)', worst: 'O(n log n)', space: 'O(n)' },
-            quick: { name: 'Quick Sort', desc: 'Picks a pivot element and partitions array around it, recursively sorting subarrays.', best: 'O(n log n)', avg: 'O(n log n)', worst: 'O(n²)', space: 'O(log n)' },
-            heap: { name: 'Heap Sort', desc: 'Builds a max heap from the array, then repeatedly extracts the maximum element.', best: 'O(n log n)', avg: 'O(n log n)', worst: 'O(n log n)', space: 'O(1)' }
-        };
         this.init();
     }
 
     init() {
         this.generateArray();
+        
         document.getElementById('generate-array').addEventListener('click', () => this.generateArray());
         document.getElementById('start-sort').addEventListener('click', () => this.startSort());
+        
         document.getElementById('array-size').addEventListener('input', (e) => {
-            document.getElementById('size-value').textContent = e.target.value;
-            this.generateArray();
+            this.generateArray(); 
         });
+        
         document.getElementById('sort-speed').addEventListener('input', (e) => {
             this.speed = parseInt(e.target.value);
-            document.getElementById('speed-value').textContent = this.speed;
         });
+        
         document.getElementById('sorting-algorithm').addEventListener('change', () => this.updateInfo());
-        this.updateInfo();
     }
 
     generateArray() {
@@ -63,11 +77,12 @@ class SortingVisualizer {
     renderBars() {
         const container = document.getElementById('bars-container');
         container.innerHTML = '';
-        const maxVal = Math.max(...this.array);
+        const maxVal = Math.max(...this.array); 
+        
         this.array.forEach((val, idx) => {
             const bar = document.createElement('div');
             bar.className = 'bar';
-            bar.style.height = `${(val / maxVal) * 100}%`;
+            bar.style.height = `${val}%`; 
             bar.dataset.index = idx;
             container.appendChild(bar);
         });
@@ -75,15 +90,27 @@ class SortingVisualizer {
 
     updateInfo() {
         const algo = document.getElementById('sorting-algorithm').value;
-        const info = this.algorithmInfo[algo];
-        document.getElementById('algo-name').textContent = info.name;
-        document.getElementById('algo-description').textContent = info.desc;
-        document.getElementById('best-case').textContent = info.best;
-        document.getElementById('avg-case').textContent = info.avg;
-        document.getElementById('worst-case').textContent = info.worst;
-        document.getElementById('space-complexity').textContent = info.space;
+        const descriptions = {
+            merge: "Recursive divide-and-conquer algorithm. O(n log n).",
+            quick: "Partitions array around a pivot. Fast in practice. O(n log n) avg.",
+            heap: "Builds a heap structure. O(n log n) guaranteed.",
+            bubble: "Simple pairwise swapping. Slow O(n²)."
+        };
+        const complexities = {
+             merge: { t: 'Θ(n log n)', s: 'O(n)' },
+             quick: { t: 'Θ(n log n)', s: 'O(log n)' },
+             heap: { t: 'Θ(n log n)', s: 'O(1)' },
+             bubble: { t: 'Θ(n²)', s: 'O(1)' }
+        };
+
+        const desc = descriptions[algo] || "Select an algorithm.";
+        const comp = complexities[algo] || { t: '-', s: '-' };
+
+        document.getElementById('algo-description').textContent = desc;
     }
 
+    
+    
     async startSort() {
         if (this.isSorting) return;
         this.isSorting = true;
@@ -92,56 +119,68 @@ class SortingVisualizer {
         this.timerInterval = setInterval(() => this.updateTimer(), 100);
 
         const algo = document.getElementById('sorting-algorithm').value;
-        const arr = [...this.array];
+        const arr = [...this.array]; 
 
-        switch (algo) {
-            case 'bubble': await this.algorithms.bubbleSort(arr); break;
-            case 'selection': await this.algorithms.selectionSort(arr); break;
-            case 'insertion': await this.algorithms.insertionSort(arr); break;
-            case 'merge': await this.algorithms.mergeSort(arr); break;
-            case 'quick': await this.algorithms.quickSort(arr); break;
-            case 'heap': await this.algorithms.heapSort(arr); break;
-        }
+        if (algo === 'bubble') await this.algorithms.bubbleSort(arr);
+        else if (algo === 'quick') await this.algorithms.quickSort(arr);
+        else if (algo === 'merge') await this.algorithms.mergeSort(arr);
+        else if (algo === 'heap') await this.algorithms.heapSort(arr);
 
         clearInterval(this.timerInterval);
         this.updateTimer();
         this.isSorting = false;
     }
 
+    resetStats() {
+        this.comparisons = 0;
+        this.swapCount = 0;
+        document.getElementById('comparisons').textContent = '0';
+        document.getElementById('swaps').textContent = '0';
+        document.getElementById('time-elapsed').textContent = '0.00s';
+    }
+
+    updateTimer() {
+        const elapsed = ((Date.now() - this.startTime) / 1000).toFixed(2);
+        document.getElementById('time-elapsed').textContent = `${elapsed}s`;
+    }
+
+
     delay() {
-        return new Promise(resolve => setTimeout(resolve, 201 - this.speed));
+        return new Promise(resolve => setTimeout(resolve, 101 - this.speed));
     }
 
     compare(i, j) {
         this.comparisons++;
         document.getElementById('comparisons').textContent = this.comparisons;
         const bars = document.querySelectorAll('.bar');
-        if (bars[i]) bars[i].classList.add('comparing');
-        if (bars[j]) bars[j].classList.add('comparing');
+        if(bars[i]) bars[i].classList.add('bg-orange-500'); 
+        if(bars[j]) bars[j].classList.add('bg-orange-500');
+    }
+    
+    uncompare(i, j) {
+         const bars = document.querySelectorAll('.bar');
+         if(bars[i]) bars[i].classList.remove('bg-orange-500');
+         if(bars[j]) bars[j].classList.remove('bg-orange-500');
     }
 
     swap(i, j) {
         this.swapCount++;
         document.getElementById('swaps').textContent = this.swapCount;
         const bars = document.querySelectorAll('.bar');
-        if (bars[i]) bars[i].classList.add('swapping');
-        if (bars[j]) bars[j].classList.add('swapping');
-        const tempHeight = bars[i].style.height;
-        bars[i].style.height = bars[j].style.height;
-        bars[j].style.height = tempHeight;
-    }
+        
 
-    incrementSwaps() {
-        this.swapCount++;
-        document.getElementById('swaps').textContent = this.swapCount;
+        if(bars[i] && bars[j]) {
+            const h1 = bars[i].style.height;
+            bars[i].style.height = bars[j].style.height;
+            bars[j].style.height = h1;
+        }
     }
-
-    updateBar(i, value) {
+    
+    updateBar(idx, val) {
         const bars = document.querySelectorAll('.bar');
-        const maxVal = Math.max(...this.array);
-        if (bars[i]) bars[i].style.height = `${(value / maxVal) * 100}%`;
+        if(bars[idx]) bars[idx].style.height = `${val}%`;
     }
-
+    
     resetColors(...indices) {
         const bars = document.querySelectorAll('.bar');
         indices.forEach(i => {
@@ -163,331 +202,377 @@ class SortingVisualizer {
         const bars = document.querySelectorAll('.bar');
         if (bars[i]) bars[i].classList.add('pivot');
     }
-
-    resetStats() {
-        this.comparisons = 0;
-        this.swapCount = 0;
-        document.getElementById('comparisons').textContent = '0';
-        document.getElementById('swaps').textContent = '0';
-        document.getElementById('time-elapsed').textContent = '0.00s';
-    }
-
-    updateTimer() {
-        const elapsed = ((Date.now() - this.startTime) / 1000).toFixed(2);
-        document.getElementById('time-elapsed').textContent = `${elapsed}s`;
-    }
 }
 
-
-// Pathfinding Visualizer
 
 class PathfindingVisualizer {
     constructor() {
         this.rows = 20;
         this.cols = 40;
         this.grid = [];
-        this.start = { row: 10, col: 5 };
-        this.end = { row: 10, col: 34 };
+        this.start = { r: 10, c: 5 };
+        this.end = { r: 10, c: 34 };
         this.drawMode = 'wall';
-        this.isDrawing = false;
         this.isRunning = false;
+        this.isDrawing = false;
         this.algorithms = new PathfindingAlgorithms(this);
         this.init();
     }
 
     init() {
         this.createGrid();
-        document.getElementById('clear-grid').addEventListener('click', () => this.clearGrid());
-        document.getElementById('generate-maze').addEventListener('click', () => this.generateMaze());
-        document.getElementById('start-pathfinding').addEventListener('click', () => this.startPathfinding());
-        document.querySelectorAll('.toggle-btn').forEach(btn => {
+        
+        document.getElementById('pf-generate-maze').addEventListener('click', () => this.generateMaze());
+        document.getElementById('pf-clear').addEventListener('click', () => this.clearGrid(true));
+        document.getElementById('pf-start').addEventListener('click', () => this.visualize());
+        document.getElementById('pf-reset').addEventListener('click', () => this.clearGrid(false)); // Clear path only
+
+        const modeBtns = document.querySelectorAll('[data-draw]');
+        modeBtns.forEach(btn => {
             btn.addEventListener('click', () => {
-                document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+                modeBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                this.drawMode = btn.dataset.mode;
+                this.drawMode = btn.dataset.draw;
             });
         });
     }
 
     createGrid() {
         const container = document.getElementById('grid-container');
-        container.style.gridTemplateColumns = `repeat(${this.cols}, 25px)`;
+        container.style.gridTemplateColumns = `repeat(${this.cols}, 1fr)`;
         container.innerHTML = '';
         this.grid = [];
 
-        for (let r = 0; r < this.rows; r++) {
-            this.grid[r] = [];
-            for (let c = 0; c < this.cols; c++) {
+        for(let r=0; r<this.rows; r++) {
+            const row = [];
+            for(let c=0; c<this.cols; c++) {
                 const cell = document.createElement('div');
                 cell.className = 'grid-cell';
-                cell.dataset.row = r;
-                cell.dataset.col = c;
-                this.grid[r][c] = { isWall: false };
+                if(r===this.start.r && c===this.start.c) cell.classList.add('start');
+                if(r===this.end.r && c===this.end.c) cell.classList.add('end');
+                
+                cell.dataset.r = r;
+                cell.dataset.c = c;
+                
 
-                if (r === this.start.row && c === this.start.col) cell.classList.add('start');
-                if (r === this.end.row && c === this.end.col) cell.classList.add('end');
-
-                cell.addEventListener('mousedown', (e) => this.handleMouseDown(e, r, c));
-                cell.addEventListener('mouseenter', (e) => this.handleMouseEnter(e, r, c));
-                cell.addEventListener('mouseup', () => this.isDrawing = false);
+                cell.addEventListener('mousedown', () => { this.isDrawing = true; this.handleInput(r, c); });
+                cell.addEventListener('mouseenter', () => { if(this.isDrawing) this.handleInput(r, c); });
+                cell.addEventListener('mouseup', () => { this.isDrawing = false; });
+                
                 container.appendChild(cell);
+                row.push({ isWall: false, visited: false, parent: null, weight: 1 });
             }
+            this.grid.push(row);
         }
-        document.addEventListener('mouseup', () => this.isDrawing = false);
+        document.addEventListener('mouseup', () => { this.isDrawing = false; });
     }
 
-    handleMouseDown(e, row, col) {
-        if (this.isRunning) return;
-        e.preventDefault();
-        this.isDrawing = true;
-        this.handleCellClick(row, col);
-    }
+    handleInput(r, c) {
+        if(this.isRunning) return;
+        
+        // Don't overwrite start/end unless dragging them (advanced logic), for now just blocking
+        if((r===this.start.r && c===this.start.c) || (r===this.end.r && c===this.end.c)) return;
 
-    handleMouseEnter(e, row, col) {
-        if (!this.isDrawing || this.isRunning) return;
-        if (this.drawMode === 'wall') this.handleCellClick(row, col);
-    }
-
-    handleCellClick(row, col) {
-        const cell = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
-        if (!cell) return;
-
-        if (this.drawMode === 'start') {
-            document.querySelector('.grid-cell.start')?.classList.remove('start');
-            cell.classList.add('start');
-            cell.classList.remove('wall', 'visited', 'path');
-            this.grid[row][col].isWall = false;
-            this.start = { row, col };
-        } else if (this.drawMode === 'end') {
-            document.querySelector('.grid-cell.end')?.classList.remove('end');
-            cell.classList.add('end');
-            cell.classList.remove('wall', 'visited', 'path');
-            this.grid[row][col].isWall = false;
-            this.end = { row, col };
-        } else if (this.drawMode === 'wall') {
-            if ((row === this.start.row && col === this.start.col) || (row === this.end.row && col === this.end.col)) return;
+        const cell = this.getCell(r, c);
+        
+        if(this.drawMode === 'wall') {
+            this.grid[r][c].isWall = !this.grid[r][c].isWall;
             cell.classList.toggle('wall');
-            this.grid[row][col].isWall = cell.classList.contains('wall');
+        } else if(this.drawMode === 'start') {
+            // Remove old start
+            this.getCell(this.start.r, this.start.c).classList.remove('start');
+            this.start = {r, c};
+            cell.classList.add('start');
+            this.grid[r][c].isWall = false; cell.classList.remove('wall');
+        } else if(this.drawMode === 'end') {
+             this.getCell(this.end.r, this.end.c).classList.remove('end');
+             this.end = {r, c};
+             cell.classList.add('end');
+             this.grid[r][c].isWall = false; cell.classList.remove('wall');
         }
-    }
-
-    clearGrid() {
-        if (this.isRunning) return;
-        document.querySelectorAll('.grid-cell').forEach(cell => {
-            cell.classList.remove('wall', 'visited', 'path');
-        });
-        this.grid.forEach(row => row.forEach(cell => cell.isWall = false));
     }
 
     generateMaze() {
-        if (this.isRunning) return;
-        this.clearGrid();
-        for (let r = 0; r < this.rows; r++) {
-            for (let c = 0; c < this.cols; c++) {
-                if ((r === this.start.row && c === this.start.col) || (r === this.end.row && c === this.end.col)) continue;
-                if (Math.random() < 0.3) {
-                    const cell = document.querySelector(`[data-row="${r}"][data-col="${c}"]`);
-                    cell.classList.add('wall');
-                    this.grid[r][c].isWall = true;
-                }
+        this.clearGrid(true);
+        for(let r=0; r<this.rows; r++) {
+            for(let c=0; c<this.cols; c++) {
+                 if(Math.random() < 0.3) {
+                     // Check start/end
+                     if((r!==this.start.r || c!==this.start.c) && (r!==this.end.r || c!==this.end.c)) {
+                         this.grid[r][c].isWall = true;
+                         this.getCell(r, c).classList.add('wall');
+                     }
+                 }
             }
         }
     }
 
-    async startPathfinding() {
-        if (this.isRunning) return;
-        this.isRunning = true;
-        document.querySelectorAll('.grid-cell.visited, .grid-cell.path').forEach(cell => {
-            cell.classList.remove('visited', 'path');
+    clearGrid(full = false) {
+        const cells = document.querySelectorAll('.grid-cell');
+        cells.forEach(cell => {
+             cell.classList.remove('visited', 'path');
+             if(full) {
+                 cell.classList.remove('wall');
+                 const r = parseInt(cell.dataset.r);
+                 const c = parseInt(cell.dataset.c);
+                 this.grid[r][c].isWall = false;
+             }
         });
-
-        const algo = document.getElementById('pathfinding-algorithm').value;
-        switch (algo) {
-            case 'dijkstra': await this.algorithms.dijkstra(this.grid, this.start, this.end); break;
-            case 'astar': await this.algorithms.astar(this.grid, this.start, this.end); break;
-            case 'bfs': await this.algorithms.bfs(this.grid, this.start, this.end); break;
-            case 'dfs': await this.algorithms.dfs(this.grid, this.start, this.end); break;
+        
+        // Reset logic stats
+        for(let r=0; r<this.rows; r++) {
+            for(let c=0; c<this.cols; c++) {
+                this.grid[r][c].visited = false;
+                this.grid[r][c].parent = null;
+                this.grid[r][c].distance = Infinity;
+            }
         }
+    }
+
+    getCell(r, c) {
+        return document.querySelector(`.grid-cell[data-r="${r}"][data-c="${c}"]`);
+    }
+
+    async visualize() {
+        if(this.isRunning) return;
+        this.isRunning = true;
+        this.clearGrid(false); // Clear previous path
+
+        const algo = document.getElementById('pf-algorithm').value;
+        if(algo === 'dijkstra') await this.algorithms.dijkstra();
+        else if(algo === 'astar') await this.algorithms.astar();
+        
         this.isRunning = false;
-    }
-
-    async visitCell(row, col) {
-        const cell = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
-        if (cell && !cell.classList.contains('start') && !cell.classList.contains('end')) {
-            cell.classList.add('visited');
-        }
-        await new Promise(resolve => setTimeout(resolve, 15));
-    }
-
-    async markPath(row, col) {
-        const cell = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
-        if (cell) cell.classList.add('path');
-        await new Promise(resolve => setTimeout(resolve, 30));
     }
 }
 
-
-// Data Structure Visualizer
-
-
+/* =========================================
+   3. DATA STRUCTURES VISUALIZER
+   ========================================= */
 class DataStructureVisualizer {
     constructor() {
-        this.bst = new BinarySearchTree();
-        this.stack = new Stack();
-        this.queue = new Queue();
-        this.linkedList = new LinkedList();
-        this.currentType = 'bst';
+        this.type = 'bst';
+        this.data = []; // Abstract representation
+        this.bstRoot = null;
+        
         this.init();
     }
-
+    
     init() {
-        document.getElementById('ds-type').addEventListener('change', (e) => {
-            this.currentType = e.target.value;
-            this.render();
+        // Type Buttons
+        const typeBtns = document.querySelectorAll('#datastructures-view .sidebar-section:first-child button');
+        typeBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // Determine type from text
+                const text = e.target.textContent.toLowerCase();
+                this.type = text.includes('bst') ? 'bst' : text;
+                
+                // Visual toggle
+                typeBtns.forEach(b => {
+                    b.classList.remove('bg-primary', 'text-white');
+                    b.classList.add('text-muted');
+                });
+                e.target.classList.remove('text-muted');
+                e.target.classList.add('bg-primary', 'text-white');
+                
+                this.reset();
+            });
         });
+
+        // Actions
         document.getElementById('ds-insert').addEventListener('click', () => this.insert());
         document.getElementById('ds-remove').addEventListener('click', () => this.remove());
-        document.getElementById('ds-clear').addEventListener('click', () => this.clear());
-        document.getElementById('ds-value').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') this.insert();
-        });
+    }
+
+    reset() {
+        this.data = [];
+        this.bstRoot = null;
+        this.render();
+        this.log(`Switched to ${this.type.toUpperCase()}`);
     }
 
     insert() {
-        const value = parseInt(document.getElementById('ds-value').value);
-        if (isNaN(value)) return;
-        document.getElementById('ds-value').value = '';
-
-        switch (this.currentType) {
-            case 'bst': this.bst.insert(value); break;
-            case 'stack': this.stack.push(value); break;
-            case 'queue': this.queue.enqueue(value); break;
-            case 'linkedlist': this.linkedList.append(value); break;
-        }
+        const valInput = document.getElementById('ds-value');
+        const val = parseInt(valInput.value);
+        if(isNaN(val)) return;
+        
+        if(this.type === 'stack') this.data.push(val);
+        else if(this.type === 'queue') this.data.push(val);
+        else if(this.type === 'bst') this.insertBST(val);
+        
+        this.log(`Inserted ${val}`);
         this.render();
+        valInput.value = '';
+        valInput.focus();
     }
-
+    
     remove() {
-        const value = parseInt(document.getElementById('ds-value').value);
-        document.getElementById('ds-value').value = '';
-
-        switch (this.currentType) {
-            case 'bst': if (!isNaN(value)) this.bst.remove(value); break;
-            case 'stack': this.stack.pop(); break;
-            case 'queue': this.queue.dequeue(); break;
-            case 'linkedlist': if (!isNaN(value)) this.linkedList.remove(value); break;
+        if(this.type === 'stack') {
+            const val = this.data.pop();
+            this.log(`Popped ${val}`);
+        } else if(this.type === 'queue') {
+            const val = this.data.shift();
+            this.log(`Dequeued ${val}`);
         }
         this.render();
     }
 
-    clear() {
-        switch (this.currentType) {
-            case 'bst': this.bst.clear(); break;
-            case 'stack': this.stack.clear(); break;
-            case 'queue': this.queue.clear(); break;
-            case 'linkedlist': this.linkedList.clear(); break;
+    insertBST(val) {
+        // Simple BST Logic
+        const node = { val, left: null, right: null };
+        if(!this.bstRoot) {
+            this.bstRoot = node;
+        } else {
+            let current = this.bstRoot;
+            while(true) {
+                if(val < current.val) {
+                    if(!current.left) { current.left = node; break; }
+                    current = current.left;
+                } else {
+                    if(!current.right) { current.right = node; break; }
+                    current = current.right;
+                }
+            }
         }
-        this.render();
     }
 
     render() {
         const container = document.getElementById('ds-container');
         container.innerHTML = '';
-
-        switch (this.currentType) {
-            case 'bst': this.renderBST(container); break;
-            case 'stack': this.renderStack(container); break;
-            case 'queue': this.renderQueue(container); break;
-            case 'linkedlist': this.renderLinkedList(container); break;
-        }
-    }
-
-    renderBST(container) {
-        const levels = this.bst.toArray();
-        if (!levels.length || !this.bst.root) {
-            container.innerHTML = '<div class="ds-empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg><p>Enter a value and click Insert to begin</p></div>';
-            return;
-        }
-        const bstContainer = document.createElement('div');
-        bstContainer.className = 'bst-container';
-        levels.forEach(level => {
-            const levelDiv = document.createElement('div');
-            levelDiv.className = 'bst-level';
-            level.forEach(val => {
-                const nodeDiv = document.createElement('div');
-                nodeDiv.className = 'bst-node';
-                if (val !== null) {
-                    const valueDiv = document.createElement('div');
-                    valueDiv.className = 'bst-value';
-                    valueDiv.textContent = val;
-                    nodeDiv.appendChild(valueDiv);
-                }
-                levelDiv.appendChild(nodeDiv);
+        
+        if(this.type === 'stack') {
+            // Render Stack (Vertical)
+            const stackDiv = document.createElement('div');
+            stackDiv.className = 'flex flex-col-reverse gap-2';
+            this.data.forEach(val => {
+                const item = document.createElement('div');
+                item.className = 'w-24 h-12 bg-surface border border-white/10 flex items-center justify-center rounded font-mono text-white';
+                item.textContent = val;
+                stackDiv.appendChild(item);
             });
-            bstContainer.appendChild(levelDiv);
-        });
-        container.appendChild(bstContainer);
-    }
-
-    renderStack(container) {
-        const items = this.stack.toArray();
-        if (!items.length) {
-            container.innerHTML = '<div class="ds-empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg><p>Stack is empty</p></div>';
-            return;
-        }
-        const structure = document.createElement('div');
-        structure.className = 'linear-structure';
-        items.forEach((item, i) => {
-            const itemDiv = document.createElement('div');
-            itemDiv.className = 'linear-item';
-            itemDiv.textContent = item;
-            if (i === 0) itemDiv.style.background = 'linear-gradient(135deg, #10B981 0%, #06D6A0 100%)';
-            structure.appendChild(itemDiv);
-        });
-        container.appendChild(structure);
-    }
-
-    renderQueue(container) {
-        const items = this.queue.toArray();
-        if (!items.length) {
-            container.innerHTML = '<div class="ds-empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg><p>Queue is empty</p></div>';
-            return;
-        }
-        const structure = document.createElement('div');
-        structure.className = 'linear-structure horizontal';
-        items.forEach((item, i) => {
-            const itemDiv = document.createElement('div');
-            itemDiv.className = 'linear-item';
-            itemDiv.textContent = item;
-            if (i === 0) itemDiv.style.background = 'linear-gradient(135deg, #10B981 0%, #06D6A0 100%)';
-            structure.appendChild(itemDiv);
-        });
-        container.appendChild(structure);
-    }
-
-    renderLinkedList(container) {
-        const items = this.linkedList.toArray();
-        if (!items.length) {
-            container.innerHTML = '<div class="ds-empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg><p>Linked List is empty</p></div>';
-            return;
-        }
-        const list = document.createElement('div');
-        list.className = 'linked-list';
-        items.forEach((item, i) => {
-            const nodeDiv = document.createElement('div');
-            nodeDiv.className = 'll-node';
-            const valueDiv = document.createElement('div');
-            valueDiv.className = 'll-value';
-            valueDiv.textContent = item;
-            nodeDiv.appendChild(valueDiv);
-            if (i < items.length - 1) {
-                const arrow = document.createElement('span');
-                arrow.className = 'll-arrow';
-                arrow.textContent = '→';
-                nodeDiv.appendChild(arrow);
+            container.appendChild(stackDiv);
+        } else if(this.type === 'queue') {
+            // Render Queue (Horizontal)
+             const qDiv = document.createElement('div');
+            qDiv.className = 'flex gap-2';
+            this.data.forEach(val => {
+                const item = document.createElement('div');
+                item.className = 'w-12 h-12 bg-surface border border-white/10 flex items-center justify-center rounded font-mono text-white';
+                item.textContent = val;
+                qDiv.appendChild(item);
+            });
+            container.appendChild(qDiv);
+        } else if(this.type === 'bst') {
+            // Render BST - simple textual representation or basic tree for now
+            // A real tree renderer is complex; verifying minimal structure first
+            // We'll use a simple recursive flex layout
+            if(this.bstRoot) {
+                const tree = this.renderTreeParams(this.bstRoot);
+                container.appendChild(tree);
+            } else {
+                container.innerHTML = '<div class="text-muted">Empty Tree</div>';
             }
-            list.appendChild(nodeDiv);
-        });
-        container.appendChild(list);
+        }
     }
+    
+    renderTreeParams(node) {
+        if(!node) return document.createElement('div');
+        
+        const wrapper = document.createElement('div');
+        wrapper.className = 'flex flex-col items-center gap-4';
+        
+        const valDiv = document.createElement('div');
+        valDiv.className = 'w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold shadow-glow';
+        valDiv.textContent = node.val;
+        wrapper.appendChild(valDiv);
+        
+        const children = document.createElement('div');
+        children.className = 'flex gap-8';
+        if(node.left) children.appendChild(this.renderTreeParams(node.left));
+        if(node.right) children.appendChild(this.renderTreeParams(node.right));
+        
+        wrapper.appendChild(children);
+        return wrapper;
+    }
+
+    log(msg) {
+        const log = document.getElementById('ds-log');
+        const entry = document.createElement('div');
+        entry.className = 'log-entry text-xs mb-1 font-mono';
+        const time = new Date().toLocaleTimeString().split(' ')[0];
+        entry.innerHTML = `<span class="text-muted mr-2">${time}</span> <span class="text-white">${msg}</span>`;
+        log.prepend(entry);
+    }
+}
+
+/* =========================================
+   ALGORITHMS (Simplified for Demo Logic)
+   ========================================= */
+class SortingAlgorithms {
+    constructor(viz) { this.viz = viz; }
+    
+    async bubbleSort(arr) {
+        for(let i=0; i<arr.length; i++) {
+            for(let j=0; j<arr.length-i-1; j++) {
+                this.viz.compare(j, j+1);
+                await this.viz.delay();
+                if(arr[j] > arr[j+1]) {
+                    this.viz.swap(j, j+1);
+                    [arr[j], arr[j+1]] = [arr[j+1], arr[j]];
+                    await this.viz.delay();
+                }
+                this.viz.uncompare(j, j+1);
+            }
+        }
+    }
+    async quickSort(arr) { 
+        // Implement full quicksort logic interacting with viz
+        // Placeholder for verification phase
+         for(let i=0; i<arr.length; i++) {
+            this.viz.updateBar(i, arr[i]);
+            await this.viz.delay();
+         }
+    }
+    async mergeSort() { /* ... */ }
+    async heapSort() { /* ... */ }
+}
+
+class PathfindingAlgorithms {
+    constructor(viz) { this.viz = viz; }
+    
+    async dijkstra() {
+        // BFS / Dijkstra visual simulation
+        const queue = [this.viz.start];
+        const visited = new Set();
+        
+        while(queue.length > 0) {
+            const curr = queue.shift();
+            const key = `${curr.r},${curr.c}`;
+            
+            if(visited.has(key)) continue;
+            visited.add(key);
+            
+            // Visual update
+            const cell = this.viz.getCell(curr.r, curr.c);
+            if(!cell.classList.contains('start') && !cell.classList.contains('end')) {
+                cell.classList.add('visited');
+            }
+            
+            if(curr.r === this.viz.end.r && curr.c === this.viz.end.c) break; // Found
+            
+            await new Promise(r => setTimeout(r, 20));
+            
+            // Neighbors
+            const dirs = [[0,1], [1,0], [0,-1], [-1,0]];
+            for(let [dr, dc] of dirs) {
+                const nr = curr.r + dr, nc = curr.c + dc;
+                if(nr>=0 && nr<this.viz.rows && nc>=0 && nc<this.viz.cols) {
+                    if(!this.viz.grid[nr][nc].isWall) {
+                        queue.push({r: nr, c: nc});
+                    }
+                }
+            }
+        }
+    }
+    async astar() { this.dijkstra(); } // Placeholder
 }
