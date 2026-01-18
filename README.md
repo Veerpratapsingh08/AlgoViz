@@ -1,64 +1,88 @@
 # AlgoViz
 
-A minimalist algorithm visualizer focused on clarity, structure, and
-intentional motion.
+AlgoViz is a minimalist algorithm visualizer built to make **thinking visible**.
 
-AlgoViz explores sorting algorithms, pathfinding techniques, and core
-data structures through calm, readable visualizations — without
-gamification or visual noise.
+It focuses on clarity over spectacle, using calm motion and restrained design
+to explore sorting algorithms, pathfinding techniques, and fundamental data
+structures.
+
+No gamification.
+No visual noise.
+Just logic, unfolding step by step.
 
 ## Live
-https://algoviz.vercel.app
 
-## Features
+[https://algoviz.vercel.app](https://algoviz.vercel.app)
+
+## What it does
 
 ### Sorting Algorithms
-- Bubble Sort
-- Selection Sort
-- Insertion Sort
-- Merge Sort
-- Quick Sort
-- Heap Sort
 
-Real-time visualization of comparisons, swaps, execution flow,
-and time complexity.
+Visualizes how data is ordered over time, with emphasis on comparisons,
+swaps, and progression.
 
-### Pathfinding Algorithms
-- Dijkstra’s Algorithm
-- A* Search
-- Breadth-First Search
-- Depth-First Search
+* Bubble Sort
+* Selection Sort
+* Insertion Sort
+* Merge Sort
+* Quick Sort
+* Heap Sort
 
-Interactive grid with wall drawing, start/end nodes,
-and animated exploration.
+### Pathfinding
+
+Shows how different algorithms explore space and arrive at a solution.
+
+* Dijkstra’s Algorithm
+* A* Search
+* Breadth-First Search
+* Depth-First Search
+
+Users can draw walls, move start and end nodes, and observe exploration
+and path reconstruction.
 
 ### Data Structures
-- Binary Search Tree
-- Stack
-- Queue
-- Linked List
 
-Insert and remove operations with structural visualization.
+Interactive representations of core structures:
 
-## Design Philosophy
+* Binary Search Tree
+* Stack
+* Queue
+* Linked List
 
-AlgoViz is designed with restraint.
+Insert and remove operations are visualized to emphasize structure and flow.
 
-The goal is not to entertain, but to **reveal how algorithms think**.
-Motion is slow enough to follow.
+## Design philosophy
+
+AlgoViz is intentionally restrained.
+
+Motion is slowed to remain readable.
 Colors are semantic, not decorative.
-Every interaction has a reason.
+Structure is prioritized over novelty.
 
-## Tech Stack
-- HTML5
-- CSS3
-- Vanilla JavaScript
+The goal is not to impress, but to **explain**.
 
-No frameworks. No dependencies.
+## Tech stack
 
-## Local Setup
+* Next.js
+* React
+* HTML / CSS
+* JavaScript
+
+Algorithms are kept separate from UI logic to preserve clarity and reuse.
+
+## Local setup
 
 ```bash
 git clone https://github.com/Veerpratapsingh08/algoviz.git
 cd algoviz
-open index.html
+npm install
+npm run dev
+```
+
+## License
+
+MIT
+
+---
+
+Built by **Veer Pratap Singh**

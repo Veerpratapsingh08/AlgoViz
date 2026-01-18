@@ -1,0 +1,39 @@
+<svg
+  width="180"
+  height="48"
+  viewBox="0 0 180 48"
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-label="AlgoViz logo"
+>
+  <defs>
+    <linearGradient id="algovizGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4F9DFF" />
+      <stop offset="100%" stop-color="#8B5CF6" />
+    </linearGradient>
+  </defs>
+
+  <!-- Icon -->
+  <g transform="translate(4 4)">
+    <path
+      d="M16 0 L32 28 L0 28 Z"
+      fill="none"
+      stroke="url(#algovizGradient)"
+      stroke-width="2.5"
+      stroke-linejoin="round"
+    />
+  </g>
+
+  <!-- Wordmark -->
+  <text
+    x="52"
+    y="32"
+    fill="#E5E7EB"
+    font-size="22"
+    font-family="Inter, SF Pro Display, system-ui, sans-serif"
+    font-weight="500"
+    letter-spacing="0.5"
+  >
+    AlgoViz
+  </text>
+</svg>
