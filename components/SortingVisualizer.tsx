@@ -145,7 +145,7 @@ export default function SortingVisualizer() {
         </div>
 
         {/* Floating Controls */}
-        <div className="absolute top-6 left-1/2 transform -translate-x-1/2 w-[90%] max-w-5xl z-30">
+        <div className="absolute top-24 left-1/2 transform -translate-x-1/2 w-[90%] max-w-5xl z-30">
             <div className="glass-panel justify-between">
                 <div className="flex items-center gap-6">
                     <div className="relative min-w-[140px]">
