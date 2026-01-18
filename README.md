@@ -12,7 +12,7 @@ Just logic, unfolding step by step.
 
 ## Live
 
-[https://algoviz.vercel.app](https://algoviz.vercel.app)
+[https://algovizvps.vercel.app](https://algoviz.vercel.app)
 
 ## What it does
 
@@ -85,4 +85,4 @@ MIT
 
 ---
 
-Built by **Veer Pratap Singh**
+Built by [https://veerpratapsingh.vercel.app](**Veer Pratap Singh**)
