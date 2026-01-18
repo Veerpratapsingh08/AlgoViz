@@ -70,6 +70,11 @@ export default function SortingVisualizer() {
   };
 
   const animate = (steps: Step[]) => {
+    if (steps.length === 0) {
+        setRunning(false);
+        return;
+    }
+
     const delay = Math.max(1, 100 - speed);
     const arr = [...array]; // Local mutable copy
     let cmp = 0;

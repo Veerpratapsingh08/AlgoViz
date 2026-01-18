@@ -17,7 +17,7 @@ export default function SplashScreen() {
   if (!show) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[var(--bg-main)] animate-[fadeOut_0.5s_ease-out_1.8s_forwards]">
+    <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[var(--bg-main)] animate-[fadeOut_0.5s_ease-out_1.8s_forwards] pointer-events-none">
       <div className="relative w-24 h-24 mb-6 animate-[bounce_2s_infinite]">
         <Image 
           src="/assets/logo/algoviz-icon.svg" 
