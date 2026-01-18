@@ -23,6 +23,12 @@ export default function SortingVisualizer() {
   const [colors, setColors] = useState<{[key: number]: string}>({});
   
   const timers = useRef<NodeJS.Timeout[]>([]);
+  const runningRef = useRef(running);
+  
+  // Keep ref in sync with state
+  useEffect(() => {
+    runningRef.current = running;
+  }, [running]);
 
   const clearTimers = () => {
     timers.current.forEach(t => clearTimeout(t));
@@ -30,17 +36,22 @@ export default function SortingVisualizer() {
   };
 
   const reset = useCallback(() => {
-    if (running) return;
+    if (runningRef.current) return;
     const arr = Array.from({ length: size }, () => Math.floor(Math.random() * 95) + 5);
     setArray(arr);
     setColors({});
     setStats({ comparisons: 0, swaps: 0 });
-  }, [running, size]);
+  }, [size]); // No longer depends on running!
 
+  // Initialize on mount and when size changes
   useEffect(() => {
     reset();
-    return () => clearTimers();
   }, [reset]);
+  
+  // Cleanup timers on unmount only
+  useEffect(() => {
+    return () => clearTimers();
+  }, []);
 
   const handleSize = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (running) return;
@@ -76,56 +87,64 @@ export default function SortingVisualizer() {
     }
 
     const delay = Math.max(1, 100 - speed);
-    const arr = [...array]; // Local mutable copy
+    const arrCopy = [...array];
     let cmp = 0;
     let swp = 0;
 
     steps.forEach((step, i) => {
       const t = setTimeout(() => {
+        // Handle array mutations first
+        if (step.type === 'swap') {
+          swp++;
+          const [a, b] = step.idx;
+          if (step.val) {
+            arrCopy[a] = step.val[0];
+            arrCopy[b] = step.val[1];
+          } else {
+            [arrCopy[a], arrCopy[b]] = [arrCopy[b], arrCopy[a]];
+          }
+          setArray([...arrCopy]);
+        } else if (step.type === 'overwrite') {
+          swp++;
+          arrCopy[step.idx] = step.val;
+          setArray([...arrCopy]);
+        } else if (step.type === 'compare') {
+          cmp++;
+        }
+        
+        // Update stats
+        setStats({ comparisons: cmp, swaps: swp });
+        
+        // Update colors
         setColors(prev => {
-           const next: {[key: number]: string} = {};
-           
-           // Persist sorted state
-           Object.keys(prev).forEach(k => {
-               if (prev[parseInt(k)] === 'sorted') next[parseInt(k)] = 'sorted';
-           });
+          const next: {[key: number]: string} = {};
+          
+          // Persist sorted state
+          Object.keys(prev).forEach(k => {
+            if (prev[parseInt(k)] === 'sorted') next[parseInt(k)] = 'sorted';
+          });
 
-           if (step.type === 'compare') {
-             cmp++;
-             step.idx.forEach(i => next[i] = 'comparing');
-           } else if (step.type === 'swap') {
-             swp++;
-             step.idx.forEach(i => next[i] = 'swapping');
-             
-             // Update logic with values from step for reliability
-             const [a, b] = step.idx;
-             if (step.val) {
-                 arr[a] = step.val[0];
-                 arr[b] = step.val[1];
-             } else {
-                 [arr[a], arr[b]] = [arr[b], arr[a]];
-             }
-             setArray([...arr]);
-           } else if (step.type === 'overwrite') {
-             swp++;
-             next[step.idx] = 'swapping';
-             arr[step.idx] = step.val;
-             setArray([...arr]);
-           } else if (step.type === 'sorted') {
-             next[step.idx] = 'sorted';
-           }
-           
-           setStats({ comparisons: cmp, swaps: swp });
-           return next;
+          if (step.type === 'compare') {
+            step.idx.forEach(idx => next[idx] = 'comparing');
+          } else if (step.type === 'swap') {
+            step.idx.forEach(idx => next[idx] = 'swapping');
+          } else if (step.type === 'overwrite') {
+            next[step.idx] = 'swapping';
+          } else if (step.type === 'sorted') {
+            next[step.idx] = 'sorted';
+          }
+          
+          return next;
         });
 
+        // Handle completion
         if (i === steps.length - 1) {
-            setRunning(false);
-            setColors(prev => {
-                const final = { ...prev };
-                arr.forEach((_, k) => final[k] = 'sorted');
-                return final;
-            });
+          setRunning(false);
+          setColors(() => {
+            const final: {[key: number]: string} = {};
+            arrCopy.forEach((_, k) => final[k] = 'sorted');
+            return final;
+          });
         }
       }, i * delay);
       

@@ -95,13 +95,12 @@ export default function PathfindingVisualizer() {
       const endNode = algoGrid[end.r][end.c];
 
       let steps: Step[] = [];
-      const { dijkstra, aStar, bfs, dfs } = Pathfinder;
       
       switch(algo) {
-          case 'dijkstra': steps = dijkstra(algoGrid, startNode, endNode); break;
-          case 'astar': steps = aStar(algoGrid, startNode, endNode); break;
-          case 'bfs': steps = bfs(algoGrid, startNode, endNode); break;
-          case 'dfs': steps = dfs(algoGrid, startNode, endNode); break;
+          case 'dijkstra': steps = Pathfinder.dijkstra(algoGrid, startNode, endNode); break;
+          case 'astar': steps = Pathfinder.aStar(algoGrid, startNode, endNode); break;
+          case 'bfs': steps = Pathfinder.bfs(algoGrid, startNode, endNode); break;
+          case 'dfs': steps = Pathfinder.dfs(algoGrid, startNode, endNode); break;
       }
 
       animate(steps);
