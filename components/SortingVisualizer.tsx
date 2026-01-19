@@ -155,10 +155,10 @@ export default function SortingVisualizer() {
   return (
     <div className="flex flex-col h-full w-full relative">
       {/* Sorting Canvas */}
-      <div className="flex-1 bg-[var(--bg-main)] relative p-8 pt-32 flex flex-col items-center justify-end overflow-hidden">
+      <div className="flex-1 bg-[var(--bg-main)] relative p-4 pt-24 md:p-8 md:pt-32 flex flex-col items-center justify-end overflow-hidden">
         
         {/* Bars Container */}
-        <div className="w-full h-full flex items-end justify-center gap-[2px] max-w-7xl mx-auto pb-8">
+        <div className="w-full h-full flex items-end justify-center gap-[1px] md:gap-[2px] max-w-7xl mx-auto pb-4 md:pb-8">
             {array.map((val, idx) => (
                 <div 
                     key={idx}
@@ -169,10 +169,10 @@ export default function SortingVisualizer() {
         </div>
 
         {/* Floating Controls */}
-        <div className="absolute top-24 left-1/2 transform -translate-x-1/2 w-[90%] max-w-5xl z-30">
-            <div className="glass-panel justify-between">
-                <div className="flex items-center gap-6">
-                    <div className="relative min-w-[140px]">
+        <div className="absolute top-20 md:top-24 left-1/2 transform -translate-x-1/2 w-[95%] md:w-[90%] max-w-5xl z-30">
+            <div className="glass-panel flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 md:gap-0 p-4">
+                <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
+                    <div className="relative w-full md:w-auto md:min-w-[140px]">
                         <select 
                             value={algo} 
                             onChange={(e) => setAlgo(e.target.value)}
@@ -185,99 +185,103 @@ export default function SortingVisualizer() {
                         </select>
                     </div>
                     
-                    <div className="w-px h-8 bg-white/10"></div>
+                    <div className="hidden md:block w-px h-8 bg-white/10"></div>
                     
-                    <div className="flex items-center gap-3">
-                        <label className="text-xs text-[var(--text-muted)] font-bold uppercase">Size</label>
-                        <input 
-                            type="range" 
-                            min="10" max="100" 
-                            value={size} 
-                            onChange={handleSize}
-                            disabled={running}
-                            className="w-32 accent-indigo-500"
-                        />
-                    </div>
-                    
-                    <div className="flex items-center gap-3">
-                        <label className="text-xs text-[var(--text-muted)] font-bold uppercase">Speed</label>
-                        <input 
-                            type="range" 
-                            min="1" max="100" 
-                            value={speed} 
-                            onChange={(e) => setSpeed(parseInt(e.target.value))}
-                            disabled={running}
-                            className="w-32 accent-indigo-500"
-                        />
+                    <div className="flex items-center justify-between w-full md:w-auto gap-4">
+                        <div className="flex items-center gap-3">
+                            <label className="text-xs text-[var(--text-muted)] font-bold uppercase hidden sm:block">Size</label>
+                            <input 
+                                type="range" 
+                                min="10" max="100" 
+                                value={size} 
+                                onChange={handleSize}
+                                disabled={running}
+                                className="w-full md:w-32 accent-indigo-500"
+                            />
+                        </div>
+                        
+                        <div className="flex items-center gap-3">
+                            <label className="text-xs text-[var(--text-muted)] font-bold uppercase hidden sm:block">Speed</label>
+                            <input 
+                                type="range" 
+                                min="1" max="100" 
+                                value={speed} 
+                                onChange={(e) => setSpeed(parseInt(e.target.value))}
+                                disabled={running}
+                                className="w-full md:w-32 accent-indigo-500"
+                            />
+                        </div>
                     </div>
                 </div>
 
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 justify-end border-t border-white/5 pt-3 md:border-0 md:pt-0">
                     <button 
                         onClick={reset} 
                         disabled={running}
-                        className="btn btn-surface backdrop-blur-md"
+                        className="btn btn-surface backdrop-blur-md flex-1 md:flex-none justify-center"
                     >
                         <span className="material-symbols-outlined text-lg">restart_alt</span>
-                        Reset
+                        <span className="md:hidden lg:inline">Reset</span>
                     </button>
                     <button 
                         onClick={run}
                         disabled={running}
-                        className="btn btn-primary"
+                        className="btn btn-primary flex-1 md:flex-none justify-center"
                     >
                         <span className="material-symbols-outlined text-lg">play_arrow</span>
-                        Sort
+                        <span>Sort</span>
                     </button>
                 </div>
             </div>
         </div>
 
-        {/* Stats Sidebar (Collapsible) */}
-        <div className="absolute top-28 right-8 w-72 z-20 flex flex-col gap-4">
+        {/* Stats Sidebar (Collapsible) - Bottom on Mobile, Right on Desktop */}
+        <div className="fixed bottom-4 left-4 right-4 md:absolute md:bottom-auto md:top-28 md:left-auto md:right-8 md:w-72 z-20 flex flex-col gap-2 md:gap-4">
              <CollapsiblePanel title="Live Statistics" icon="monitoring" initialOpen={true}>
-                <div className="grid grid-cols-2 gap-4 w-full mb-4">
-                    <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-xl p-3 text-center">
-                        <div className="text-2xl font-bold font-mono text-white mb-1">{stats.comparisons}</div>
+                <div className="grid grid-cols-2 gap-4 w-full mb-2 md:mb-4">
+                    <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-xl p-2 md:p-3 text-center">
+                        <div className="text-xl md:text-2xl font-bold font-mono text-white mb-1">{stats.comparisons}</div>
                         <div className="text-[10px] text-[var(--text-faint)] uppercase">Comparisons</div>
                     </div>
-                    <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-xl p-3 text-center">
-                        <div className="text-2xl font-bold font-mono text-white mb-1">{stats.swaps}</div>
+                    <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-xl p-2 md:p-3 text-center">
+                        <div className="text-xl md:text-2xl font-bold font-mono text-white mb-1">{stats.swaps}</div>
                         <div className="text-[10px] text-[var(--text-faint)] uppercase">Swaps</div>
                     </div>
                 </div>
              </CollapsiblePanel>
 
-             <CollapsiblePanel title="Algorithm Details" icon="info" initialOpen={false}>
-                 <div className="text-xs text-[var(--text-muted)] leading-relaxed space-y-4">
-                    <div>
-                        <strong className="text-indigo-400 block text-sm mb-1">{ALGORITHMS[algo as keyof typeof ALGORITHMS]}</strong>
-                        <p className="mb-2">
-                             {algo === 'quick' && "A divide-and-conquer algorithm that selects a 'pivot' element and partitions the other elements into two sub-arrays, according to whether they are less than or greater than the pivot."}
-                             {algo === 'merge' && "A specific type of divide-and-conquer algorithm that divides the input array into two halves, calls itself for the two halves, and then merges the two sorted halves."}
-                             {algo === 'heap' && "A comparison-based sorting technique based on Binary Heap data structure. It is similar to selection sort where we first find the maximum element and place the maximum element at the end."}
-                             {algo === 'bubble' && "The simplest sorting algorithm that works by repeatedly swapping the adjacent elements if they are in wrong order."}
-                             {algo === 'insertion' && "Builds the final sorted array one item at a time. It is much less efficient on large lists than more advanced algorithms such as quicksort, heapsort, or merge sort."}
-                             {algo === 'selection' && "Sorts an array by repeatedly finding the minimum element (considering ascending order) from unsorted part and putting it at the beginning."}
-                        </p>
-                    </div>
-                    
-                    <div className="space-y-2 border-t border-white/5 pt-2">
-                        <div className="flex justify-between">
-                            <span className="text-[var(--text-faint)]">Time Complexity</span>
-                            <span className="font-mono text-white">
-                                {algo === 'quick' || algo === 'merge' || algo === 'heap' ? 'O(n log n)' : 'O(n²)'}
-                            </span>
+             <div className="hidden md:block">
+                <CollapsiblePanel title="Algorithm Details" icon="info" initialOpen={false}>
+                    <div className="text-xs text-[var(--text-muted)] leading-relaxed space-y-4">
+                        <div>
+                            <strong className="text-indigo-400 block text-sm mb-1">{ALGORITHMS[algo as keyof typeof ALGORITHMS]}</strong>
+                            <p className="mb-2">
+                                {algo === 'quick' && "A divide-and-conquer algorithm that selects a 'pivot' element and partitions the other elements into two sub-arrays, according to whether they are less than or greater than the pivot."}
+                                {algo === 'merge' && "A specific type of divide-and-conquer algorithm that divides the input array into two halves, calls itself for the two halves, and then merges the two sorted halves."}
+                                {algo === 'heap' && "A comparison-based sorting technique based on Binary Heap data structure. It is similar to selection sort where we first find the maximum element and place the maximum element at the end."}
+                                {algo === 'bubble' && "The simplest sorting algorithm that works by repeatedly swapping the adjacent elements if they are in wrong order."}
+                                {algo === 'insertion' && "Builds the final sorted array one item at a time. It is much less efficient on large lists than more advanced algorithms such as quicksort, heapsort, or merge sort."}
+                                {algo === 'selection' && "Sorts an array by repeatedly finding the minimum element (considering ascending order) from unsorted part and putting it at the beginning."}
+                            </p>
                         </div>
-                        <div className="flex justify-between">
-                            <span className="text-[var(--text-faint)]">Space Complexity</span>
-                            <span className="font-mono text-white">
-                                {algo === 'merge' ? 'O(n)' : algo === 'quick' ? 'O(log n)' : 'O(1)'}
-                            </span>
+                        
+                        <div className="space-y-2 border-t border-white/5 pt-2">
+                            <div className="flex justify-between">
+                                <span className="text-[var(--text-faint)]">Time Complexity</span>
+                                <span className="font-mono text-white">
+                                    {algo === 'quick' || algo === 'merge' || algo === 'heap' ? 'O(n log n)' : 'O(n²)'}
+                                </span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span className="text-[var(--text-faint)]">Space Complexity</span>
+                                <span className="font-mono text-white">
+                                    {algo === 'merge' ? 'O(n)' : algo === 'quick' ? 'O(log n)' : 'O(1)'}
+                                </span>
+                            </div>
                         </div>
                     </div>
-                </div>
-             </CollapsiblePanel>
+                </CollapsiblePanel>
+             </div>
         </div>
 
       </div>

@@ -82,8 +82,8 @@ export default function DataStructureVisualizer() {
 
   return (
     <div className="flex flex-col h-full w-full relative">
-        {/* Sidebar Controls */}
-        <div className="absolute left-8 top-28 w-72 z-20 flex flex-col gap-4 max-h-[calc(100vh-140px)] overflow-y-auto custom-scrollbar pr-2 pb-4">
+        {/* Sidebar Controls - Bottom on mobile, Left on desktop */}
+        <div className="fixed bottom-4 left-4 right-4 md:absolute md:left-8 md:top-28 md:bottom-auto md:right-auto md:w-72 z-20 flex flex-col gap-2 md:gap-4 max-h-[40vh] md:max-h-[calc(100vh-140px)] overflow-y-auto custom-scrollbar pr-0 md:pr-2 pb-0 md:pb-4">
             <CollapsiblePanel title="Controls" icon="settings" initialOpen={true}>
                 <div className="flex flex-col gap-4">
                     <div className="flex flex-col gap-2">
@@ -116,8 +116,8 @@ export default function DataStructureVisualizer() {
                 </div>
             </CollapsiblePanel>
             
-            <CollapsiblePanel title="Activity Log" icon="history" initialOpen={true}>
-                 <div className="bg-[var(--bg-main)] rounded-lg p-3 border border-[var(--border-light)] h-40 overflow-y-auto font-mono text-xs custom-scrollbar">
+            <CollapsiblePanel title="Activity Log" icon="history" initialOpen={false}>
+                 <div className="bg-[var(--bg-main)] rounded-lg p-3 border border-[var(--border-light)] h-24 md:h-40 overflow-y-auto font-mono text-xs custom-scrollbar">
                     {logs.map((msg, i) => (
                         <div key={i} className="text-white/80 mb-1 border-b border-white/5 pb-1 last:border-0">{">"} {msg}</div>
                     ))}
@@ -125,47 +125,49 @@ export default function DataStructureVisualizer() {
                 </div>
             </CollapsiblePanel>
 
-            <CollapsiblePanel title="Structure Details" icon="info" initialOpen={false}>
-                 <div className="text-xs text-[var(--text-muted)] leading-relaxed space-y-4">
-                    <div>
-                        <strong className="text-indigo-400 block text-sm mb-1">
-                            {type === 'bst' && "Binary Search Tree (BST)"}
-                            {type === 'stack' && "Stack (LIFO)"}
-                            {type === 'queue' && "Queue (FIFO)"}
-                        </strong>
-                        <p className="mb-2">
-                             {type === 'bst' && "A hierarchical data structure where each node has at most two children. The left child is smaller, and the right child is larger than the parent. Efficient for searching and sorting."}
-                             {type === 'stack' && "A linear data structure that follows the Last In, First Out (LIFO) principle. Think of a stack of plates; the last one you put on is the first one you take off."}
-                             {type === 'queue' && "A linear data structure that follows the First In, First Out (FIFO) principle. Think of a line at a ticket counter; the first person in line is the first one served."}
-                        </p>
+            <div className="hidden md:block">
+                <CollapsiblePanel title="Structure Details" icon="info" initialOpen={false}>
+                        <div className="text-xs text-[var(--text-muted)] leading-relaxed space-y-4">
+                        <div>
+                            <strong className="text-indigo-400 block text-sm mb-1">
+                                {type === 'bst' && "Binary Search Tree (BST)"}
+                                {type === 'stack' && "Stack (LIFO)"}
+                                {type === 'queue' && "Queue (FIFO)"}
+                            </strong>
+                            <p className="mb-2">
+                                    {type === 'bst' && "A hierarchical data structure where each node has at most two children. The left child is smaller, and the right child is larger than the parent. Efficient for searching and sorting."}
+                                    {type === 'stack' && "A linear data structure that follows the Last In, First Out (LIFO) principle. Think of a stack of plates; the last one you put on is the first one you take off."}
+                                    {type === 'queue' && "A linear data structure that follows the First In, First Out (FIFO) principle. Think of a line at a ticket counter; the first person in line is the first one served."}
+                            </p>
+                        </div>
+                        
+                        <div className="space-y-2 border-t border-white/5 pt-2">
+                                <div className="flex justify-between">
+                                <span className="text-[var(--text-faint)]">Access</span>
+                                <span className="font-mono text-white">
+                                    {type === 'bst' ? 'O(log n)' : 'O(1)'}
+                                </span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span className="text-[var(--text-faint)]">Search</span>
+                                <span className="font-mono text-white">
+                                    {type === 'bst' ? 'O(log n)' : 'O(n)'}
+                                </span>
+                            </div>
+                                <div className="flex justify-between">
+                                <span className="text-[var(--text-faint)]">Insertion</span>
+                                <span className="font-mono text-white">
+                                    {type === 'bst' ? 'O(log n)' : 'O(1)'}
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <div className="space-y-2 border-t border-white/5 pt-2">
-                         <div className="flex justify-between">
-                            <span className="text-[var(--text-faint)]">Access</span>
-                            <span className="font-mono text-white">
-                                {type === 'bst' ? 'O(log n)' : 'O(1)'}
-                            </span>
-                        </div>
-                        <div className="flex justify-between">
-                            <span className="text-[var(--text-faint)]">Search</span>
-                            <span className="font-mono text-white">
-                                {type === 'bst' ? 'O(log n)' : 'O(n)'}
-                            </span>
-                        </div>
-                         <div className="flex justify-between">
-                            <span className="text-[var(--text-faint)]">Insertion</span>
-                            <span className="font-mono text-white">
-                                {type === 'bst' ? 'O(log n)' : 'O(1)'}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-           </CollapsiblePanel>
+                </CollapsiblePanel>
+            </div>
         </div>
 
        {/* Canvas */}
-       <div className="flex-1 bg-[var(--bg-canvas)] relative overflow-hidden flex items-center justify-center" ref={canvas}>
+       <div className="flex-1 bg-[var(--bg-canvas)] relative overflow-hidden flex items-center justify-center p-4 md:p-8" ref={canvas}>
            
            {/* BST Render */}
            {type === 'bst' && (

@@ -137,8 +137,8 @@ export default function PathfindingVisualizer() {
 
   return (
     <div className="flex flex-col h-full w-full relative">
-       {/* Sidebar Controls */}
-       <div className="absolute left-8 top-28 w-72 z-20 flex flex-col gap-4 max-h-[calc(100vh-140px)] overflow-y-auto custom-scrollbar pr-2 pb-4">
+       {/* Sidebar Controls - Bottom on mobile, Left on desktop */}
+       <div className="fixed bottom-4 left-4 right-4 md:absolute md:left-8 md:top-28 md:bottom-auto md:right-auto md:w-72 z-20 flex flex-col gap-2 md:gap-4 max-h-[40vh] md:max-h-[calc(100vh-140px)] overflow-y-auto custom-scrollbar pr-0 md:pr-2 pb-0 md:pb-4">
            <CollapsiblePanel title="Configuration" icon="settings" initialOpen={true}>
                <div className="flex flex-col gap-4">
                    <div className="flex flex-col gap-2">
@@ -166,7 +166,7 @@ export default function PathfindingVisualizer() {
                </div>
            </CollapsiblePanel>
 
-           <CollapsiblePanel title="Legend" icon="help" initialOpen={true}>
+           <CollapsiblePanel title="Legend" icon="help" initialOpen={false}>
                <div className="text-xs text-[var(--text-muted)] space-y-2">
                    <div className="flex items-center gap-3"><span className="w-4 h-4 bg-[var(--node-start)] rounded-md"></span> Start Node</div>
                    <div className="flex items-center gap-3"><span className="w-4 h-4 bg-[var(--node-end)] rounded-md"></span> Target Node</div>
@@ -176,46 +176,48 @@ export default function PathfindingVisualizer() {
                </div>
            </CollapsiblePanel>
 
-           <CollapsiblePanel title="Algorithm Details" icon="info" initialOpen={false}>
-                 <div className="text-xs text-[var(--text-muted)] leading-relaxed space-y-4">
-                    <div>
-                        <strong className="text-indigo-400 block text-sm mb-1">
-                            {algo === 'dijkstra' && "Dijkstra's Algorithm"}
-                            {algo === 'astar' && "A* Search"}
-                            {algo === 'bfs' && "Breadth-First Search"}
-                            {algo === 'dfs' && "Depth-First Search"}
-                        </strong>
-                        <p className="mb-2">
-                             {algo === 'dijkstra' && "The father of pathfinding algorithms; guarantees the shortest path. It explores all neighbors equally, expanding outward like a shockwave."}
-                             {algo === 'astar' && "Changes the 'shockwave' into a directed beam by using a heuristic (estimate) to prioritize nodes closer to the target. Usually faster than Dijkstra."}
-                             {algo === 'bfs' && "Explores all neighbor nodes at the present depth prior to moving on to the nodes at the next depth level. Guarantees shortest path in unweighted graphs."}
-                             {algo === 'dfs' && "Explores as far as possible along each branch before backtracking. Does NOT guarantee shortest path and can get lost in infinite grids."}
-                        </p>
-                    </div>
-                    
-                    <div className="space-y-2 border-t border-white/5 pt-2">
-                         <div className="flex justify-between">
-                            <span className="text-[var(--text-faint)]">Performance</span>
-                            <span className="font-mono text-white">
-                                {algo === 'astar' ? 'Fastest' : algo === 'dfs' ? 'Variable' : 'Moderate'}
-                            </span>
-                        </div>
-                        <div className="flex justify-between">
-                            <span className="text-[var(--text-faint)]">Shortest Path?</span>
-                            <span className="font-mono text-white">
-                                {algo === 'dfs' ? 'No' : 'Yes'}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-           </CollapsiblePanel>
+           <div className="hidden md:block">
+              <CollapsiblePanel title="Algorithm Details" icon="info" initialOpen={false}>
+                    <div className="text-xs text-[var(--text-muted)] leading-relaxed space-y-4">
+                       <div>
+                           <strong className="text-indigo-400 block text-sm mb-1">
+                               {algo === 'dijkstra' && "Dijkstra's Algorithm"}
+                               {algo === 'astar' && "A* Search"}
+                               {algo === 'bfs' && "Breadth-First Search"}
+                               {algo === 'dfs' && "Depth-First Search"}
+                           </strong>
+                           <p className="mb-2">
+                                {algo === 'dijkstra' && "The father of pathfinding algorithms; guarantees the shortest path. It explores all neighbors equally, expanding outward like a shockwave."}
+                                {algo === 'astar' && "Changes the 'shockwave' into a directed beam by using a heuristic (estimate) to prioritize nodes closer to the target. Usually faster than Dijkstra."}
+                                {algo === 'bfs' && "Explores all neighbor nodes at the present depth prior to moving on to the nodes at the next depth level. Guarantees shortest path in unweighted graphs."}
+                                {algo === 'dfs' && "Explores as far as possible along each branch before backtracking. Does NOT guarantee shortest path and can get lost in infinite grids."}
+                           </p>
+                       </div>
+                       
+                       <div className="space-y-2 border-t border-white/5 pt-2">
+                            <div className="flex justify-between">
+                               <span className="text-[var(--text-faint)]">Performance</span>
+                               <span className="font-mono text-white">
+                                   {algo === 'astar' ? 'Fastest' : algo === 'dfs' ? 'Variable' : 'Moderate'}
+                               </span>
+                           </div>
+                           <div className="flex justify-between">
+                               <span className="text-[var(--text-faint)]">Shortest Path?</span>
+                               <span className="font-mono text-white">
+                                   {algo === 'dfs' ? 'No' : 'Yes'}
+                               </span>
+                           </div>
+                       </div>
+                   </div>
+              </CollapsiblePanel>
+           </div>
        </div>
 
        {/* Grid Canvas */}
-       <div className="flex-1 bg-[var(--bg-canvas)] flex items-center justify-center p-8 pt-20" onMouseUp={handleMouseUp}>
+       <div className="flex-1 bg-[var(--bg-canvas)] overflow-auto flex items-start md:items-center justify-start md:justify-center p-4 md:p-8 pt-24 md:pt-20 custom-scrollbar" onMouseUp={handleMouseUp}>
            <div 
              ref={gridRef}
-             className="grid gap-[1px] bg-[var(--border-light)] border border-[var(--border-light)] shadow-2xl"
+             className="grid gap-[1px] bg-[var(--border-light)] border border-[var(--border-light)] shadow-2xl mx-auto my-auto"
              style={{ 
                  gridTemplateColumns: `repeat(${COLS}, 30px)`,
                  gridTemplateRows: `repeat(${ROWS}, 30px)`

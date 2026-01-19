@@ -2,12 +2,12 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <section className="dashboard-view w-full h-full flex flex-col items-center justify-start overflow-y-auto p-8 pb-32">
-      <div className="about-container max-w-6xl w-full flex flex-col gap-16 mt-12">
+    <section className="dashboard-view w-full h-full flex flex-col items-center justify-start overflow-y-auto p-4 md:p-8 pb-32">
+      <div className="about-container max-w-6xl w-full flex flex-col gap-12 md:gap-16 mt-6 md:mt-12">
         
         {/* Hero Section */}
-        <div className="about-hero text-center space-y-8 animate-[fadeIn_0.5s_ease-out]">
-          <div className="relative w-64 h-16 mx-auto mb-8">
+        <div className="about-hero text-center space-y-6 md:space-y-8 animate-[fadeIn_0.5s_ease-out]">
+          <div className="relative w-48 md:w-64 h-12 md:h-16 mx-auto mb-4 md:mb-8">
             <Image 
               src="/assets/logo/algoviz.svg" 
               alt="AlgoViz" 
@@ -15,17 +15,17 @@ export default function Home() {
               className="object-contain drop-shadow-[0_0_20px_rgba(99,102,241,0.3)]"
             />
           </div>
-          <h1 className="text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-indigo-200 to-indigo-400 leading-tight">
+          <h1 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-indigo-200 to-indigo-400 leading-tight">
             Visualize Algorithms<br/>in Real-Time
           </h1>
-          <p className="about-subtitle text-xl text-[var(--text-muted)] max-w-2xl mx-auto leading-relaxed">
+          <p className="about-subtitle text-lg md:text-xl text-[var(--text-muted)] max-w-2xl mx-auto leading-relaxed px-2">
             An interactive platform to understand sorting algorithms, pathfinding techniques, 
             and data structures through stunning visual animations.
           </p>
         </div>
 
         {/* Feature Cards */}
-        <div className="about-features grid grid-cols-1 md:grid-cols-3 gap-8 animate-[slideUp_0.8s_ease-out_0.2s_both]">
+        <div className="about-features grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 animate-[slideUp_0.8s_ease-out_0.2s_both]">
           <FeatureCard 
             icon="swap_vert" 
             title="Sorting Algorithms" 
@@ -45,10 +45,10 @@ export default function Home() {
 
         {/* Technology Stack */}
         <div className="about-tech text-center space-y-8 animate-[slideUp_0.8s_ease-out_0.4s_both]">
-          <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-indigo-300">
+          <h2 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-indigo-300">
             Built With Modern Tech
           </h2>
-          <div className="tech-grid flex flex-wrap justify-center gap-4">
+          <div className="tech-grid flex flex-wrap justify-center gap-3 md:gap-4">
             <TechBadge icon="bolt" name="Next.js 15" />
             <TechBadge icon="code" name="TypeScript" />
             <TechBadge icon="palette" name="Tailwind CSS" />
@@ -57,7 +57,7 @@ export default function Home() {
         </div>
 
         {/* Footer */}
-        <div className="about-footer text-center pt-12 border-t border-[var(--border-light)] text-[var(--text-muted)] animate-[fadeIn_1s_ease-out_0.6s_both]">
+        <div className="about-footer text-center pt-8 md:pt-12 border-t border-[var(--border-light)] text-[var(--text-muted)] animate-[fadeIn_1s_ease-out_0.6s_both]">
           <p className="mb-2">Created with ❤️ by <a href="https://veerpratapsingh.vercel.app" target="_blank" rel="noopener noreferrer" className="hover:text-indigo-400 transition-colors">Veer Pratap Singh</a></p>
           <div className="text-xs font-mono opacity-50">version 1.0</div>
         </div>
