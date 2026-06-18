@@ -88,8 +88,6 @@ export default function PathfindingVisualizer() {
       const cells = gridRef.current?.getElementsByClassName('grid-cell');
       if (cells) Array.from(cells).forEach(c => c.classList.remove('visited', 'path'));
 
-      // Create algorithm-ready grid copy (resetting stateful props)
-      // Preserving 'isWall' but resetting 'distance', 'visited', 'parent'
       const algoGrid = grid.map(row => row.map(node => ({ ...node, distance: Infinity, visited: false, parent: null })));
       const startNode = algoGrid[start.r][start.c];
       const endNode = algoGrid[end.r][end.c];
@@ -137,56 +135,69 @@ export default function PathfindingVisualizer() {
 
   return (
     <div className="flex flex-col h-full w-full relative">
-       {/* Sidebar Controls - Bottom on mobile, Left on desktop */}
-       <div className="fixed bottom-4 left-4 right-4 md:absolute md:left-8 md:top-28 md:bottom-auto md:right-auto md:w-72 z-20 flex flex-col gap-2 md:gap-4 max-h-[40vh] md:max-h-[calc(100vh-140px)] overflow-y-auto custom-scrollbar pr-0 md:pr-2 pb-0 md:pb-4">
-           <CollapsiblePanel title="Configuration" icon="settings" initialOpen={true}>
-               <div className="flex flex-col gap-4">
-                   <div className="flex flex-col gap-2">
-                       <label className="text-xs text-[var(--text-muted)] font-bold uppercase">Algorithm</label>
-                       <select 
+       
+       {/* Floating Controls Dock */}
+       <div className="absolute top-24 md:top-28 left-1/2 transform -translate-x-1/2 w-[95%] md:w-auto max-w-5xl z-30 animate-[slideUp_0.5s_ease-out]">
+            <div className="glass-panel flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 p-4 md:px-8 md:py-4 rounded-3xl border border-white/10 shadow-[0_15px_40px_rgba(0,0,0,0.5)] bg-slate-900/60 backdrop-blur-2xl">
+                
+                <div className="flex items-center gap-4 w-full md:w-auto">
+                    <div className="relative flex-1 md:flex-none">
+                        <select 
                            value={algo}
                            onChange={(e) => setAlgo(e.target.value)}
                            disabled={running}
-                           className="bg-[var(--bg-surface)] text-white p-2 rounded-lg border border-[var(--border-light)] outline-none"
+                           className="bg-white/5 border border-white/10 text-white font-semibold rounded-xl px-4 py-2 outline-none cursor-pointer w-full text-sm appearance-none hover:bg-white/10 transition-colors"
                        >
-                           <option value="dijkstra">Dijkstra&apos;s Algorithm</option>
-                           <option value="astar">A* Search</option>
-                           <option value="bfs">Breadth-First Search</option>
-                           <option value="dfs">Depth-First Search</option>
+                           <option value="dijkstra" className="bg-slate-900 text-white">Dijkstra&apos;s Algorithm</option>
+                           <option value="astar" className="bg-slate-900 text-white">A* Search</option>
+                           <option value="bfs" className="bg-slate-900 text-white">Breadth-First Search</option>
+                           <option value="dfs" className="bg-slate-900 text-white">Depth-First Search</option>
                        </select>
-                   </div>
-                   
-                   <div className="grid grid-cols-2 gap-2">
-                       <button onClick={visualize} disabled={running} className="btn btn-primary col-span-2">
-                           Visualize
-                       </button>
-                       <button onClick={generateMaze} disabled={running} className="btn btn-surface text-xs">Gen Maze</button>
-                       <button onClick={clearGrid} disabled={running} className="btn btn-surface text-xs">Clear</button>
-                   </div>
-               </div>
-           </CollapsiblePanel>
+                        <span className="material-symbols-outlined absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-slate-400 text-sm">expand_more</span>
+                    </div>
+                </div>
 
-           <CollapsiblePanel title="Legend" icon="help" initialOpen={false}>
-               <div className="text-xs text-[var(--text-muted)] space-y-2">
-                   <div className="flex items-center gap-3"><span className="w-4 h-4 bg-[var(--node-start)] rounded-md"></span> Start Node</div>
-                   <div className="flex items-center gap-3"><span className="w-4 h-4 bg-[var(--node-end)] rounded-md"></span> Target Node</div>
-                   <div className="flex items-center gap-3"><span className="w-4 h-4 bg-[var(--node-wall)] rounded-md"></span> Wall</div>
-                   <div className="flex items-center gap-3"><span className="w-4 h-4 bg-[var(--node-visited)] rounded-md opacity-50"></span> Visited</div>
-                   <div className="flex items-center gap-3"><span className="w-4 h-4 bg-[var(--node-shortest)] rounded-md"></span> Shortest Path</div>
+                <div className="hidden md:block w-px h-8 bg-white/10"></div>
+
+                <div className="flex items-center gap-3 justify-end mt-2 md:mt-0">
+                    <button onClick={clearGrid} disabled={running} className="btn btn-surface flex-1 md:flex-none justify-center px-4" title="Clear Grid">
+                        <span className="material-symbols-outlined text-lg">delete_sweep</span>
+                    </button>
+                    <button onClick={generateMaze} disabled={running} className="btn btn-surface flex-1 md:flex-none justify-center px-4" title="Generate Random Maze">
+                        <span className="material-symbols-outlined text-lg">grid_goldenratio</span>
+                    </button>
+                    <button onClick={visualize} disabled={running} className="btn btn-primary flex-1 md:flex-none justify-center px-8 shadow-[0_0_20px_rgba(6,182,212,0.4)] bg-gradient-to-r from-cyan-500 to-blue-600">
+                        <span className="material-symbols-outlined text-lg">explore</span>
+                        <span className="tracking-wide">Find Path</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+       {/* Sidebar Controls - Bottom on mobile, Left on desktop */}
+       <div className="fixed bottom-4 left-4 right-4 md:absolute md:left-8 md:top-48 md:bottom-auto md:right-auto md:w-72 z-20 flex flex-col gap-2 md:gap-4 max-h-[40vh] md:max-h-[calc(100vh-140px)] overflow-y-auto custom-scrollbar pr-0 md:pr-2 pb-0 md:pb-4 animate-[fadeIn_0.8s_ease-out]">
+           
+           <CollapsiblePanel title="Legend" icon="help" initialOpen={true}>
+               <div className="text-xs text-slate-300 space-y-3 pt-2">
+                   <div className="flex items-center gap-4 p-2 bg-white/5 rounded-lg border border-white/5"><span className="w-5 h-5 bg-[var(--node-start)] rounded-full shadow-[0_0_10px_var(--node-start)] animate-pulseGlow"></span> Start Node</div>
+                   <div className="flex items-center gap-4 p-2 bg-white/5 rounded-lg border border-white/5"><span className="w-5 h-5 bg-[var(--node-end)] rounded-full shadow-[0_0_10px_var(--node-end)] animate-pulseGlow"></span> Target Node</div>
+                   <div className="flex items-center gap-4 p-2 bg-white/5 rounded-lg border border-white/5"><span className="w-5 h-5 bg-[var(--node-wall)] rounded-md border border-slate-600"></span> Wall</div>
+                   <div className="flex items-center gap-4 p-2 bg-white/5 rounded-lg border border-white/5"><span className="w-5 h-5 bg-[var(--grid-visited)] border border-cyan-500/30 rounded-md"></span> Visited Node</div>
+                   <div className="flex items-center gap-4 p-2 bg-white/5 rounded-lg border border-white/5"><span className="w-5 h-5 bg-[var(--grid-path)] rounded-md shadow-[0_0_10px_var(--grid-path)]"></span> Shortest Path</div>
                </div>
            </CollapsiblePanel>
 
            <div className="hidden md:block">
               <CollapsiblePanel title="Algorithm Details" icon="info" initialOpen={false}>
-                    <div className="text-xs text-[var(--text-muted)] leading-relaxed space-y-4">
+                    <div className="text-xs text-slate-300 leading-relaxed space-y-4">
                        <div>
-                           <strong className="text-indigo-400 block text-sm mb-1">
+                           <strong className="text-cyan-400 block text-sm mb-2 font-bold tracking-wide">
                                {algo === 'dijkstra' && "Dijkstra's Algorithm"}
                                {algo === 'astar' && "A* Search"}
                                {algo === 'bfs' && "Breadth-First Search"}
                                {algo === 'dfs' && "Depth-First Search"}
                            </strong>
-                           <p className="mb-2">
+                           <p className="mb-2 font-light">
                                 {algo === 'dijkstra' && "The father of pathfinding algorithms; guarantees the shortest path. It explores all neighbors equally, expanding outward like a shockwave."}
                                 {algo === 'astar' && "Changes the 'shockwave' into a directed beam by using a heuristic (estimate) to prioritize nodes closer to the target. Usually faster than Dijkstra."}
                                 {algo === 'bfs' && "Explores all neighbor nodes at the present depth prior to moving on to the nodes at the next depth level. Guarantees shortest path in unweighted graphs."}
@@ -194,16 +205,16 @@ export default function PathfindingVisualizer() {
                            </p>
                        </div>
                        
-                       <div className="space-y-2 border-t border-white/5 pt-2">
-                            <div className="flex justify-between">
-                               <span className="text-[var(--text-faint)]">Performance</span>
-                               <span className="font-mono text-white">
+                       <div className="space-y-3 border-t border-white/10 pt-3">
+                            <div className="flex justify-between items-center">
+                               <span className="text-slate-400 font-medium">Performance</span>
+                               <span className="font-mono text-white bg-white/10 px-2 py-0.5 rounded text-[10px]">
                                    {algo === 'astar' ? 'Fastest' : algo === 'dfs' ? 'Variable' : 'Moderate'}
                                </span>
                            </div>
-                           <div className="flex justify-between">
-                               <span className="text-[var(--text-faint)]">Shortest Path?</span>
-                               <span className="font-mono text-white">
+                           <div className="flex justify-between items-center">
+                               <span className="text-slate-400 font-medium">Shortest Path?</span>
+                               <span className="font-mono text-white bg-white/10 px-2 py-0.5 rounded text-[10px]">
                                    {algo === 'dfs' ? 'No' : 'Yes'}
                                </span>
                            </div>
@@ -214,13 +225,18 @@ export default function PathfindingVisualizer() {
        </div>
 
        {/* Grid Canvas */}
-       <div className="flex-1 bg-[var(--bg-canvas)] overflow-auto flex items-start md:items-center justify-start md:justify-center p-4 md:p-8 pt-24 md:pt-20 custom-scrollbar" onMouseUp={handleMouseUp}>
+       <div className="flex-1 overflow-auto flex items-start md:items-center justify-start md:justify-center p-4 md:p-8 pt-40 md:pt-48 custom-scrollbar relative z-10" onMouseUp={handleMouseUp}>
+            {/* Dynamic Background */}
+            <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none -z-10">
+                <div className="absolute top-[20%] right-[20%] w-[50%] h-[50%] rounded-full bg-cyan-500/10 blur-[150px]"></div>
+            </div>
+
            <div 
              ref={gridRef}
-             className="grid gap-[1px] bg-[var(--border-light)] border border-[var(--border-light)] shadow-2xl mx-auto my-auto"
+             className="grid gap-[2px] bg-white/5 border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] mx-auto my-auto p-[2px] rounded-xl backdrop-blur-sm"
              style={{ 
-                 gridTemplateColumns: `repeat(${COLS}, 30px)`,
-                 gridTemplateRows: `repeat(${ROWS}, 30px)`
+                 gridTemplateColumns: `repeat(${COLS}, 28px)`,
+                 gridTemplateRows: `repeat(${ROWS}, 28px)`
              }}
            >
                {grid.map((row, r) => (
@@ -234,7 +250,7 @@ export default function PathfindingVisualizer() {
                            <div
                                key={`${r}-${c}`}
                                id={`node-${r}-${c}`}
-                               className={`grid-cell w-[30px] h-[30px] ${extraClass}`}
+                               className={`grid-cell ${extraClass}`}
                                onMouseDown={() => handleMouseDown(r, c)}
                                onMouseEnter={() => handleMouseEnter(r, c)}
                            ></div>

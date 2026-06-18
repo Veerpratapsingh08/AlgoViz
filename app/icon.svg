@@ -1,0 +1,23 @@
+<svg
+  width="40"
+  height="40"
+  viewBox="0 0 40 40"
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-label="AlgoViz icon"
+>
+  <defs>
+    <linearGradient id="algovizGradientIcon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4F9DFF" />
+      <stop offset="100%" stop-color="#8B5CF6" />
+    </linearGradient>
+  </defs>
+
+  <path
+    d="M20 4 L34 32 L6 32 Z"
+    fill="none"
+    stroke="url(#algovizGradientIcon)"
+    stroke-width="2.8"
+    stroke-linejoin="round"
+  />
+</svg>
