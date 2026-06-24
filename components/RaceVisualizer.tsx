@@ -434,7 +434,7 @@ export default function RaceVisualizer() {
                     onClick={() => { setBetWinner(null); run(); }}
                     className="mt-6 text-stone-500 hover:text-stone-300 underline font-mono text-sm"
                   >
-                    I don't know, just start the race!
+                    I don&apos;t know, just start the race!
                   </button>
               </div>
           </div>

@@ -352,7 +352,7 @@ export default function DataStructureVisualizer() {
                    <div className="text-xs text-stone-400 font-bold uppercase tracking-widest absolute top-2 right-6">Tail</div>
 
                    <div className="flex items-center pt-6 px-4">
-                       {items.map((item, i) => (
+                       {items.map((item) => (
                            <div key={item.id} className="flex items-center">
                                <div className={`min-w-[64px] h-14 px-4 sketch-box flex items-center justify-center font-bold text-2xl text-stone-100 transition-all ${item.val === highlightedVal ? 'bg-amber-600 border-amber-400 shadow-[0_0_15px_rgba(217,119,6,0.8)]' : 'bg-stone-700'}`}>
                                    {item.val}

@@ -1,4 +1,3 @@
-import Link from "next/link";
 
 export const metadata = {
   title: 'The Algorithm Sketchbook - About',
@@ -21,16 +20,16 @@ export default function AboutPage() {
           
           <div className="space-y-6 text-xl text-stone-300 leading-relaxed font-inter">
             <p>
-              I've always felt that traditional computer science resources get it backwards. They bury you in dry theory, mathematical proofs, and dense textbook paragraphs before you ever get to see the algorithm actually <em>run</em>.
+              I&apos;ve always felt that traditional computer science resources get it backwards. They bury you in dry theory, mathematical proofs, and dense textbook paragraphs before you ever get to see the algorithm actually <em>run</em>.
             </p>
             <p>
-              Learning algorithms shouldn't feel like deciphering an ancient manuscript. It should feel like playing with Lego blocks. You should be able to poke at it, change the speed, swap the data, and watch the mechanics unfold right in front of your eyes.
+              Learning algorithms shouldn&apos;t feel like deciphering an ancient manuscript. It should feel like playing with Lego blocks. You should be able to poke at it, change the speed, swap the data, and watch the mechanics unfold right in front of your eyes.
             </p>
             <p>
-              I built <strong>The Algorithm Sketchbook</strong> to be the tool I wish I had when I was first learning Data Structures and Algorithms. I wanted a messy, hands-on, highly visual playground where you can literally see an $O(n^2)$ algorithm struggle, or watch Dijkstra's algorithm organically explore a maze.
+              I built <strong>The Algorithm Sketchbook</strong> to be the tool I wish I had when I was first learning Data Structures and Algorithms. I wanted a messy, hands-on, highly visual playground where you can literally see an $O(n^2)$ algorithm struggle, or watch Dijkstra&apos;s algorithm organically explore a maze.
             </p>
             <p>
-              No corporate fluff. No rigid grids. Just raw logic, visual intuition, and a chalkboard aesthetic to make it feel like you're sketching out ideas in a notebook.
+              No corporate fluff. No rigid grids. Just raw logic, visual intuition, and a chalkboard aesthetic to make it feel like you&apos;re sketching out ideas in a notebook.
             </p>
           </div>
         </div>
@@ -77,11 +76,11 @@ export default function AboutPage() {
                 </div>
                 <div className="border-l-2 border-stone-600 pl-4 py-1">
                     <span className="text-amber-500 font-bold block mb-1">Day 12:</span>
-                    Accidentally animated 5,000 DOM updates per frame on a 100x100 pathfinding grid. My laptop fan sounded like a jet engine. Re-learned that $O(n^2)$ isn't just theory—it actually burns CPU cycles in the real world.
+                    Accidentally animated 5,000 DOM updates per frame on a 100x100 pathfinding grid. My laptop fan sounded like a jet engine. Re-learned that $O(n^2)$ isn&apos;t just theory—it actually burns CPU cycles in the real world.
                 </div>
                 <div className="border-l-2 border-stone-600 pl-4 py-1">
                     <span className="text-amber-500 font-bold block mb-1">Day 18:</span>
-                    Dijkstra's algorithm kept exploring the entire grid even when the target was right next to it. Realized my priority queue was a standard array and I was doing `arr.sort()` on every single insertion. Big O strikes again.
+                    Dijkstra&apos;s algorithm kept exploring the entire grid even when the target was right next to it. Realized my priority queue was a standard array and I was doing `arr.sort()` on every single insertion. Big O strikes again.
                 </div>
             </div>
         </div>

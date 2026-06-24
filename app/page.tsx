@@ -19,7 +19,7 @@ export default function Home() {
           </p>
           <div className="pt-8">
               <Link href="/sorting" className="btn btn-primary text-2xl px-8 py-3 transform rotate-1">
-                  Let's draw some algorithms!
+                  Let&apos;s draw some algorithms!
               </Link>
           </div>
         </div>
@@ -105,7 +105,7 @@ export default function Home() {
               </svg>
               <h2 className="text-4xl font-editorial italic text-stone-100 mb-2 group-hover:underline decoration-2 decoration-purple-400 underline-offset-4 tracking-tight">Freeform Graphs</h2>
               <p className="text-stone-400 font-inter text-lg leading-relaxed">
-                Draw your own freeform graph networks, connect edges, and run Kruskal's MST or Dijkstra's Shortest Path right on top of your sketches.
+                Draw your own freeform graph networks, connect edges, and run Kruskal&apos;s MST or Dijkstra&apos;s Shortest Path right on top of your sketches.
               </p>
             </Link>
           </div>

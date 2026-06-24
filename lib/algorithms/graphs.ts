@@ -28,8 +28,8 @@ class UnionFind {
         return this.parent[i] = this.find(this.parent[i]);
     }
     union(i: string, j: string) {
-        let root_i = this.find(i);
-        let root_j = this.find(j);
+        const root_i = this.find(i);
+        const root_j = this.find(j);
         if (root_i !== root_j) {
             this.parent[root_i] = root_j;
         }

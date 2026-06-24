@@ -41,7 +41,7 @@ export default function PathfindingVisualizer() {
   const [noPath, setNoPath] = useState(false);
   const [pathLength, setPathLength] = useState<number | null>(null);
 
-  const [stats, setStats] = useState({ visited: 0, pathLength: 0 });
+
   const [showStudyGuide, setShowStudyGuide] = useState(false);
 
   const gridRef = useRef<HTMLDivElement>(null);

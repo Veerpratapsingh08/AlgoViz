@@ -36,6 +36,30 @@ export default function GraphVisualizer() {
     timers.current = [];
   };
 
+  const resetVisuals = () => {
+    clearTimers();
+    setRunning(false);
+    setEdgeColors({});
+    setNodeColors({});
+  };
+
+  const clearAll = () => {
+    if (running) return;
+    setNodes([]);
+    setEdges([]);
+    setNodeIdCounter(0);
+    resetVisuals();
+  };
+  
+  const clearEdges = () => {
+    if (running) return;
+    setEdges([]);
+    resetVisuals();
+  };
+
+   
+
+
   const loadGraph = (type: 'constellation' | 'k4' | 'star') => {
     clearAll();
     const w = window.innerWidth;
@@ -103,14 +127,10 @@ export default function GraphVisualizer() {
   useEffect(() => {
     // Load default constellation on mount
     loadGraph('constellation');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const resetVisuals = () => {
-    clearTimers();
-    setRunning(false);
-    setEdgeColors({});
-    setNodeColors({});
-  };
+
 
   const handleCanvasDoubleClick = (e: MouseEvent) => {
     if (running) return;
@@ -196,19 +216,7 @@ export default function GraphVisualizer() {
     }
   };
 
-  const clearAll = () => {
-    if (running) return;
-    setNodes([]);
-    setEdges([]);
-    setNodeIdCounter(0);
-    resetVisuals();
-  };
-  
-  const clearEdges = () => {
-    if (running) return;
-    setEdges([]);
-    resetVisuals();
-  };
+
 
   const runAlgorithm = () => {
     if (running || nodes.length === 0) return;
@@ -270,12 +278,12 @@ export default function GraphVisualizer() {
                   <div className="relative w-48 shrink-0">
                       <select
                           value={algo}
-                          onChange={(e) => { setAlgo(e.target.value as any); resetVisuals(); }}
+                          onChange={(e) => { setAlgo(e.target.value as 'kruskal' | 'dijkstra'); resetVisuals(); }}
                           disabled={running}
                           className="sketch-box bg-stone-700 text-stone-100 font-bold px-4 py-2 outline-none cursor-pointer w-full text-sm appearance-none hover:bg-stone-600 transition-colors border-sky-600"
                       >
-                          <option value="kruskal" className="bg-stone-800">Kruskal's MST</option>
-                          <option value="dijkstra" className="bg-stone-800">Dijkstra's Shortest Path</option>
+                          <option value="kruskal" className="bg-stone-800">Kruskal&apos;s MST</option>
+                          <option value="dijkstra" className="bg-stone-800">Dijkstra&apos;s Shortest Path</option>
                       </select>
                   </div>
 
@@ -283,7 +291,7 @@ export default function GraphVisualizer() {
                       <select
                           onChange={(e) => { 
                             if (e.target.value) {
-                              loadGraph(e.target.value as any);
+                              loadGraph(e.target.value as 'constellation' | 'k4' | 'star');
                               e.target.value = '';
                             }
                           }}
