@@ -254,7 +254,7 @@ export default function DataStructureVisualizer() {
         </div>
 
         {/* Right Sidebar Controls */}
-        <div className="hidden md:flex fixed bottom-4 left-4 right-4 md:absolute md:right-8 md:top-64 md:bottom-auto md:left-auto md:w-72 z-20 flex-col gap-2 md:gap-4 max-h-[40vh] md:max-h-[calc(100vh-140px)] overflow-y-auto custom-scrollbar pr-0 md:pr-2 pb-0 md:pb-4 -rotate-1">
+        <div className="hidden xl:flex fixed bottom-4 left-4 right-4 xl:absolute xl:right-8 xl:top-64 xl:bottom-auto xl:left-auto xl:w-72 z-20 flex-col gap-2 xl:gap-4 max-h-[40vh] xl:max-h-[calc(100vh-140px)] overflow-y-auto custom-scrollbar pr-0 xl:pr-2 pb-0 xl:pb-4 -rotate-1">
             <CollapsiblePanel title="How it Works" icon="info" initialOpen={true}>
                 <div className="text-lg text-stone-300 leading-relaxed space-y-3 font-inter">
                 {type === 'bst' && (
@@ -301,7 +301,7 @@ export default function DataStructureVisualizer() {
         </div>
 
        {/* Canvas */}
-       <div className="flex-1 relative overflow-hidden flex items-center justify-center p-4 md:p-8 pt-32 md:pt-40" ref={canvas}>
+       <div className="flex-1 relative overflow-hidden flex items-center justify-center p-4 md:pl-[22rem] xl:pr-[22rem] pt-32 md:pt-40" ref={canvas}>
 
            {/* BST Render */}
            {type === 'bst' && (

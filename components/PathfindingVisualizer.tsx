@@ -306,7 +306,7 @@ export default function PathfindingVisualizer() {
        </div>
 
        {/* Grid Canvas */}
-       <div className="flex-1 overflow-auto flex items-start md:items-center justify-start md:justify-center p-4 md:p-8 pt-40 md:pt-48 custom-scrollbar relative z-10" onMouseUp={handleMouseUp}>
+       <div className="flex-1 overflow-auto flex items-start md:items-center justify-start md:justify-center p-4 md:pr-8 md:pl-[22rem] pt-40 md:pt-48 custom-scrollbar relative z-10" onMouseUp={handleMouseUp}>
            <div
              ref={gridRef}
              className="grid gap-[2px] mx-auto my-auto p-[2px] rounded-xl sketch-box bg-stone-800"

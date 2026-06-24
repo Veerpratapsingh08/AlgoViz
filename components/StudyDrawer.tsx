@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { STUDY_DATA } from '@/lib/studyContent';
 
 interface StudyDrawerProps {
@@ -11,6 +11,7 @@ interface StudyDrawerProps {
 
 export default function StudyDrawer({ isOpen, onClose, contentKey }: StudyDrawerProps) {
   const content = STUDY_DATA[contentKey];
+  const [lang, setLang] = useState<'typescript' | 'python' | 'java' | 'cpp'>('typescript');
 
   // Lock body scroll when open
   useEffect(() => {
@@ -88,13 +89,21 @@ export default function StudyDrawer({ isOpen, onClose, contentKey }: StudyDrawer
 
             {/* Code Snippet */}
             <div>
-               <h3 className="text-stone-100 font-bold text-2xl mb-4 font-inter tracking-wide flex items-center gap-2">
-                 <span className="material-symbols-outlined text-stone-400">code</span>
-                 Standard Implementation
-               </h3>
+               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                 <h3 className="text-stone-100 font-bold text-2xl font-inter tracking-wide flex items-center gap-2">
+                   <span className="material-symbols-outlined text-stone-400">code</span>
+                   Implementation
+                 </h3>
+                 <div className="flex flex-wrap gap-2">
+                    <button onClick={() => setLang('typescript')} className={`px-3 py-1.5 text-sm font-bold sketch-box ${lang === 'typescript' ? 'bg-stone-600 text-stone-100 border-stone-500' : 'bg-stone-800 text-stone-400 hover:text-stone-200'}`}>TypeScript</button>
+                    <button onClick={() => setLang('python')} className={`px-3 py-1.5 text-sm font-bold sketch-box ${lang === 'python' ? 'bg-stone-600 text-stone-100 border-stone-500' : 'bg-stone-800 text-stone-400 hover:text-stone-200'}`}>Python</button>
+                    <button onClick={() => setLang('java')} className={`px-3 py-1.5 text-sm font-bold sketch-box ${lang === 'java' ? 'bg-stone-600 text-stone-100 border-stone-500' : 'bg-stone-800 text-stone-400 hover:text-stone-200'}`}>Java</button>
+                    <button onClick={() => setLang('cpp')} className={`px-3 py-1.5 text-sm font-bold sketch-box ${lang === 'cpp' ? 'bg-stone-600 text-stone-100 border-stone-500' : 'bg-stone-800 text-stone-400 hover:text-stone-200'}`}>C++</button>
+                 </div>
+               </div>
                <div className="sketch-box bg-[#1a1a1a] border-stone-700 p-0 overflow-hidden shadow-inner">
                    <pre className="p-6 overflow-x-auto custom-scrollbar font-mono text-sm md:text-base text-stone-300 leading-relaxed">
-                       <code dangerouslySetInnerHTML={{ __html: content.code.replace(/\n/g, '<br/>').replace(/ /g, '&nbsp;') }}></code>
+                       <code dangerouslySetInnerHTML={{ __html: (content.code[lang as keyof typeof content.code] || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br/>').replace(/ /g, '&nbsp;') }}></code>
                    </pre>
                </div>
                <p className="text-stone-500 text-sm mt-4 italic">* Note: This is a conceptual implementation meant for educational study, not production use.</p>

@@ -242,7 +242,7 @@ export default function SortingVisualizer() {
         )}
 
         {/* Bars Container */}
-        <div className="w-full h-full flex items-end justify-center gap-[2px] md:gap-1 max-w-7xl mx-auto pb-4 px-2 md:px-8 z-10">
+        <div className="flex-1 w-full h-[60vh] md:h-full mt-32 md:mt-0 flex items-end justify-center gap-[2px] md:gap-1 max-w-7xl mx-auto pb-4 px-2 md:pl-8 md:pr-[22rem] z-10">
             {array.map((val, idx) => (
                 <div
                     key={idx}
