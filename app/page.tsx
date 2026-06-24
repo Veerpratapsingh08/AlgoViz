@@ -115,7 +115,12 @@ export default function Home() {
         {/* Footer */}
         <div className="mt-32 pt-10 text-center text-xl text-stone-500 sketch-box bg-stone-800/50 border-none shadow-none transform rotate-1">
           <p>Scribbled together by <a href="https://veerpratapsingh.vercel.app" target="_blank" rel="noopener noreferrer" className="text-stone-300 underline decoration-2 decoration-stone-500 font-bold hover:text-white">Veer Pratap Singh</a></p>
-          <span className="sr-only">The Algorithm Sketchbook</span><p className="mt-2 opacity-50">v2.0 (Dark Sketch Edition)</p>
+          <div className="mt-4 flex items-center justify-center gap-4 text-base opacity-75">
+             <span className="sr-only">The Algorithm Sketchbook</span>
+             <span>v2.0 (Dark Sketch Edition)</span>
+             <span className="text-stone-600">|</span>
+             <Link href="/privacy" className="hover:text-stone-300 hover:underline">Privacy Policy</Link>
+          </div>
         </div>
 
       </div>
