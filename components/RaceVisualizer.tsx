@@ -31,6 +31,9 @@ export default function RaceVisualizer() {
   const [speed, setSpeed] = useState<number>(50);
   const [running, setRunning] = useState<boolean>(false);
   const [winner, setWinner] = useState<1 | 2 | 'tie' | null>(null);
+  
+  const [showBetModal, setShowBetModal] = useState(false);
+  const [betWinner, setBetWinner] = useState<1 | 2 | null>(null);
 
   const timers1 = useRef<NodeJS.Timeout[]>([]);
   const timers2 = useRef<NodeJS.Timeout[]>([]);
@@ -55,9 +58,10 @@ export default function RaceVisualizer() {
     setColors2({});
     setStats1({ comparisons: 0, writes: 0 });
     setStats2({ comparisons: 0, writes: 0 });
-    setDone1(false);
     setDone2(false);
     setWinner(null);
+    setBetWinner(null);
+    setShowBetModal(false);
   }, [size]);
 
   const stop = () => {
@@ -80,9 +84,10 @@ export default function RaceVisualizer() {
     setArray2([...arr]);
     setColors1({});
     setColors2({});
-    setDone1(false);
     setDone2(false);
     setWinner(null);
+    setBetWinner(null);
+    setShowBetModal(false);
   };
 
   const getSteps = (algo: string, arr: number[]) => {
@@ -97,12 +102,22 @@ export default function RaceVisualizer() {
     }
   };
 
+  const handleRaceClick = () => {
+    if (running) return;
+    if (betWinner === null) {
+      setShowBetModal(true);
+      return;
+    }
+    run();
+  };
+
   const run = () => {
     if (running) return;
     setRunning(true);
     setDone1(false);
     setDone2(false);
     setWinner(null);
+    setShowBetModal(false);
     setStats1({ comparisons: 0, writes: 0 });
     setStats2({ comparisons: 0, writes: 0 });
     clearTimers();
@@ -202,7 +217,7 @@ export default function RaceVisualizer() {
     <div className="flex flex-col h-full w-full relative bg-[var(--bg-main)]">
       
       {/* Floating Controls Dock */}
-      <div className="absolute top-16 md:top-20 left-1/2 transform -translate-x-1/2 w-[98%] max-w-6xl z-30">
+      <div className="absolute top-12 md:top-16 left-1/2 transform -translate-x-1/2 w-[98%] max-w-6xl z-30">
           <div className="sketch-box bg-stone-800 flex flex-row flex-wrap items-center justify-center lg:justify-between gap-4 xl:gap-6 p-4 xl:px-8 xl:py-4 -rotate-1">
               
               {/* Algos Selection */}
@@ -279,7 +294,7 @@ export default function RaceVisualizer() {
                         <span className="material-symbols-outlined text-lg text-stone-300">restart_alt</span>
                     </button>
                   )}
-                  <button onClick={run} disabled={running} className="btn btn-primary flex-1 lg:flex-none justify-center px-8 bg-amber-600 hover:bg-amber-500 text-stone-900">
+                  <button onClick={handleRaceClick} disabled={running} className="btn btn-primary flex-1 lg:flex-none justify-center px-8 bg-amber-600 hover:bg-amber-500 text-stone-900 border-stone-800">
                       <span className="material-symbols-outlined text-lg">flag</span>
                       <span className="tracking-wide text-xl font-black uppercase">Race</span>
                   </button>
@@ -358,7 +373,19 @@ export default function RaceVisualizer() {
       
       {/* Race Winner Overlay Banner */}
       {done1 && done2 && !running && winner && (
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 sketch-box bg-stone-900 border-amber-500 border-4 p-8 flex flex-col items-center shadow-[0_0_50px_rgba(245,158,11,0.2)] animate-[popIn_0.5s_cubic-bezier(0.175,0.885,0.32,1.275)] -rotate-2">
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 sketch-box bg-stone-900 border-amber-500 border-4 p-8 flex flex-col items-center shadow-[0_0_50px_rgba(245,158,11,0.2)] animate-[popIn_0.5s_cubic-bezier(0.175,0.885,0.32,1.275)] -rotate-2 min-w-[300px]">
+              
+              {/* Betting Result */}
+              {betWinner && winner !== 'tie' && (
+                  <div className={`text-2xl font-black uppercase tracking-widest mb-4 px-4 py-1 border-2 transform -rotate-2 ${
+                    betWinner === winner 
+                      ? 'text-emerald-400 border-emerald-400 bg-emerald-900/30' 
+                      : 'text-rose-400 border-rose-400 bg-rose-900/30'
+                  }`}>
+                    {betWinner === winner ? '🎉 You Won the Bet!' : '💀 You Lost the Bet!'}
+                  </div>
+              )}
+
               <span className="material-symbols-outlined text-6xl text-amber-500 mb-2">emoji_events</span>
               <h1 className="text-4xl font-black text-stone-100 uppercase tracking-widest text-center">
                  {winner === 'tie' ? "It's a Tie!" : `${ALGORITHMS[(winner === 1 ? algo1 : algo2) as keyof typeof ALGORITHMS]} Wins!`}
@@ -371,6 +398,45 @@ export default function RaceVisualizer() {
                   </p>
               )}
               <button onClick={reset} className="mt-6 btn btn-primary px-8 py-2 text-lg">Race Again</button>
+          </div>
+      )}
+
+      {/* Betting Modal Overlay */}
+      {showBetModal && (
+          <div className="absolute inset-0 bg-stone-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+              <div className="sketch-box bg-stone-800 p-8 md:p-12 max-w-xl w-full transform -rotate-1 flex flex-col items-center animate-[popIn_0.3s_ease-out]">
+                  <span className="material-symbols-outlined text-6xl text-amber-400 mb-4">monetization_on</span>
+                  <h2 className="text-4xl md:text-5xl font-editorial italic text-stone-100 mb-2">Place Your Bet!</h2>
+                  <p className="text-stone-400 font-mono mb-8 text-center">Which algorithm will finish in fewer operations?</p>
+                  
+                  <div className="flex flex-col sm:flex-row gap-4 w-full">
+                      <button 
+                          onClick={() => { setBetWinner(1); setTimeout(run, 0); }}
+                          className="flex-1 btn btn-surface py-6 bg-rose-900/20 hover:bg-rose-900/40 border-rose-600 group"
+                      >
+                          <div className="flex flex-col items-center">
+                              <span className="text-xs font-mono text-rose-400 mb-1">ALGO 1</span>
+                              <span className="text-2xl font-black text-stone-100 group-hover:text-rose-400 transition-colors uppercase tracking-widest">{ALGORITHMS[algo1 as keyof typeof ALGORITHMS]}</span>
+                          </div>
+                      </button>
+                      <button 
+                          onClick={() => { setBetWinner(2); setTimeout(run, 0); }}
+                          className="flex-1 btn btn-surface py-6 bg-sky-900/20 hover:bg-sky-900/40 border-sky-600 group"
+                      >
+                          <div className="flex flex-col items-center">
+                              <span className="text-xs font-mono text-sky-400 mb-1">ALGO 2</span>
+                              <span className="text-2xl font-black text-stone-100 group-hover:text-sky-400 transition-colors uppercase tracking-widest">{ALGORITHMS[algo2 as keyof typeof ALGORITHMS]}</span>
+                          </div>
+                      </button>
+                  </div>
+                  
+                  <button 
+                    onClick={() => { setBetWinner(null); run(); }}
+                    className="mt-6 text-stone-500 hover:text-stone-300 underline font-mono text-sm"
+                  >
+                    I don't know, just start the race!
+                  </button>
+              </div>
           </div>
       )}
       

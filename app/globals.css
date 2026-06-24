@@ -2,8 +2,10 @@
 
 @theme {
   --font-display: var(--font-sketch), cursive;
+  --font-editorial: var(--font-instrument), serif;
   --font-body: var(--font-sketch), cursive;
   --font-inter: var(--font-inter), sans-serif;
+  --font-mono: var(--font-mono), monospace;
 }
 
 :root {
@@ -14,10 +16,13 @@
     --text-muted: #a8a29e; /* Grey chalk */
     --border-light: #78716c; /* Light chalk lines */
     
+    /* Brand Accent */
+    --accent-gold: #fbbf24; /* Tailwind amber-400 */
+
     /* Pathfinding & Visualizer Colors */
     --grid-wall: #78716c; /* Scribbled wall */
-    --grid-path: #fef08a; /* Pastel yellow */
-    --grid-visited: #bae6fd; /* Pastel blue */
+    --grid-path: var(--accent-gold); /* Gold accent for shortest path */
+    --grid-visited: rgba(28, 25, 23, 0.5); /* Muted dark stone to let gold pop */
     --node-start: #4ade80; /* Marker green */
     --node-end: #f87171; /* Marker red */
 }
@@ -82,15 +87,15 @@ h1, h2, h3, h4, button {
 
 /* Visualizer Bars (Hand-drawn style) */
 .bar { 
-    width: 100%; background: #bae6fd; 
+    width: 100%; background: #57534e; /* Muted stone default */
     border: 1px solid var(--border-light);
     border-bottom: none;
     border-radius: 5px 15px 0 0/15px 5px 0 0;
     transition: height 0.1s ease, background 0.1s ease; 
 }
-.bar.comparing { background: #fef08a; }
-.bar.swapping { background: #f87171; }
-.bar.sorted { background: #4ade80; }
+.bar.comparing { background: #fef3c7; } /* Faint pastel gold */
+.bar.swapping { background: var(--accent-gold); } /* Primary brand gold */
+.bar.sorted { background: #a8a29e; } /* Light grey to let active swaps pop */
 
 /* Grid Styles (Pathfinding) */
 .grid-cell { 

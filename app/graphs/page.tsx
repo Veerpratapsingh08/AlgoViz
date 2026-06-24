@@ -1,7 +1,7 @@
 import GraphVisualizer from '@/components/GraphVisualizer';
 
 export const metadata = {
-  title: 'AlgoViz - Freeform Graphs',
+  title: 'The Algorithm Sketchbook - Freeform Graphs',
   description: 'Draw freeform graphs and visualize algorithms.',
 };
 

@@ -11,6 +11,7 @@ export default function GraphVisualizer() {
   const [nodeIdCounter, setNodeIdCounter] = useState(0);
   
   const [draggingEdge, setDraggingEdge] = useState<{fromId: string, x: number, y: number} | null>(null);
+  const [showTooltip, setShowTooltip] = useState(true);
   
   const [algo, setAlgo] = useState<'kruskal' | 'dijkstra'>('kruskal');
   const [running, setRunning] = useState(false);
@@ -34,6 +35,75 @@ export default function GraphVisualizer() {
     timers.current.forEach(clearTimeout);
     timers.current = [];
   };
+
+  const loadGraph = (type: 'constellation' | 'k4' | 'star') => {
+    clearAll();
+    const w = window.innerWidth;
+    const cx = w > 768 ? 400 : w / 2;
+    const cy = 250;
+    
+    if (type === 'constellation') {
+      const n = [
+        { id: '1', x: cx - 100, y: cy - 100 },
+        { id: '2', x: cx + 50, y: cy - 120 },
+        { id: '3', x: cx + 150, y: cy },
+        { id: '4', x: cx + 50, y: cy + 120 },
+        { id: '5', x: cx - 100, y: cy + 100 },
+        { id: '6', x: cx - 200, y: cy }
+      ];
+      setNodes(n);
+      setEdges([
+        { id: 'e_1_2', from: '1', to: '2', weight: 4 },
+        { id: 'e_2_3', from: '2', to: '3', weight: 3 },
+        { id: 'e_3_4', from: '3', to: '4', weight: 5 },
+        { id: 'e_4_5', from: '4', to: '5', weight: 2 },
+        { id: 'e_5_6', from: '5', to: '6', weight: 4 },
+        { id: 'e_6_1', from: '6', to: '1', weight: 6 },
+        { id: 'e_1_4', from: '1', to: '4', weight: 7 },
+        { id: 'e_2_5', from: '2', to: '5', weight: 8 },
+      ]);
+      setNodeIdCounter(7);
+    } else if (type === 'k4') {
+      const n = [
+        { id: '1', x: cx, y: cy - 100 },
+        { id: '2', x: cx + 100, y: cy + 50 },
+        { id: '3', x: cx - 100, y: cy + 50 },
+        { id: '4', x: cx, y: cy + 10 }
+      ];
+      setNodes(n);
+      setEdges([
+        { id: 'e_1_2', from: '1', to: '2', weight: 5 },
+        { id: 'e_2_3', from: '2', to: '3', weight: 5 },
+        { id: 'e_3_1', from: '3', to: '1', weight: 5 },
+        { id: 'e_1_4', from: '1', to: '4', weight: 3 },
+        { id: 'e_2_4', from: '2', to: '4', weight: 3 },
+        { id: 'e_3_4', from: '3', to: '4', weight: 3 },
+      ]);
+      setNodeIdCounter(5);
+    } else if (type === 'star') {
+      const n = [
+        { id: 'C', x: cx, y: cy },
+        { id: '1', x: cx, y: cy - 120 },
+        { id: '2', x: cx + 120, y: cy },
+        { id: '3', x: cx, y: cy + 120 },
+        { id: '4', x: cx - 120, y: cy },
+      ];
+      setNodes(n);
+      setEdges([
+        { id: 'e_C_1', from: 'C', to: '1', weight: 2 },
+        { id: 'e_C_2', from: 'C', to: '2', weight: 4 },
+        { id: 'e_C_3', from: 'C', to: '3', weight: 1 },
+        { id: 'e_C_4', from: 'C', to: '4', weight: 7 },
+      ]);
+      setNodeIdCounter(5);
+    }
+    setShowTooltip(false);
+  };
+
+  useEffect(() => {
+    // Load default constellation on mount
+    loadGraph('constellation');
+  }, []);
 
   const resetVisuals = () => {
     clearTimers();
@@ -62,6 +132,7 @@ export default function GraphVisualizer() {
     setNodes(prev => [...prev, newNode]);
     setNodeIdCounter(prev => prev + 1);
     resetVisuals();
+    setShowTooltip(false);
   };
 
   const handleNodeMouseDown = (e: MouseEvent, id: string) => {
@@ -169,11 +240,11 @@ export default function GraphVisualizer() {
         } else if (step.type === 'rejected_edge' && step.edgeId) {
           setEdgeColors(prev => ({ ...prev, [step.edgeId!]: 'stroke-stone-700 opacity-30' }));
         } else if (step.type === 'visited_node' && step.nodeId) {
-          setNodeColors(prev => ({ ...prev, [step.nodeId!]: 'bg-amber-600 border-amber-400 text-stone-100' }));
+          setNodeColors(prev => ({ ...prev, [step.nodeId!]: 'bg-[var(--accent-gold)] border-amber-600 text-stone-900' }));
         } else if (step.type === 'path_found' && step.pathEdges) {
            // Color the final path in green
            const finalEdges: {[key: string]: string} = {};
-           step.pathEdges.forEach(id => finalEdges[id] = 'stroke-emerald-500 stroke-[4px]');
+           step.pathEdges.forEach(id => finalEdges[id] = 'stroke-[var(--accent-gold)] stroke-[4px]');
            setEdgeColors(prev => ({ ...prev, ...finalEdges }));
         }
 
@@ -207,6 +278,24 @@ export default function GraphVisualizer() {
                           <option value="dijkstra" className="bg-stone-800">Dijkstra's Shortest Path</option>
                       </select>
                   </div>
+
+                  <div className="relative w-40 shrink-0">
+                      <select
+                          onChange={(e) => { 
+                            if (e.target.value) {
+                              loadGraph(e.target.value as any);
+                              e.target.value = '';
+                            }
+                          }}
+                          disabled={running}
+                          className="sketch-box bg-stone-700 text-stone-100 font-bold px-4 py-2 outline-none cursor-pointer w-full text-sm appearance-none hover:bg-stone-600 transition-colors border-emerald-600"
+                      >
+                          <option value="" className="bg-stone-800">Load Graph...</option>
+                          <option value="constellation" className="bg-stone-800">Constellation</option>
+                          <option value="k4" className="bg-stone-800">K4 Complete</option>
+                          <option value="star" className="bg-stone-800">Star Graph</option>
+                      </select>
+                  </div>
               </div>
 
               <div className="flex items-center gap-3">
@@ -233,10 +322,16 @@ export default function GraphVisualizer() {
           </div>
       </div>
 
-      {/* Instructions */}
-      <div className="absolute top-44 left-1/2 transform -translate-x-1/2 z-20 text-stone-500 font-sketch text-2xl tracking-wide pointer-events-none text-center">
-         Double-click to add nodes. Drag between nodes to connect edges.
-      </div>
+      {/* Instructions Overlay */}
+      {showTooltip && (
+          <div className="absolute top-44 left-1/2 transform -translate-x-1/2 z-20 pointer-events-none">
+              <div className="sketch-box bg-amber-400 text-stone-900 font-editorial italic tracking-wide text-2xl p-4 transform -rotate-2 animate-bounce shadow-xl">
+                  Double-click to drop a node. Drag between nodes to connect!
+                  {/* Speech bubble tail */}
+                  <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[16px] border-t-amber-400"></div>
+              </div>
+          </div>
+      )}
 
       {/* Main Canvas */}
       <div className="flex-1 w-full h-full pt-40 px-4 pb-8 overflow-hidden">

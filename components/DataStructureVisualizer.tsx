@@ -225,7 +225,7 @@ export default function DataStructureVisualizer() {
                 <span className="material-symbols-outlined text-stone-500 text-sm">open_in_new</span>
              </button>
 
-            <CollapsiblePanel title="Activity Log" icon="history" initialOpen={true}>
+            <CollapsiblePanel title="Activity Log" icon="history" initialOpen={true} variant="mono">
                  <div className="sketch-box bg-stone-900 p-3 h-32 md:h-48 overflow-y-auto font-mono text-base custom-scrollbar">
                     {logs.map((entry, i) => (
                         <div key={i} className={`mb-1.5 pb-1.5 border-b border-stone-700 last:border-0 ${logColor[entry.type]}`}>
@@ -237,7 +237,7 @@ export default function DataStructureVisualizer() {
             </CollapsiblePanel>
 
             {type === 'bst' && root && (
-              <CollapsiblePanel title="Tree Stats" icon="account_tree" initialOpen={true}>
+              <CollapsiblePanel title="Tree Stats" icon="account_tree" initialOpen={true} variant="mono">
                 <div className="grid grid-cols-2 gap-3">
                   <div className="sketch-box bg-stone-700 p-3 text-center">
                     <div className="text-3xl font-black text-stone-100">{treeSize}</div>
@@ -255,8 +255,8 @@ export default function DataStructureVisualizer() {
 
         {/* Right Sidebar Controls */}
         <div className="hidden xl:flex fixed bottom-4 left-4 right-4 xl:absolute xl:right-8 xl:top-64 xl:bottom-auto xl:left-auto xl:w-72 z-20 flex-col gap-2 xl:gap-4 max-h-[40vh] xl:max-h-[calc(100vh-140px)] overflow-y-auto custom-scrollbar pr-0 xl:pr-2 pb-0 xl:pb-4 -rotate-1">
-            <CollapsiblePanel title="How it Works" icon="info" initialOpen={true}>
-                <div className="text-lg text-stone-300 leading-relaxed space-y-3 font-inter">
+            <CollapsiblePanel title="How it Works" icon="info" initialOpen={true} variant="editorial">
+                <div className="text-lg text-stone-300 leading-relaxed space-y-4 font-inter">
                 {type === 'bst' && (
                   <>
                     <p><strong className="text-stone-100">Binary Search Tree</strong> — each node has at most 2 children. Left child is always smaller, right is always larger.</p>

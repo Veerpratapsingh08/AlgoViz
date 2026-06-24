@@ -21,16 +21,17 @@ export default function SplashScreen() {
       <div className="relative w-24 h-24 mb-6 animate-[bounce_2s_infinite]">
         <Image 
           src="/assets/logo/algoviz-icon.svg" 
-          alt="AlgoViz" 
-          fill
+          alt="The Algorithm Sketchbook" 
+          width={80}
+          height={80}
           className="object-contain drop-shadow-[0_0_25px_rgba(99,102,241,0.6)]"
           priority
         />
       </div>
       
       <div className="flex flex-col items-center gap-3">
-        <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-indigo-200 to-indigo-400 tracking-tight">
-          AlgoViz
+        <h1 className="mt-8 text-5xl font-black text-stone-100 tracking-tight drop-shadow-lg">
+          The Algorithm Sketchbook
         </h1>
         <div className="flex gap-2">
           <div className="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></div>

@@ -265,7 +265,7 @@ export default function PathfindingVisualizer() {
                 <span className="material-symbols-outlined text-stone-500 text-sm">open_in_new</span>
              </button>
 
-           <CollapsiblePanel title="Legend" icon="help" initialOpen={true}>
+           <CollapsiblePanel title="Legend" icon="help" initialOpen={true} variant="mono">
                <div className="text-lg text-stone-300 space-y-3 pt-2 font-inter">
                    <div className="flex items-center gap-4 p-2 sketch-box bg-stone-700"><span className="w-5 h-5 bg-[var(--node-start)] rounded-full border-2 border-stone-500 shrink-0"></span> Start Node</div>
                    <div className="flex items-center gap-4 p-2 sketch-box bg-stone-700"><span className="w-5 h-5 bg-[var(--node-end)] rounded-full border-2 border-stone-500 shrink-0"></span> Target Node</div>
@@ -276,17 +276,17 @@ export default function PathfindingVisualizer() {
            </CollapsiblePanel>
 
             <div className="hidden md:block">
-              <CollapsiblePanel title="Algorithm Details" icon="info" initialOpen={false}>
-                    <div className="text-lg text-stone-300 leading-relaxed space-y-4 font-inter">
-                       <div>
-                           <strong className="text-stone-100 block text-2xl mb-2 font-bold tracking-wide">
+              <CollapsiblePanel title="Algorithm Details" icon="info" initialOpen={false} variant="editorial">
+                  <div className="text-lg text-stone-300 leading-relaxed space-y-4 font-inter">
+                      <div>
+                          <strong className="text-stone-100 block text-4xl font-editorial italic mb-2 font-normal tracking-wide">
                                {algo === 'dijkstra' && "Dijkstra's Algorithm"}
                                {algo === 'astar' && "A* Search"}
                                {algo === 'bfs' && "Breadth-First Search"}
                                {algo === 'dfs' && "Depth-First Search"}
-                           </strong>
-                           <p className="mb-2">{info?.desc}</p>
-                       </div>
+                          </strong>
+                          <p className="mb-2 text-stone-400">{info?.desc}</p>
+                      </div>
 
                        <div className="space-y-3 border-t border-stone-600 pt-3">
                             <div className="flex justify-between items-center">

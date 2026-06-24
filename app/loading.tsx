@@ -7,7 +7,7 @@ export default function Loading() {
       <div className="relative w-20 h-20 mb-8 animate-[float_3s_ease-in-out_infinite]">
         <Image 
           src="/assets/logo/algoviz-icon.svg" 
-          alt="AlgoViz" 
+          alt="The Algorithm Sketchbook" 
           fill
           className="object-contain drop-shadow-[0_0_15px_rgba(99,102,241,0.5)]"
           priority
@@ -15,9 +15,9 @@ export default function Loading() {
       </div>
       
       <div className="flex flex-col items-center gap-2">
-        <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
-          AlgoViz
-        </h2>
+        <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-indigo-200 to-indigo-400 tracking-tight">
+          The Algorithm Sketchbook
+        </h1>
         <div className="flex gap-1">
           <span className="w-2 h-2 bg-indigo-500 rounded-full animate-[bounce_1s_infinite_0ms]"></span>
           <span className="w-2 h-2 bg-indigo-500 rounded-full animate-[bounce_1s_infinite_200ms]"></span>

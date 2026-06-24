@@ -1,7 +1,7 @@
 import RaceVisualizer from '@/components/RaceVisualizer';
 
 export const metadata = {
-  title: 'AlgoViz - Race Mode',
+  title: 'The Algorithm Sketchbook - Race Mode',
   description: 'Compare sorting algorithms side-by-side.',
 };
 

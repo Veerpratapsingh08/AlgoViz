@@ -265,7 +265,7 @@ export default function SortingVisualizer() {
                 <span className="material-symbols-outlined text-stone-500 text-sm">open_in_new</span>
              </button>
 
-             <CollapsiblePanel title="Live Statistics" icon="monitoring" initialOpen={true}>
+             <CollapsiblePanel title="Live Statistics" icon="monitoring" initialOpen={true} variant="mono">
                 <div className="grid grid-cols-2 gap-4 w-full mb-2">
                     <div className="sketch-box bg-stone-700 p-3 text-center -rotate-1">
                         <div className="text-3xl font-black text-stone-100 mb-1">{stats.comparisons}</div>
@@ -281,11 +281,11 @@ export default function SortingVisualizer() {
              </CollapsiblePanel>
 
              <div className="hidden md:block">
-                <CollapsiblePanel title="Algorithm Details" icon="info" initialOpen={false}>
+                <CollapsiblePanel title="Algorithm Details" icon="info" initialOpen={false} variant="editorial">
                     <div className="text-lg text-stone-300 leading-relaxed space-y-4 font-inter">
                         <div>
-                            <strong className="text-stone-100 block text-2xl mb-2 font-bold tracking-wide">{ALGORITHMS[algo as keyof typeof ALGORITHMS]}</strong>
-                            <p className="mb-2">{info?.desc}</p>
+                            <strong className="text-stone-100 block text-4xl font-editorial italic mb-2 tracking-wide font-normal">{ALGORITHMS[algo as keyof typeof ALGORITHMS]}</strong>
+                            <p className="mb-2 text-stone-400">{info?.desc}</p>
                         </div>
 
                         <div className="space-y-3 border-t border-stone-600 pt-3">
