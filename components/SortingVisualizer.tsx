@@ -157,14 +157,9 @@ export default function SortingVisualizer() {
       {/* Sorting Canvas */}
       <div className="flex-1 relative p-4 pt-40 md:pt-48 flex flex-col items-center justify-end overflow-hidden custom-scrollbar">
         
-        {/* Dynamic Background */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none -z-10">
-            <div className="absolute bottom-[0%] left-[20%] w-[60%] h-[50%] rounded-full bg-indigo-500/5 blur-[150px]"></div>
-        </div>
-
         {/* Floating Controls Dock */}
-        <div className="absolute top-24 md:top-28 left-1/2 transform -translate-x-1/2 w-[95%] md:w-auto max-w-5xl z-30 animate-[slideUp_0.5s_ease-out]">
-            <div className="glass-panel flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 md:gap-6 p-4 md:px-8 md:py-4 rounded-3xl border border-white/10 shadow-[0_15px_40px_rgba(0,0,0,0.5)] bg-slate-900/60 backdrop-blur-2xl">
+        <div className="absolute top-24 md:top-28 left-1/2 transform -translate-x-1/2 w-[95%] md:w-auto max-w-5xl z-30">
+            <div className="sketch-box bg-stone-800 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 md:gap-6 p-4 md:px-8 md:py-4 -rotate-1">
                 
                 <div className="flex items-center gap-4 w-full md:w-auto">
                     <div className="relative flex-1 md:flex-none">
@@ -172,13 +167,13 @@ export default function SortingVisualizer() {
                             value={algo} 
                             onChange={(e) => setAlgo(e.target.value)}
                             disabled={running}
-                            className="bg-white/5 border border-white/10 text-white font-semibold rounded-xl px-4 py-2 outline-none cursor-pointer w-full text-sm appearance-none hover:bg-white/10 transition-colors"
+                            className="sketch-box bg-stone-700 text-stone-100 font-semibold px-4 py-2 outline-none cursor-pointer w-full text-base appearance-none hover:bg-stone-600 transition-colors"
                         >
                             {Object.entries(ALGORITHMS).map(([key, name]) => (
-                                <option key={key} value={key} className="bg-slate-900 text-white">{name}</option>
+                                <option key={key} value={key} className="bg-stone-800 text-stone-100">{name}</option>
                             ))}
                         </select>
-                        <span className="material-symbols-outlined absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-slate-400 text-sm">expand_more</span>
+                        <span className="material-symbols-outlined absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-stone-400 text-sm">expand_more</span>
                     </div>
                 </div>
                 
@@ -186,26 +181,26 @@ export default function SortingVisualizer() {
                 
                 <div className="flex items-center justify-between gap-6 w-full md:w-auto">
                     <div className="flex items-center gap-3 flex-1 md:flex-none">
-                        <label className="text-xs text-slate-400 font-bold uppercase tracking-widest hidden lg:block">Size</label>
+                        <label className="text-sm text-stone-400 font-bold uppercase tracking-widest hidden lg:block">Size</label>
                         <input 
                             type="range" 
                             min="10" max="100" 
                             value={size} 
                             onChange={handleSize}
                             disabled={running}
-                            className="w-full md:w-28 accent-indigo-500 h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer"
+                            className="w-full md:w-28 accent-stone-300 h-2 bg-stone-700 rounded-lg appearance-none cursor-pointer"
                         />
                     </div>
                     
                     <div className="flex items-center gap-3 flex-1 md:flex-none">
-                        <label className="text-xs text-slate-400 font-bold uppercase tracking-widest hidden lg:block">Speed</label>
+                        <label className="text-sm text-stone-400 font-bold uppercase tracking-widest hidden lg:block">Speed</label>
                         <input 
                             type="range" 
                             min="1" max="100" 
                             value={speed} 
                             onChange={(e) => setSpeed(parseInt(e.target.value))}
                             disabled={running}
-                            className="w-full md:w-28 accent-indigo-500 h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer"
+                            className="w-full md:w-28 accent-stone-300 h-2 bg-stone-700 rounded-lg appearance-none cursor-pointer"
                         />
                     </div>
                 </div>
@@ -216,18 +211,18 @@ export default function SortingVisualizer() {
                     <button 
                         onClick={reset} 
                         disabled={running}
-                        className="btn btn-surface flex-1 md:flex-none justify-center px-4"
+                        className="btn btn-surface flex-1 md:flex-none justify-center px-4 sketch-box bg-stone-700 hover:bg-stone-600"
                         title="Reset Array"
                     >
-                        <span className="material-symbols-outlined text-lg">restart_alt</span>
+                        <span className="material-symbols-outlined text-lg text-stone-300">restart_alt</span>
                     </button>
                     <button 
                         onClick={run}
                         disabled={running}
-                        className="btn btn-primary flex-1 md:flex-none justify-center px-8 shadow-[0_0_20px_rgba(99,102,241,0.4)]"
+                        className="btn btn-primary flex-1 md:flex-none justify-center px-8"
                     >
                         <span className="material-symbols-outlined text-lg">play_arrow</span>
-                        <span className="tracking-wide">Sort</span>
+                        <span className="tracking-wide text-xl">Sort</span>
                     </button>
                 </div>
             </div>
@@ -244,27 +239,27 @@ export default function SortingVisualizer() {
             ))}
         </div>
 
-        {/* Stats Sidebar (Collapsible) - Bottom on Mobile, Right on Desktop */}
-        <div className="fixed bottom-4 left-4 right-4 md:absolute md:bottom-auto md:top-48 md:left-auto md:right-8 md:w-72 z-20 flex flex-col gap-2 md:gap-4 animate-[fadeIn_0.8s_ease-out]">
+         {/* Stats Sidebar (Collapsible) - Bottom on Mobile, Right on Desktop */}
+        <div className="fixed bottom-4 left-4 right-4 md:absolute md:bottom-auto md:top-48 md:left-auto md:right-8 md:w-72 z-20 flex flex-col gap-2 md:gap-4 rotate-1">
              <CollapsiblePanel title="Live Statistics" icon="monitoring" initialOpen={true}>
                 <div className="grid grid-cols-2 gap-4 w-full mb-2">
-                    <div className="bg-white/5 border border-white/10 rounded-xl p-3 text-center shadow-inner">
-                        <div className="text-2xl font-black font-mono text-indigo-300 mb-1 drop-shadow-md">{stats.comparisons}</div>
-                        <div className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold">Comparisons</div>
+                    <div className="sketch-box bg-stone-700 p-3 text-center -rotate-1">
+                        <div className="text-3xl font-black text-stone-100 mb-1">{stats.comparisons}</div>
+                        <div className="text-base text-stone-400 uppercase tracking-widest font-semibold">Comparisons</div>
                     </div>
-                    <div className="bg-white/5 border border-white/10 rounded-xl p-3 text-center shadow-inner">
-                        <div className="text-2xl font-black font-mono text-cyan-300 mb-1 drop-shadow-md">{stats.swaps}</div>
-                        <div className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold">Swaps</div>
+                    <div className="sketch-box bg-stone-700 p-3 text-center rotate-1">
+                        <div className="text-3xl font-black text-stone-100 mb-1">{stats.swaps}</div>
+                        <div className="text-base text-stone-400 uppercase tracking-widest font-semibold">Swaps</div>
                     </div>
                 </div>
              </CollapsiblePanel>
 
              <div className="hidden md:block">
                 <CollapsiblePanel title="Algorithm Details" icon="info" initialOpen={false}>
-                    <div className="text-xs text-slate-300 leading-relaxed space-y-4">
+                    <div className="text-lg text-stone-300 leading-relaxed space-y-4 font-inter">
                         <div>
-                            <strong className="text-indigo-400 block text-sm mb-2 font-bold tracking-wide">{ALGORITHMS[algo as keyof typeof ALGORITHMS]}</strong>
-                            <p className="mb-2 font-light">
+                            <strong className="text-stone-100 block text-2xl mb-2 font-bold tracking-wide">{ALGORITHMS[algo as keyof typeof ALGORITHMS]}</strong>
+                            <p className="mb-2">
                                 {algo === 'quick' && "A divide-and-conquer algorithm that selects a 'pivot' element and partitions the other elements into two sub-arrays, according to whether they are less than or greater than the pivot."}
                                 {algo === 'merge' && "A specific type of divide-and-conquer algorithm that divides the input array into two halves, calls itself for the two halves, and then merges the two sorted halves."}
                                 {algo === 'heap' && "A comparison-based sorting technique based on Binary Heap data structure. It is similar to selection sort where we first find the maximum element and place the maximum element at the end."}
@@ -274,16 +269,16 @@ export default function SortingVisualizer() {
                             </p>
                         </div>
                         
-                        <div className="space-y-3 border-t border-white/10 pt-3">
+                        <div className="space-y-3 border-t border-stone-600 pt-3">
                             <div className="flex justify-between items-center">
-                                <span className="text-slate-400 font-medium">Time Complexity</span>
-                                <span className="font-mono text-white bg-white/10 px-2 py-0.5 rounded text-[10px]">
+                                <span className="text-stone-400 font-medium">Time Complexity</span>
+                                <span className="font-mono text-stone-100 bg-stone-700 px-2 py-0.5 rounded text-base border border-stone-600">
                                     {algo === 'quick' || algo === 'merge' || algo === 'heap' ? 'O(n log n)' : 'O(n²)'}
                                 </span>
                             </div>
                             <div className="flex justify-between items-center">
-                                <span className="text-slate-400 font-medium">Space Complexity</span>
-                                <span className="font-mono text-white bg-white/10 px-2 py-0.5 rounded text-[10px]">
+                                <span className="text-stone-400 font-medium">Space Complexity</span>
+                                <span className="font-mono text-stone-100 bg-stone-700 px-2 py-0.5 rounded text-base border border-stone-600">
                                     {algo === 'merge' ? 'O(n)' : algo === 'quick' ? 'O(log n)' : 'O(1)'}
                                 </span>
                             </div>

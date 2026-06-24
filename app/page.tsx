@@ -1,115 +1,75 @@
-import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
   return (
-    <section className="relative w-full h-full flex flex-col items-center justify-start overflow-y-auto overflow-x-hidden p-4 md:p-8 pb-32 custom-scrollbar">
-      {/* Dynamic Background Effects */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none -z-10">
-          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-purple-600/20 blur-[120px] animate-[pulseGlow_8s_ease-in-out_infinite_alternate]"></div>
-          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-cyan-600/20 blur-[150px] animate-[pulseGlow_10s_ease-in-out_infinite_alternate_reverse]"></div>
-      </div>
-
-      <div className="max-w-6xl w-full flex flex-col gap-16 md:gap-24 mt-12 md:mt-20 relative z-10">
+    <section className="w-full h-full flex flex-col pt-32 px-6 md:px-12 overflow-y-auto custom-scrollbar">
+      <div className="max-w-5xl w-full mx-auto pb-32">
         
         {/* Hero Section */}
-        <div className="about-hero space-y-8 animate-[popIn_0.8s_ease-out]">
-          <div className="relative w-24 h-24 md:w-32 md:h-32 mx-auto mb-8 animate-[float_6s_ease-in-out_infinite]">
-            <Image 
-              src="/assets/logo/algoviz-icon.svg" 
-              alt="AlgoViz Logo" 
-              fill
-              className="object-contain drop-shadow-[0_0_30px_rgba(139,92,246,0.6)]"
-            />
-          </div>
-          <div className="inline-block px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-xs font-semibold text-indigo-300 mb-4 tracking-widest uppercase">
-            Interactive Learning Platform
-          </div>
-          <h1 className="text-5xl md:text-7xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-white via-indigo-200 to-cyan-300 leading-tight tracking-tight drop-shadow-lg">
-            Master Algorithms <br/> Visually.
+        <div className="space-y-6 text-center max-w-3xl mx-auto mt-12 mb-24 relative">
+          {/* A sketchy little decorative element */}
+          <div className="absolute -top-12 -left-12 text-6xl opacity-20 transform -rotate-12">✨</div>
+          <div className="absolute top-10 -right-12 text-5xl opacity-20 transform rotate-12">🚀</div>
+
+          <h1 className="text-6xl md:text-8xl font-bold text-stone-100 tracking-tight transform -rotate-1">
+            AlgoViz
           </h1>
-          <p className="text-lg md:text-2xl text-slate-400 max-w-3xl mx-auto leading-relaxed font-light">
-            AlgoViz transforms abstract code into stunning, real-time animations.
-            Understand sorting, pathfinding, and data structures like never before.
+          <h2 className="text-2xl md:text-3xl text-stone-400 font-medium transform rotate-1">
+            (The Algorithm Sketchbook)
+          </h2>
+          <p className="text-2xl text-stone-300 leading-relaxed max-w-2xl mx-auto pt-4">
+            A messy, hands-on place to figure out how algorithms actually work under the hood. 
+            No corporate fluff, just code, logic, and a whole lot of scribbles.
           </p>
-          <div className="pt-8 flex items-center justify-center gap-6">
-              <Link href="/sorting" className="btn btn-primary text-lg px-8 py-4 rounded-xl font-bold tracking-wide">
-                  Start Visualizing <span className="material-symbols-outlined ml-2 text-xl">arrow_forward</span>
+          <div className="pt-8">
+              <Link href="/sorting" className="btn btn-primary text-2xl px-8 py-3 transform rotate-1">
+                  Let's draw some algorithms! 🖍️
               </Link>
           </div>
         </div>
 
-        {/* Feature Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 animate-[slideUp_1s_ease-out_0.3s_both]">
-          <FeatureCard 
-            icon="swap_vert" 
-            title="Sorting" 
-            description="Watch Bubble, Quick, Merge, and Heap Sort come to life with colorful animations. Adjust speed and array size to see how efficiency changes."
-            href="/sorting"
-            color="from-purple-500 to-indigo-600"
-          />
-          <FeatureCard 
-            icon="route" 
-            title="Pathfinding" 
-            description="Explore Dijkstra's, A*, BFS, and DFS algorithms. Draw mazes, set start and target points, and visualize how each algorithm finds the optimal path."
-            href="/pathfinding"
-            color="from-cyan-500 to-blue-600"
-          />
-          <FeatureCard 
-            icon="account_tree" 
-            title="Data Structures" 
-            description="Interact with Binary Search Trees, Stacks, and Queues. Insert, remove, and search elements while watching the structure update in real-time."
-            href="/datastructures"
-            color="from-emerald-400 to-teal-600"
-          />
-        </div>
-
-        {/* Technology Stack */}
-        <div className="text-center space-y-10 animate-[slideUp_1s_ease-out_0.5s_both]">
-          <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
-            Powered by Modern Tech
-          </h2>
-          <div className="flex flex-wrap justify-center gap-4 md:gap-6">
-            <TechBadge icon="bolt" name="Next.js 15" />
-            <TechBadge icon="code" name="TypeScript" />
-            <TechBadge icon="palette" name="Tailwind CSS v4" />
-            <TechBadge icon="animation" name="Framer Motion Concepts" />
+        {/* Modules Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+          
+          <div className="sketch-box p-6 group hover:-translate-y-1 hover:-rotate-1 transition-transform bg-stone-800">
+            <Link href="/sorting" className="block">
+              <div className="text-4xl mb-4">📊</div>
+              <h2 className="text-3xl font-bold text-stone-100 mb-3 group-hover:underline decoration-4 decoration-yellow-400 underline-offset-4">Sorting</h2>
+              <p className="text-stone-400 text-xl leading-relaxed">
+                Watch arrays get sorted in real-time. Bubble, Quick, Merge, and Heap. Mess with the speed and size to see how it scales.
+              </p>
+            </Link>
           </div>
+
+          <div className="sketch-box p-6 group hover:-translate-y-1 hover:rotate-1 transition-transform bg-stone-800">
+            <Link href="/pathfinding" className="block">
+              <div className="text-4xl mb-4">🗺️</div>
+              <h2 className="text-3xl font-bold text-stone-100 mb-3 group-hover:underline decoration-4 decoration-blue-400 underline-offset-4">Pathfinding</h2>
+              <p className="text-stone-400 text-xl leading-relaxed">
+                Find the shortest path without blowing up the call stack. Draw your own walls and let Dijkstra or A* figure it out.
+              </p>
+            </Link>
+          </div>
+
+          <div className="sketch-box p-6 group hover:-translate-y-1 hover:-rotate-2 transition-transform bg-stone-800">
+            <Link href="/datastructures" className="block">
+              <div className="text-4xl mb-4">🌳</div>
+              <h2 className="text-3xl font-bold text-stone-100 mb-3 group-hover:underline decoration-4 decoration-green-400 underline-offset-4">Structures</h2>
+              <p className="text-stone-400 text-xl leading-relaxed">
+                Trees, Stacks, and Queues. Throw data in, pull it out, and see how memory pointers actually connect everything together.
+              </p>
+            </Link>
+          </div>
+
         </div>
 
         {/* Footer */}
-        <div className="text-center pt-16 pb-8 border-t border-white/10 text-slate-500 animate-[fadeIn_1.5s_ease-out_0.8s_both]">
-          <p className="mb-2">Created with ❤️ by <a href="https://veerpratapsingh.vercel.app" target="_blank" rel="noopener noreferrer" className="hover:text-indigo-400 transition-colors font-semibold">Veer Pratap Singh</a></p>
-          <div className="text-xs font-mono opacity-40">AlgoViz v2.0</div>
+        <div className="mt-32 pt-10 text-center text-xl text-stone-500 sketch-box bg-stone-800/50 border-none shadow-none transform rotate-1">
+          <p>Scribbled together by <a href="https://veerpratapsingh.vercel.app" target="_blank" rel="noopener noreferrer" className="text-stone-300 underline decoration-2 decoration-stone-500 font-bold hover:text-white">Veer Pratap Singh</a></p>
+          <p className="mt-2 opacity-50">v2.0 (Dark Sketch Edition)</p>
         </div>
+
       </div>
     </section>
-  );
-}
-
-function FeatureCard({ icon, title, description, href, color }: { icon: string, title: string, description: string, href: string, color: string }) {
-  return (
-    <Link href={href} className="feature-card group block">
-      <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${color} bg-opacity-20 flex items-center justify-center mb-6 shadow-lg shadow-black/20 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500`}>
-        <span className="material-symbols-outlined text-4xl text-white drop-shadow-md">
-          {icon}
-        </span>
-      </div>
-      <h3 className="text-2xl font-bold text-white mb-4 tracking-tight group-hover:text-indigo-300 transition-colors">{title}</h3>
-      <p className="text-slate-400 leading-relaxed font-light">{description}</p>
-      
-      <div className="mt-8 flex items-center text-indigo-400 font-semibold text-sm tracking-wide opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
-          Explore Module <span className="material-symbols-outlined ml-1 text-base">east</span>
-      </div>
-    </Link>
-  );
-}
-
-function TechBadge({ icon, name }: { icon: string, name: string }) {
-  return (
-    <div className="tech-badge cursor-default">
-      <span className="material-symbols-outlined text-indigo-400">{icon}</span>
-      <span className="font-semibold text-slate-200 tracking-wide">{name}</span>
-    </div>
   );
 }
