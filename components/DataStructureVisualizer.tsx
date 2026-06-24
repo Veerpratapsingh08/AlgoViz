@@ -301,7 +301,7 @@ export default function DataStructureVisualizer() {
         </div>
 
        {/* Canvas */}
-       <div className="flex-1 relative overflow-hidden flex items-center justify-center p-4 md:pl-[22rem] xl:pr-[22rem] pt-32 md:pt-40" ref={canvas}>
+       <div className="flex-1 relative overflow-hidden flex items-center justify-center p-4 md:pl-[22rem] xl:pr-[22rem] pt-48 md:pt-64" ref={canvas}>
 
            {/* BST Render */}
            {type === 'bst' && (
