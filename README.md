@@ -1,96 +1,40 @@
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="public/assets/logo/algoviz.svg">
-  <source media="(prefers-color-scheme: light)" srcset="public/assets/logo/algoviz.svg">
-  <img alt="AlgoViz Logo" src="public/assets/logo/algoviz.svg" width="200">
-</picture>
+# The Algorithm Sketchbook (AlgoViz)
 
-# AlgoViz
+> **Built by a CS student who got tired of memorizing algorithms.**
 
-> **See the algorithm think.**
+I've always felt that traditional computer science resources get it backwards. They bury you in dry theory, mathematical proofs, and dense textbook paragraphs before you ever get to see the algorithm actually *run*. 
 
-AlgoViz is an interactive, visual-first platform for learning data structures and algorithms through real-time visualizations and step-by-step execution.
+Learning algorithms shouldn't feel like deciphering an ancient manuscript. It should feel like playing with Lego blocks. You should be able to poke at it, change the speed, swap the data, and watch the mechanics unfold right in front of your eyes.
 
-[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen?style=flat-square)](https://algovizvps.vercel.app)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)](CONTRIBUTING.md)
+I built **The Algorithm Sketchbook** to be the tool I wish I had when I was first learning Data Structures and Algorithms. I wanted a messy, hands-on, highly visual playground where you can literally see an $O(n^2)$ algorithm struggle, or watch Dijkstra's algorithm organically explore a maze.
+
+No corporate fluff. No generic grids. Just raw logic, visual intuition, and a chalkboard aesthetic to make it feel like you're sketching out ideas in a notebook.
 
 ---
 
-## ✨ Why AlgoViz?
+## ✨ Features
 
-Most algorithm resources bury you in theory before you ever see the algorithm run. AlgoViz flips this:
-
-- **Watch algorithms execute** — not just their output
-- **Understand *why* they work** — through observable behavior
-- **Minimal UI, maximum signal** — no distractions, just logic unfolding
-
----
-
-## 🎬 Demo
-
-<!-- Replace these with actual screenshots/GIFs -->
-| Sorting Visualizer | Pathfinding | Data Structures |
-|:------------------:|:-----------:|:---------------:|
-| ![Sorting Demo](public/assets/screenshots/sorting.png) | ![Pathfinding Demo](public/assets/screenshots/pathfinding.png) | ![DSA Demo](public/assets/screenshots/datastructures.png) |
-
-**[🔗 Try the Live Demo →](https://algovizvps.vercel.app)**
-
----
-
-## 🧮 Supported Algorithms
-
-### Sorting
-Visualize comparisons, swaps, and step-by-step progression:
-- **Bubble Sort** — Simple swapping, great for understanding basics
-- **Selection Sort** — Find minimum, place it, repeat
-- **Insertion Sort** — Build sorted portion one element at a time
-- **Merge Sort** — Divide, conquer, merge (with visual recursion)
-- **Quick Sort** — Pivot partitioning in action
-- **Heap Sort** — Heap construction and extraction
-
-### Pathfinding
-Draw walls, move start/end nodes, and watch exploration unfold:
-- **Dijkstra's Algorithm** — Guaranteed shortest path
-- **A\* Search** — Heuristic-guided pathfinding
-- **Breadth-First Search (BFS)** — Level-by-level exploration
-- **Depth-First Search (DFS)** — Deep dive before backtracking
-
-### Data Structures
-Interactive insert, remove, and search operations:
-- **Binary Search Tree (BST)** — Visualized node positioning
-- **Stack** — LIFO operations
-- **Queue** — FIFO operations
-
----
-
-## 🎯 Design Philosophy
-
-AlgoViz is intentionally restrained:
-
-| Principle | What it means |
-|-----------|---------------|
-| **See the algorithm think** | Every step is visible — no magic jumps |
-| **Interaction over memorization** | Learn by doing, not reading |
-| **Minimal UI, high signal** | Clean interface, zero distractions |
-| **Progressive complexity** | Start simple, go deeper |
-| **Beginner-friendly, not dumbed down** | Accessible without oversimplifying |
+- **Gamified Race Mode**: Pit $O(n^2)$ against $O(n \log n)$ side-by-side. Place your bets on which algorithm will finish first before the race starts!
+- **Freeform Graphs**: Don't just click grids. Drop nodes onto an open canvas, draw connecting edges, and watch Kruskal's or Dijkstra's run directly on top of your sketches.
+- **Pathfinding**: Draw your own walls and let A* or BFS organically explore the maze.
+- **Data Structures**: Trees, Stacks, Queues, and Linked Lists. See how memory pointers actually connect and branch.
+- **Deep Domain Logic**: Algorithms aren't faked with CSS tricks. The app implements the raw mathematical logic using generator-based state queues to pause execution frame-by-frame.
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Technology | Purpose |
-|------------|---------|
-| [Next.js 15](https://nextjs.org/) | React framework with App Router |
-| [React 19](https://react.dev/) | UI components |
-| [TypeScript](https://www.typescriptlang.org/) | Type safety |
-| [Tailwind CSS 4](https://tailwindcss.com/) | Utility-first styling |
+- **Next.js 15 & React 19**
+- **TypeScript**
+- **Tailwind CSS 4** (Using `@theme` for a custom, asymmetric "sketch" aesthetic)
 
-Algorithms are **separated from UI logic** in `/lib/algorithms/` for clarity and reuse.
+*Algorithms are strictly decoupled from UI logic in `/lib/algorithms/` for clean state management.*
 
 ---
 
 ## 🚀 Quick Start
+
+Want to break things locally? Be my guest.
 
 ```bash
 # Clone the repository
@@ -108,91 +52,25 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 📁 Project Structure
+## 📖 Building Log: Mistakes & Discoveries
 
-```
-AlgoViz/
-├── app/                    # Next.js App Router pages
-│   ├── sorting/            # Sorting visualizer page
-│   ├── pathfinding/        # Pathfinding visualizer page
-│   ├── datastructures/     # Data structures page
-│   ├── page.tsx            # Landing page
-│   └── globals.css         # Global styles
-├── components/             # React components
-│   ├── SortingVisualizer.tsx
-│   ├── PathfindingVisualizer.tsx
-│   ├── DataStructureVisualizer.tsx
-│   └── ...
-├── lib/
-│   └── algorithms/         # Algorithm implementations (pure logic)
-│       ├── sorting.ts      # Sorting algorithms
-│       ├── pathfinding.ts  # Pathfinding algorithms
-│       └── datastructures.ts # Data structure utilities
-└── public/                 # Static assets
-```
+Building this wasn't straightforward. Here are a few things I broke along the way:
+
+- **Day 1:** Attempted to build Quick Sort using React State. Instantly hit maximum update depth exceeded. Turns out `setArray` inside a recursive loop is a remarkably efficient way to crash Chrome.
+- **Day 4:** Trying to animate CSS bars swapping. Discovered that React state batching and `setTimeout` are mortal enemies. Refactored the entire sorting engine to use a generator-like `Step` queue.
+- **Day 12:** Accidentally animated 5,000 DOM updates per frame on a 100x100 pathfinding grid. My laptop fan sounded like a jet engine. Re-learned that $O(n^2)$ isn't just theory—it actually burns CPU cycles in the real world.
+- **Day 18:** Dijkstra's algorithm kept exploring the entire grid even when the target was right next to it. Realized my priority queue was a standard array and I was doing `arr.sort()` on every single insertion. Big O strikes again.
 
 ---
 
-## 🚧 Non-Goals
+## 🤝 Open Source
 
-AlgoViz intentionally does **NOT** try to be:
-
-- ❌ A comprehensive DSA textbook
-- ❌ A coding interview prep platform (LeetCode, etc.)
-- ❌ A competitive programming judge
-- ❌ A feature-heavy IDE or code editor
-- ❌ A gamified learning app with streaks and badges
-
-**Focus is everything.** We do one thing well: visualize algorithms clearly.
-
----
-
-## 🗺️ Roadmap
-
-### v1.1 — Coming Soon
-- [ ] Speed control presets (slow-motion, real-time)
-- [ ] Step-by-step controls (pause, step forward/back)
-- [ ] Algorithm comparison mode (side-by-side)
-
-### v1.2 — Near Future
-- [ ] Linked List visualization
-- [ ] Graph algorithms (DFS/BFS on graphs)
-- [ ] Mobile-responsive improvements
-
-### v2.0 — Future Vision
-- [ ] Code export (Python, Java, C++)
-- [ ] Custom algorithm builder
-- [ ] Dark/light theme toggle
-
----
-
-## 🤝 Contributing
-
-We welcome contributions from everyone! Whether you're:
-- A student learning DSA
-- A developer brushing up on fundamentals
-- An educator building teaching tools
-
-**Check out [CONTRIBUTING.md](CONTRIBUTING.md) to get started.**
-
-Good first issues are tagged with [`good first issue`](https://github.com/Veerpratapsingh08/AlgoViz/labels/good%20first%20issue).
-
----
-
-## 📜 License
+This entire project is open source. Feel free to explore the code, report issues, or contribute new algorithms!
 
 [MIT License](LICENSE) — free to use, modify, and distribute.
 
 ---
 
-## 🙏 Acknowledgments
-
-Built by [**Veer Pratap Singh**](https://veerpratapsingh.vercel.app)
-
-Inspired by the belief that **everyone deserves to understand how algorithms work** — not through walls of text, but through the algorithms themselves.
-
----
-
 <p align="center">
-  <sub>If AlgoViz helps you learn, consider giving it a ⭐</sub>
+  <sub>If this helps you finally understand Quick Sort, consider giving it a ⭐</sub>
 </p>
