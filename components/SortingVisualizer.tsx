@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import CollapsiblePanel from './CollapsiblePanel';
+import StudyDrawer from './StudyDrawer';
 import { Sort, Step } from '@/lib/algorithms/sorting';
 
 const ALGORITHMS = {
@@ -13,22 +14,30 @@ const ALGORITHMS = {
   insertion: 'Insertion Sort',
 };
 
+const ALGO_INFO: Record<string, { desc: string; time: string; space: string; stable: string }> = {
+  merge:     { desc: 'Divide-and-conquer. Splits the array in half recursively, then merges sorted halves back together. Always O(n log n) — fast and predictable.', time: 'O(n log n)', space: 'O(n)', stable: 'Yes' },
+  quick:     { desc: "Picks a 'pivot', partitions elements smaller/larger around it, then recurses. Very fast in practice but worst-case O(n²) on sorted input.", time: 'O(n log n) avg', space: 'O(log n)', stable: 'No' },
+  heap:      { desc: 'Builds a max-heap, then extracts the maximum one-by-one. Guaranteed O(n log n), in-place. Less cache-friendly than quicksort.', time: 'O(n log n)', space: 'O(1)', stable: 'No' },
+  bubble:    { desc: 'Repeatedly swaps adjacent elements that are out of order. Simple to understand but very slow — O(n²) in the worst case. Good for teaching only.', time: 'O(n²)', space: 'O(1)', stable: 'Yes' },
+  selection: { desc: 'Finds the minimum element and places it at the front, repeating for the rest. Always O(n²) comparisons but minimal swaps.', time: 'O(n²)', space: 'O(1)', stable: 'No' },
+  insertion: { desc: 'Builds the sorted array one element at a time, inserting each into its correct position. Excellent for small or nearly-sorted arrays.', time: 'O(n²) / O(n) best', space: 'O(1)', stable: 'Yes' },
+};
+
 export default function SortingVisualizer() {
   const [array, setArray] = useState<number[]>([]);
   const [algo, setAlgo] = useState<string>('merge');
   const [size, setSize] = useState<number>(50);
   const [speed, setSpeed] = useState<number>(50);
   const [running, setRunning] = useState<boolean>(false);
-  const [stats, setStats] = useState({ comparisons: 0, swaps: 0 });
+  const [done, setDone] = useState<boolean>(false);
+  const [stats, setStats] = useState({ comparisons: 0, writes: 0 });
   const [colors, setColors] = useState<{[key: number]: string}>({});
-  
+  const [showStudyGuide, setShowStudyGuide] = useState(false);
+
   const timers = useRef<NodeJS.Timeout[]>([]);
   const runningRef = useRef(running);
-  
-  // Keep ref in sync with state
-  useEffect(() => {
-    runningRef.current = running;
-  }, [running]);
+
+  useEffect(() => { runningRef.current = running; }, [running]);
 
   const clearTimers = () => {
     timers.current.forEach(t => clearTimeout(t));
@@ -40,18 +49,19 @@ export default function SortingVisualizer() {
     const arr = Array.from({ length: size }, () => Math.floor(Math.random() * 95) + 5);
     setArray(arr);
     setColors({});
-    setStats({ comparisons: 0, swaps: 0 });
+    setStats({ comparisons: 0, writes: 0 });
+    setDone(false);
   }, [size]);
 
-  // Initialize on mount and when size changes
-  useEffect(() => {
-    reset();
-  }, [reset]);
-  
-  // Cleanup timers on unmount only
-  useEffect(() => {
-    return () => clearTimers();
-  }, []);
+  const stop = () => {
+    clearTimers();
+    setRunning(false);
+    setColors({});
+    setDone(false);
+  };
+
+  useEffect(() => { reset(); }, [reset]);
+  useEffect(() => { return () => clearTimers(); }, []);
 
   const handleSize = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (running) return;
@@ -59,43 +69,40 @@ export default function SortingVisualizer() {
     setSize(val);
     setArray(Array.from({ length: val }, () => Math.floor(Math.random() * 95) + 5));
     setColors({});
+    setDone(false);
   };
 
   const run = () => {
     if (running) return;
     setRunning(true);
-    setStats({ comparisons: 0, swaps: 0 });
+    setDone(false);
+    setStats({ comparisons: 0, writes: 0 });
     clearTimers();
 
     let steps: Step[] = [];
     switch (algo) {
-      case 'bubble': steps = Sort.bubble(array); break;
+      case 'bubble':    steps = Sort.bubble(array);    break;
       case 'selection': steps = Sort.selection(array); break;
       case 'insertion': steps = Sort.insertion(array); break;
-      case 'merge': steps = Sort.merge(array); break;
-      case 'quick': steps = Sort.quick(array); break;
-      case 'heap': steps = Sort.heap(array); break;
+      case 'merge':     steps = Sort.merge(array);     break;
+      case 'quick':     steps = Sort.quick(array);     break;
+      case 'heap':      steps = Sort.heap(array);      break;
     }
-
     animate(steps);
   };
 
   const animate = (steps: Step[]) => {
-    if (steps.length === 0) {
-        setRunning(false);
-        return;
-    }
+    if (steps.length === 0) { setRunning(false); return; }
 
-    const delay = Math.max(1, 100 - speed);
+    const delay = Math.max(1, 101 - speed);
     const arrCopy = [...array];
     let cmp = 0;
-    let swp = 0;
+    let wrt = 0;
 
     steps.forEach((step, i) => {
       const t = setTimeout(() => {
-        // Handle array mutations first
         if (step.type === 'swap') {
-          swp++;
+          wrt++;
           const [a, b] = step.idx;
           if (step.val) {
             arrCopy[a] = step.val[0];
@@ -105,41 +112,30 @@ export default function SortingVisualizer() {
           }
           setArray([...arrCopy]);
         } else if (step.type === 'overwrite') {
-          swp++;
+          wrt++;
           arrCopy[step.idx] = step.val;
           setArray([...arrCopy]);
         } else if (step.type === 'compare') {
           cmp++;
         }
-        
-        // Update stats
-        setStats({ comparisons: cmp, swaps: swp });
-        
-        // Update colors
+
+        setStats({ comparisons: cmp, writes: wrt });
+
         setColors(prev => {
           const next: {[key: number]: string} = {};
-          
-          // Persist sorted state
           Object.keys(prev).forEach(k => {
             if (prev[parseInt(k)] === 'sorted') next[parseInt(k)] = 'sorted';
           });
-
-          if (step.type === 'compare') {
-            step.idx.forEach(idx => next[idx] = 'comparing');
-          } else if (step.type === 'swap') {
-            step.idx.forEach(idx => next[idx] = 'swapping');
-          } else if (step.type === 'overwrite') {
-            next[step.idx] = 'swapping';
-          } else if (step.type === 'sorted') {
-            next[step.idx] = 'sorted';
-          }
-          
+          if (step.type === 'compare')        step.idx.forEach(idx => next[idx] = 'comparing');
+          else if (step.type === 'swap')      step.idx.forEach(idx => next[idx] = 'swapping');
+          else if (step.type === 'overwrite') next[step.idx] = 'swapping';
+          else if (step.type === 'sorted')    next[step.idx] = 'sorted';
           return next;
         });
 
-        // Handle completion
         if (i === steps.length - 1) {
           setRunning(false);
+          setDone(true);
           setColors(() => {
             const final: {[key: number]: string} = {};
             arrCopy.forEach((_, k) => final[k] = 'sorted');
@@ -147,27 +143,28 @@ export default function SortingVisualizer() {
           });
         }
       }, i * delay);
-      
+
       timers.current.push(t);
     });
   };
 
+  const info = ALGO_INFO[algo];
+
   return (
     <div className="flex flex-col h-full w-full relative">
-      {/* Sorting Canvas */}
       <div className="flex-1 relative p-4 pt-40 md:pt-48 flex flex-col items-center justify-end overflow-hidden custom-scrollbar">
-        
+
         {/* Floating Controls Dock */}
-        <div className="absolute top-24 md:top-28 left-1/2 transform -translate-x-1/2 w-[95%] md:w-auto max-w-5xl z-30">
-            <div className="sketch-box bg-stone-800 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 md:gap-6 p-4 md:px-8 md:py-4 -rotate-1">
-                
-                <div className="flex items-center gap-4 w-full md:w-auto">
-                    <div className="relative flex-1 md:flex-none">
-                        <select 
-                            value={algo} 
-                            onChange={(e) => setAlgo(e.target.value)}
+        <div className="absolute top-16 md:top-20 left-1/2 transform -translate-x-1/2 w-[98%] max-w-7xl z-30">
+            <div className="sketch-box bg-stone-800 flex flex-row flex-wrap items-center justify-center lg:justify-between gap-4 xl:gap-6 p-4 xl:px-8 xl:py-4 -rotate-1">
+
+                <div className="flex items-center gap-4 w-full xl:w-auto">
+                    <div className="relative w-full xl:w-56 shrink-0">
+                        <select
+                            value={algo}
+                            onChange={(e) => { setAlgo(e.target.value); }}
                             disabled={running}
-                            className="sketch-box bg-stone-700 text-stone-100 font-semibold px-4 py-2 outline-none cursor-pointer w-full text-base appearance-none hover:bg-stone-600 transition-colors"
+                            className="sketch-box bg-stone-700 text-stone-100 font-semibold px-4 pr-10 py-2 outline-none cursor-pointer w-full text-base appearance-none hover:bg-stone-600 transition-colors shrink-0"
                         >
                             {Object.entries(ALGORITHMS).map(([key, name]) => (
                                 <option key={key} value={key} className="bg-stone-800 text-stone-100">{name}</option>
@@ -176,50 +173,59 @@ export default function SortingVisualizer() {
                         <span className="material-symbols-outlined absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-stone-400 text-sm">expand_more</span>
                     </div>
                 </div>
-                
-                <div className="hidden md:block w-px h-8 bg-white/10"></div>
-                
-                <div className="flex items-center justify-between gap-6 w-full md:w-auto">
-                    <div className="flex items-center gap-3 flex-1 md:flex-none">
-                        <label className="text-sm text-stone-400 font-bold uppercase tracking-widest hidden lg:block">Size</label>
-                        <input 
-                            type="range" 
-                            min="10" max="100" 
-                            value={size} 
+
+                <div className="hidden xl:block w-px h-8 bg-white/10"></div>
+
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 xl:gap-8 w-full xl:w-auto">
+                    <div className="flex items-center gap-3 w-full sm:w-auto">
+                        <label className="text-sm text-stone-400 font-bold uppercase tracking-widest whitespace-nowrap min-w-[80px]">Size: {size}</label>
+                        <input
+                            type="range"
+                            min="10" max="120"
+                            value={size}
                             onChange={handleSize}
                             disabled={running}
-                            className="w-full md:w-28 accent-stone-300 h-2 bg-stone-700 rounded-lg appearance-none cursor-pointer"
+                            className="w-full sm:w-32 xl:w-40 accent-stone-300 h-2 bg-stone-700 rounded-lg appearance-none cursor-pointer"
                         />
                     </div>
-                    
-                    <div className="flex items-center gap-3 flex-1 md:flex-none">
-                        <label className="text-sm text-stone-400 font-bold uppercase tracking-widest hidden lg:block">Speed</label>
-                        <input 
-                            type="range" 
-                            min="1" max="100" 
-                            value={speed} 
+
+                    <div className="flex items-center gap-3 w-full sm:w-auto">
+                        <label className="text-sm text-stone-400 font-bold uppercase tracking-widest whitespace-nowrap min-w-[80px]">Speed: {speed}</label>
+                        <input
+                            type="range"
+                            min="1" max="100"
+                            value={speed}
                             onChange={(e) => setSpeed(parseInt(e.target.value))}
-                            disabled={running}
-                            className="w-full md:w-28 accent-stone-300 h-2 bg-stone-700 rounded-lg appearance-none cursor-pointer"
+                            className="w-full sm:w-32 xl:w-40 accent-stone-300 h-2 bg-stone-700 rounded-lg appearance-none cursor-pointer"
                         />
                     </div>
                 </div>
 
-                <div className="hidden md:block w-px h-8 bg-white/10"></div>
+                <div className="hidden xl:block w-px h-8 bg-white/10"></div>
 
-                <div className="flex items-center gap-3 justify-end mt-2 md:mt-0">
-                    <button 
-                        onClick={reset} 
-                        disabled={running}
-                        className="btn btn-surface flex-1 md:flex-none justify-center px-4 sketch-box bg-stone-700 hover:bg-stone-600"
-                        title="Reset Array"
-                    >
-                        <span className="material-symbols-outlined text-lg text-stone-300">restart_alt</span>
-                    </button>
-                    <button 
+                <div className="flex items-center gap-3 justify-end mt-2 xl:mt-0 w-full xl:w-auto">
+                    {running ? (
+                      <button
+                          onClick={stop}
+                          className="btn btn-surface flex-1 xl:flex-none justify-center px-4 sketch-box bg-rose-900 hover:bg-rose-800 border-rose-700"
+                          title="Stop"
+                      >
+                          <span className="material-symbols-outlined text-lg text-rose-300">stop</span>
+                          <span className="text-rose-300 tracking-wide">Stop</span>
+                      </button>
+                    ) : (
+                      <button
+                          onClick={reset}
+                          className="btn btn-surface flex-1 xl:flex-none justify-center px-4 sketch-box bg-stone-700 hover:bg-stone-600"
+                          title="Reset Array"
+                      >
+                          <span className="material-symbols-outlined text-lg text-stone-300">restart_alt</span>
+                      </button>
+                    )}
+                    <button
                         onClick={run}
                         disabled={running}
-                        className="btn btn-primary flex-1 md:flex-none justify-center px-8"
+                        className="btn btn-primary flex-1 xl:flex-none justify-center px-8"
                     >
                         <span className="material-symbols-outlined text-lg">play_arrow</span>
                         <span className="tracking-wide text-xl">Sort</span>
@@ -228,10 +234,17 @@ export default function SortingVisualizer() {
             </div>
         </div>
 
+        {/* Done Banner */}
+        {done && (
+          <div className="absolute top-36 md:top-40 left-1/2 -translate-x-1/2 z-40 sketch-box bg-emerald-900 border-emerald-600 px-6 py-2 text-emerald-300 font-bold text-lg tracking-wide animate-[popIn_0.4s_cubic-bezier(0.175,0.885,0.32,1.275)]">
+            ✓ Sorted in {stats.comparisons} comparisons &amp; {stats.writes} writes
+          </div>
+        )}
+
         {/* Bars Container */}
         <div className="w-full h-full flex items-end justify-center gap-[2px] md:gap-1 max-w-7xl mx-auto pb-4 px-2 md:px-8 z-10">
             {array.map((val, idx) => (
-                <div 
+                <div
                     key={idx}
                     className={`bar ${colors[idx] || ''}`}
                     style={{ height: `${val}%` }}
@@ -239,17 +252,30 @@ export default function SortingVisualizer() {
             ))}
         </div>
 
-         {/* Stats Sidebar (Collapsible) - Bottom on Mobile, Right on Desktop */}
-        <div className="fixed bottom-4 left-4 right-4 md:absolute md:bottom-auto md:top-48 md:left-auto md:right-8 md:w-72 z-20 flex flex-col gap-2 md:gap-4 rotate-1">
+        {/* Stats Sidebar */}
+        <div className="fixed bottom-4 left-4 right-4 md:absolute md:bottom-auto md:top-64 md:left-auto md:right-8 md:w-72 z-20 flex flex-col gap-2 md:gap-4 rotate-1">
+             <button 
+                onClick={() => setShowStudyGuide(true)}
+                className="w-full sketch-box bg-stone-800 hover:bg-stone-700 text-stone-100 py-3 px-4 font-bold text-xl flex items-center justify-between transition-colors border-stone-500 shadow-lg group"
+             >
+                <span className="flex items-center gap-3">
+                    <span className="material-symbols-outlined text-amber-400 group-hover:scale-110 transition-transform">menu_book</span>
+                    Study Guide
+                </span>
+                <span className="material-symbols-outlined text-stone-500 text-sm">open_in_new</span>
+             </button>
+
              <CollapsiblePanel title="Live Statistics" icon="monitoring" initialOpen={true}>
                 <div className="grid grid-cols-2 gap-4 w-full mb-2">
                     <div className="sketch-box bg-stone-700 p-3 text-center -rotate-1">
                         <div className="text-3xl font-black text-stone-100 mb-1">{stats.comparisons}</div>
-                        <div className="text-base text-stone-400 uppercase tracking-widest font-semibold">Comparisons</div>
+                        <div className="text-sm text-stone-400 uppercase tracking-wider font-semibold">Compares</div>
                     </div>
                     <div className="sketch-box bg-stone-700 p-3 text-center rotate-1">
-                        <div className="text-3xl font-black text-stone-100 mb-1">{stats.swaps}</div>
-                        <div className="text-base text-stone-400 uppercase tracking-widest font-semibold">Swaps</div>
+                        <div className="text-3xl font-black text-stone-100 mb-1">{stats.writes}</div>
+                        <div className="text-sm text-stone-400 uppercase tracking-wider font-semibold">
+                          {algo === 'merge' || algo === 'insertion' ? 'Writes' : 'Swaps'}
+                        </div>
                     </div>
                 </div>
              </CollapsiblePanel>
@@ -259,28 +285,21 @@ export default function SortingVisualizer() {
                     <div className="text-lg text-stone-300 leading-relaxed space-y-4 font-inter">
                         <div>
                             <strong className="text-stone-100 block text-2xl mb-2 font-bold tracking-wide">{ALGORITHMS[algo as keyof typeof ALGORITHMS]}</strong>
-                            <p className="mb-2">
-                                {algo === 'quick' && "A divide-and-conquer algorithm that selects a 'pivot' element and partitions the other elements into two sub-arrays, according to whether they are less than or greater than the pivot."}
-                                {algo === 'merge' && "A specific type of divide-and-conquer algorithm that divides the input array into two halves, calls itself for the two halves, and then merges the two sorted halves."}
-                                {algo === 'heap' && "A comparison-based sorting technique based on Binary Heap data structure. It is similar to selection sort where we first find the maximum element and place the maximum element at the end."}
-                                {algo === 'bubble' && "The simplest sorting algorithm that works by repeatedly swapping the adjacent elements if they are in wrong order."}
-                                {algo === 'insertion' && "Builds the final sorted array one item at a time. It is much less efficient on large lists than more advanced algorithms such as quicksort, heapsort, or merge sort."}
-                                {algo === 'selection' && "Sorts an array by repeatedly finding the minimum element (considering ascending order) from unsorted part and putting it at the beginning."}
-                            </p>
+                            <p className="mb-2">{info?.desc}</p>
                         </div>
-                        
+
                         <div className="space-y-3 border-t border-stone-600 pt-3">
                             <div className="flex justify-between items-center">
-                                <span className="text-stone-400 font-medium">Time Complexity</span>
-                                <span className="font-mono text-stone-100 bg-stone-700 px-2 py-0.5 rounded text-base border border-stone-600">
-                                    {algo === 'quick' || algo === 'merge' || algo === 'heap' ? 'O(n log n)' : 'O(n²)'}
-                                </span>
+                                <span className="text-stone-400 font-medium">Time</span>
+                                <span className="font-mono text-stone-100 bg-stone-700 px-2 py-0.5 rounded text-base border border-stone-600">{info?.time}</span>
                             </div>
                             <div className="flex justify-between items-center">
-                                <span className="text-stone-400 font-medium">Space Complexity</span>
-                                <span className="font-mono text-stone-100 bg-stone-700 px-2 py-0.5 rounded text-base border border-stone-600">
-                                    {algo === 'merge' ? 'O(n)' : algo === 'quick' ? 'O(log n)' : 'O(1)'}
-                                </span>
+                                <span className="text-stone-400 font-medium">Space</span>
+                                <span className="font-mono text-stone-100 bg-stone-700 px-2 py-0.5 rounded text-base border border-stone-600">{info?.space}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <span className="text-stone-400 font-medium">Stable?</span>
+                                <span className={`font-mono px-2 py-0.5 rounded text-base border ${info?.stable === 'Yes' ? 'bg-emerald-900 text-emerald-300 border-emerald-700' : 'bg-rose-900 text-rose-300 border-rose-700'}`}>{info?.stable}</span>
                             </div>
                         </div>
                     </div>
@@ -289,6 +308,12 @@ export default function SortingVisualizer() {
         </div>
 
       </div>
+
+      <StudyDrawer 
+        isOpen={showStudyGuide} 
+        onClose={() => setShowStudyGuide(false)} 
+        contentKey={algo} 
+      />
     </div>
   );
 }

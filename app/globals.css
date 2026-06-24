@@ -106,3 +106,21 @@ h1, h2, h3, h4, button {
 .grid-cell.end { background: var(--node-end); border-color: var(--border-light); border-radius: 40% 50% 40% 50%/50% 40% 50% 40%; border-width: 2px;}
 .grid-cell.path { background: var(--grid-path); border-radius: 50%; transform: scale(0.8); }
 .grid-cell.visited { background: var(--grid-visited); }
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
