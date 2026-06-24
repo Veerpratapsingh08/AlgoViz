@@ -9,19 +9,19 @@ export default function Loading() {
           src="/assets/logo/algoviz-icon.svg" 
           alt="The Algorithm Sketchbook" 
           fill
-          className="object-contain drop-shadow-[0_0_15px_rgba(99,102,241,0.5)]"
+          className="object-contain drop-shadow-[0_0_15px_rgba(251,191,36,0.2)]"
           priority
         />
       </div>
       
       <div className="flex flex-col items-center gap-2">
-        <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-indigo-200 to-indigo-400 tracking-tight">
+        <h1 className="text-3xl font-bold text-stone-100 tracking-tight font-editorial italic">
           The Algorithm Sketchbook
         </h1>
         <div className="flex gap-1">
-          <span className="w-2 h-2 bg-indigo-500 rounded-full animate-[bounce_1s_infinite_0ms]"></span>
-          <span className="w-2 h-2 bg-indigo-500 rounded-full animate-[bounce_1s_infinite_200ms]"></span>
-          <span className="w-2 h-2 bg-indigo-500 rounded-full animate-[bounce_1s_infinite_400ms]"></span>
+          <span className="w-2 h-2 bg-stone-400 rounded-full animate-[bounce_1s_infinite_0ms]"></span>
+          <span className="w-2 h-2 bg-stone-400 rounded-full animate-[bounce_1s_infinite_200ms]"></span>
+          <span className="w-2 h-2 bg-stone-400 rounded-full animate-[bounce_1s_infinite_400ms]"></span>
         </div>
       </div>
     </div>

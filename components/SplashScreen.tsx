@@ -24,7 +24,7 @@ export default function SplashScreen() {
           alt="The Algorithm Sketchbook" 
           width={80}
           height={80}
-          className="object-contain drop-shadow-[0_0_25px_rgba(99,102,241,0.6)]"
+          className="object-contain drop-shadow-[0_0_20px_rgba(251,191,36,0.2)]"
           priority
         />
       </div>
@@ -34,9 +34,9 @@ export default function SplashScreen() {
           The Algorithm Sketchbook
         </h1>
         <div className="flex gap-2">
-          <div className="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></div>
-          <div className="w-2 h-2 bg-indigo-500 rounded-full animate-pulse delay-75"></div>
-          <div className="w-2 h-2 bg-indigo-500 rounded-full animate-pulse delay-150"></div>
+          <div className="w-2 h-2 bg-stone-400 rounded-full animate-pulse"></div>
+          <div className="w-2 h-2 bg-stone-400 rounded-full animate-pulse delay-75"></div>
+          <div className="w-2 h-2 bg-stone-400 rounded-full animate-pulse delay-150"></div>
         </div>
       </div>
     </div>
