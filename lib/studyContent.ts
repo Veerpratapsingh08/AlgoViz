@@ -1013,6 +1013,139 @@ bool dfs(vector<vector<int>>& adj, int current, int goal, vector<bool>& visited)
     }
   },
 
+  kruskal: {
+    title: "Kruskal's Algorithm (MST)",
+    description: [
+      "Kruskal's Algorithm is a greedy algorithm that finds a Minimum Spanning Tree (MST) for a connected weighted undirected graph.",
+      "It works by sorting all the edges from the lowest weight to the highest, and then adding them one by one to the MST.",
+      "To prevent cycles from forming when adding edges, it uses a Union-Find (Disjoint Set) data structure."
+    ],
+    best: 'O(E log E)',
+    avg: 'O(E log E)',
+    worst: 'O(E log E)',
+    space: 'O(V + E)',
+    characteristics: ['Greedy Algorithm', 'Finds Minimum Spanning Tree', 'Uses Union-Find', 'Works well on sparse graphs'],
+    code: {
+      typescript: `class UnionFind {
+  parent: {[key: string]: string} = {};
+  constructor(nodes: string[]) {
+      nodes.forEach(n => this.parent[n] = n);
+  }
+  find(i: string): string {
+      if (this.parent[i] === i) return i;
+      return this.parent[i] = this.find(this.parent[i]);
+  }
+  union(i: string, j: string) {
+      let root_i = this.find(i);
+      let root_j = this.find(j);
+      if (root_i !== root_j) {
+          this.parent[root_i] = root_j;
+      }
+  }
+}
+
+function kruskal(nodes: string[], edges: {from: string, to: string, weight: number}[]) {
+  const uf = new UnionFind(nodes);
+  const mst = [];
+  edges.sort((a, b) => a.weight - b.weight);
+
+  for (const edge of edges) {
+      if (uf.find(edge.from) !== uf.find(edge.to)) {
+          uf.union(edge.from, edge.to);
+          mst.push(edge);
+      }
+  }
+  return mst;
+}`,
+      python: `class UnionFind:
+    def __init__(self, nodes):
+        self.parent = {n: n for n in nodes}
+        
+    def find(self, i):
+        if self.parent[i] == i:
+            return i
+        self.parent[i] = self.find(self.parent[i])
+        return self.parent[i]
+        
+    def union(self, i, j):
+        root_i = self.find(i)
+        root_j = self.find(j)
+        if root_i != root_j:
+            self.parent[root_i] = root_j
+
+def kruskal(nodes, edges):
+    uf = UnionFind(nodes)
+    mst = []
+    edges.sort(key=lambda e: e['weight'])
+    
+    for edge in edges:
+        if uf.find(edge['from']) != uf.find(edge['to']):
+            uf.union(edge['from'], edge['to'])
+            mst.append(edge)
+            
+    return mst`,
+      java: `import java.util.*;
+
+class Edge implements Comparable<Edge> {
+    int src, dest, weight;
+    public int compareTo(Edge compareEdge) {
+        return this.weight - compareEdge.weight;
+    }
+}
+
+class subset { int parent, rank; }
+
+public class Kruskal {
+    int find(subset subsets[], int i) {
+        if (subsets[i].parent != i)
+            subsets[i].parent = find(subsets, subsets[i].parent);
+        return subsets[i].parent;
+    }
+    
+    void Union(subset subsets[], int x, int y) {
+        int xroot = find(subsets, x);
+        int yroot = find(subsets, y);
+        
+        if (subsets[xroot].rank < subsets[yroot].rank)
+            subsets[xroot].parent = yroot;
+        else if (subsets[xroot].rank > subsets[yroot].rank)
+            subsets[yroot].parent = xroot;
+        else {
+            subsets[yroot].parent = xroot;
+            subsets[xroot].rank++;
+        }
+    }
+}`,
+      cpp: `#include <vector>
+#include <algorithm>
+using namespace std;
+
+struct Edge { int src, dest, weight; };
+
+struct subset { int parent; int rank; };
+
+int find(subset subsets[], int i) {
+    if (subsets[i].parent != i)
+        subsets[i].parent = find(subsets, subsets[i].parent);
+    return subsets[i].parent;
+}
+
+void Union(subset subsets[], int x, int y) {
+    int xroot = find(subsets, x);
+    int yroot = find(subsets, y);
+    
+    if (subsets[xroot].rank < subsets[yroot].rank)
+        subsets[xroot].parent = yroot;
+    else if (subsets[xroot].rank > subsets[yroot].rank)
+        subsets[yroot].parent = xroot;
+    else {
+        subsets[yroot].parent = xroot;
+        subsets[xroot].rank++;
+    }
+}`
+    }
+  },
+
   // ================== DATA STRUCTURES ==================
   bst: {
     title: 'Binary Search Tree',

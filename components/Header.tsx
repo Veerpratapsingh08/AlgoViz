@@ -18,7 +18,9 @@ export default function Header() {
       {/* Navigation */}
       <nav className="flex items-center gap-6">
         <NavLink href="/sorting" active={pathname?.startsWith('/sorting')}>Sorting</NavLink>
+        <NavLink href="/race" active={pathname?.startsWith('/race')}>Race</NavLink>
         <NavLink href="/pathfinding" active={pathname?.startsWith('/pathfinding')}>Pathfinding</NavLink>
+        <NavLink href="/graphs" active={pathname?.startsWith('/graphs')}>Graphs</NavLink>
         <NavLink href="/datastructures" active={pathname?.startsWith('/datastructures')}>Structures</NavLink>
         <div className="w-0.5 h-6 bg-stone-400/30 hidden md:block rounded-full"></div>
         <a 
