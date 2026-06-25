@@ -64,6 +64,10 @@ git commit -m "feat(sorting): add radix sort visualization"
 git push origin feature/add-radix-sort
 ```
 
+### Understanding the Architecture
+
+Before diving into code, we highly recommend reading [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for a high-level overview of our components and the [docs/PROJECT_HYGIENE.md](docs/PROJECT_HYGIENE.md) for our file structure and coding conventions.
+
 ---
 
 ## 🧮 Adding a New Algorithm
@@ -174,6 +178,20 @@ export const TreeUtils = {
   insert(root: BSTNode | null, value: number): BSTNode { /* ... */ }
   search(root: BSTNode | null, value: number): boolean { /* ... */ }
   layout(root: BSTNode | null, x, y, level, width) { /* ... */ }
+};
+```
+
+### Graphs (`lib/algorithms/graphs.ts`)
+
+```typescript
+export type GraphNode = { id, x, y, edges };
+export type GraphEdge = { source, target, weight };
+export type Step =
+  | { type: 'visit', nodeId: string }
+  | { type: 'edge', sourceId: string, targetId: string };
+
+export const GraphAlgorithms = {
+  algorithmName(nodes: GraphNode[], edges: GraphEdge[], start: string): Step[] { /* ... */ }
 };
 ```
 

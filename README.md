@@ -63,9 +63,20 @@ Building this wasn't straightforward. Here are a few things I broke along the wa
 
 ---
 
+## 📚 Architecture & Documentation
+
+Want to dive deeper into how this is built? Check out our `docs/` folder:
+- [**ARCHITECTURE.md**](docs/ARCHITECTURE.md): An overview of the project's goals, components, and long-term vision.
+- [**PROJECT_HYGIENE.md**](docs/PROJECT_HYGIENE.md): The official guide to our repository structure, naming conventions, and code style.
+- [**OSS_USABILITY_REVIEW.md**](docs/OSS_USABILITY_REVIEW.md): An analysis of the app's usability from a learner's perspective.
+
+---
+
 ## 🤝 Open Source
 
-This entire project is open source. Feel free to explore the code, report issues, or contribute new algorithms!
+This entire project is open source, and we welcome contributions from everyone! Whether you want to add a new algorithm, improve the existing visualizers (including our new **Race Mode** and **Freeform Graphs**), or fix a bug, please check out:
+- [**CONTRIBUTING.md**](CONTRIBUTING.md) for local setup and algorithm module structure guidelines.
+- Our [Issue Templates](.github/ISSUE_TEMPLATE) and [PR Template](.github/PULL_REQUEST_TEMPLATE.md) for reporting bugs or suggesting features.
 
 [MIT License](LICENSE) — free to use, modify, and distribute.
 

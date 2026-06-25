@@ -11,7 +11,7 @@ assignees: ''
 
 ## 📍 Where does it happen?
 <!-- Which visualizer/page? Which algorithm? -->
-- **Visualizer**: [ ] Sorting | [ ] Pathfinding | [ ] Data Structures
+- **Visualizer**: [ ] Sorting | [ ] Pathfinding | [ ] Data Structures | [ ] Graphs | [ ] Race Mode
 - **Algorithm**: 
 - **URL**: 
 

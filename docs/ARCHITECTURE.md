@@ -1,4 +1,4 @@
-# AlgoViz Project Report
+# Architecture & Project Overview
 
 ## What is AlgoViz?
 **AlgoViz** is a minimalist, modern Progressive Web Application (PWA) designed to make algorithms and data structures intuitive and visible.
@@ -7,13 +7,15 @@ The application is accessible across all modern browsers and devices, providing 
 
 ## What You Get?
 
-**AlgoViz** provides instant availability to interactive visualizations for Sorting, Pathfinding, and Data Structures.
+**AlgoViz** provides instant availability to interactive visualizations for Sorting, Pathfinding, Data Structures, Freeform Graphs, and Race Mode.
 
 *   **Sorting Algorithms**: Visualizes comparisons and swaps for Bubble, Selection, Insertion, Merge, Quick, and Heap sort.
 *   **Pathfinding**: Demonstrates exploration and shortest path finding with Dijkstra, A*, BFS, and DFS.
 *   **Data Structures**: Interactive playgrounds for Binary Search Trees, Stacks, Queues, and Linked Lists.
-*   **Clean Design**: intentionally restrained UI with semantic colors and slow motion to maximize readability.
-*   **No Noise**: Zero gamification or unnecessary visual clutter—just pure logic unfolding.
+*   **Freeform Graphs**: Drop nodes onto an open canvas, draw connecting edges, and watch Kruskal's or Dijkstra's run directly on top of your sketches.
+*   **Race Mode**: Gamified side-by-side execution where users can pit different algorithms against each other.
+*   **Clean Design**: Intentionally restrained UI with semantic colors and slow motion to maximize readability.
+*   **No Noise**: Zero gamification (except for the educational Race Mode) or unnecessary visual clutter—just pure logic unfolding.
 
 ## Built With :-
 
@@ -48,9 +50,12 @@ Save preferred settings, custom visualizations, and track learning progress.
 **Performance Mode**
 A mode to compare the execution speed and efficiency of different algorithms side-by-side with larger datasets.
 
+## Architecture Details
+See `PROJECT_HYGIENE.md` for a deeper breakdown of the Next.js and algorithm segregation.
+
 ---
 
-## Know the team:-
+## Maintainers
 
 I.  **Veer Pratap Singh** - Lead Developer, Design, and Implementation.
     

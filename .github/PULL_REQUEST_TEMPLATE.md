@@ -19,7 +19,7 @@ Closes #
 ## Algorithm Details (if adding new algorithm)
 
 - **Algorithm Name**: 
-- **Category**: Sorting / Pathfinding / Data Structure
+- **Category**: Sorting / Pathfinding / Data Structure / Graphs / Race Mode
 - **Time Complexity**: O(?)
 - **Space Complexity**: O(?)
 

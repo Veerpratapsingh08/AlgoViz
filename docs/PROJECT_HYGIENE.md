@@ -24,21 +24,27 @@ AlgoViz/
 │   │   └── page.tsx
 │   ├── datastructures/
 │   │   └── page.tsx
+│   ├── race/                # Gamified Mode
+│   │   └── page.tsx
+│   ├── graphs/              # Freeform Graphs
+│   │   └── page.tsx
 │   ├── layout.tsx
 │   ├── page.tsx             # Landing page
 │   └── globals.css
 │
 ├── components/              # React components
-│   ├── visualizers/         # 🆕 Group visualizers
+│   ├── visualizers/         # Group visualizers
 │   │   ├── SortingVisualizer.tsx
 │   │   ├── PathfindingVisualizer.tsx
-│   │   └── DataStructureVisualizer.tsx
-│   ├── ui/                  # 🆕 Reusable UI components
+│   │   ├── DataStructureVisualizer.tsx
+│   │   ├── RaceVisualizer.tsx
+│   │   └── GraphVisualizer.tsx
+│   ├── ui/                  # Reusable UI components
 │   │   ├── Button.tsx
 │   │   ├── Slider.tsx
 │   │   ├── Select.tsx
 │   │   └── Panel.tsx
-│   └── layout/              # 🆕 Layout components
+│   └── layout/              # Layout components
 │       ├── Header.tsx
 │       ├── Footer.tsx
 │       └── Sidebar.tsx
@@ -48,11 +54,12 @@ AlgoViz/
 │   │   ├── sorting.ts
 │   │   ├── pathfinding.ts
 │   │   ├── datastructures.ts
-│   │   └── index.ts         # 🆕 Barrel export
-│   ├── hooks/               # 🆕 Custom React hooks
+│   │   ├── graphs.ts
+│   │   └── index.ts         # Barrel export
+│   ├── hooks/               # Custom React hooks
 │   │   ├── useAnimation.ts
 │   │   └── useKeyboard.ts
-│   └── utils/               # 🆕 Utility functions
+│   └── utils/               # Utility functions
 │       ├── array.ts
 │       └── timing.ts
 │
@@ -118,6 +125,8 @@ AlgoViz/
 | A* Search | `aStar` | "A* Search" |
 | BFS | `bfs` | "Breadth-First Search" |
 | DFS | `dfs` | "Depth-First Search" |
+| Kruskal's | `kruskal` | "Kruskal's" |
+| Prim's | `prim` | "Prim's" |
 
 ---
 

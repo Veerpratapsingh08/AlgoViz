@@ -29,7 +29,7 @@ assignees: ''
 
 ### For New Algorithms:
 - **Algorithm Name**: 
-- **Category**: [Sorting / Pathfinding / Data Structure / Other]
+- **Category**: [Sorting / Pathfinding / Data Structure / Graphs / Race Mode / Other]
 - **Time Complexity**: O(?)
 - **Space Complexity**: O(?)
 - **Key Steps to Visualize**: 
