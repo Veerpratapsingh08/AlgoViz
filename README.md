@@ -10,6 +10,20 @@ I built **The Algorithm Sketchbook** to be the tool I wish I had when I was firs
 
 No corporate fluff. No generic grids. Just raw logic, visual intuition, and a chalkboard aesthetic to make it feel like you're sketching out ideas in a notebook.
 
+**🚀 Live Demo: [algovizvps.vercel.app](https://algovizvps.vercel.app)**
+
+---
+
+## 📸 Screenshots
+
+| Landing Page | Algorithm Race | Freeform Graphs |
+|:---:|:---:|:---:|
+| ![Landing Page](public/assets/screenshots/landing.png) | ![Algorithm Race](public/assets/screenshots/race.png) | ![Freeform Graphs](public/assets/screenshots/graphs.png) |
+
+| Sorting Algorithms | Pathfinding | Data Structures |
+|:---:|:---:|:---:|
+| ![Sorting Visualization](public/assets/screenshots/sorting.png) | ![Pathfinding Visualization](public/assets/screenshots/pathfinding.png) | ![Data Structures Visualization](public/assets/screenshots/datastructures.png) |
+
 ---
 
 ## ✨ Features
