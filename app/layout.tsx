@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Caveat, Instrument_Serif, Fira_Code } from "next/font/google";
 import Header from "@/components/Header";
 import SplashScreen from "@/components/SplashScreen";
+import CookieConsent from "@/components/CookieConsent";
+import Analytics from "@/components/Analytics";
 import "./globals.css";
 
 const inter = Inter({
@@ -52,6 +54,8 @@ export default function RootLayout({
         <main className="pt-24 h-screen overflow-hidden flex flex-col">
           {children}
         </main>
+        <CookieConsent />
+        <Analytics />
       </body>
     </html>
   );

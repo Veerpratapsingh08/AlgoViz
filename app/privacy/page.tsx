@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AnalyticsConsent from "./AnalyticsConsent";
 
 export const metadata = {
   title: 'The Algorithm Sketchbook - Privacy Policy',
@@ -24,7 +25,7 @@ export default function PrivacyPage() {
               <strong>The Algorithm Sketchbook (AlgoViz) does not collect, store, sell, or share any personal data.</strong>
             </p>
             <p>
-              Everything you do on this site—every node you create, every algorithm you race, and every path you draw—happens locally in your own browser. We don&apos;t use cookies to track you, we don&apos;t require accounts, and we don&apos;t have a backend database gobbling up your information.
+              Everything you do on this site—every node you create, every algorithm you race, and every path you draw—happens locally in your own browser. We don&apos;t require accounts, and we don&apos;t have a backend database gobbling up your information. We only use cookies for optional analytics if you explicitly opt in.
             </p>
           </div>
         </div>
@@ -32,9 +33,10 @@ export default function PrivacyPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="sketch-box bg-stone-800 p-8 transform -rotate-1">
                 <h3 className="text-2xl font-bold text-rose-400 mb-4">Analytics</h3>
-                <p className="text-stone-300 text-lg">
-                    We might use basic, privacy-friendly analytics (like Vercel Web Analytics) just to see how many people visit the site. These tools do not track individual users or store personally identifiable information (PII).
+                <p className="text-stone-300 text-lg mb-6">
+                    To understand how people use AlgoViz and to fix UX issues, we use Microsoft Clarity. This helps us see which algorithms are most popular and where users might get stuck. It is strictly opt-in via our cookie consent banner. Clarity does not track personal identities or store personally identifiable information (PII).
                 </p>
+                <AnalyticsConsent />
             </div>
             
             <div className="sketch-box bg-stone-800 p-8 transform rotate-2">
